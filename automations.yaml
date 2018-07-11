@@ -39,3 +39,16 @@
       message: It will probably rain soon
       title: Rain alert
     service: notify.pushbullet_notifier
+- id: '1531325215883'
+  alias: Welcome home
+  trigger:
+  - entity_id: device_tracker.huawei_mate_9_pro9daa4a7
+    from: not_home
+    platform: state
+    to: home
+  condition: []
+  action:
+  - data:
+      message: Du är kung :)
+      title: Välkommen hem
+    service: notify.pushbullet_notifier
