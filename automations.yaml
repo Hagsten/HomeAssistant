@@ -1,0 +1,41 @@
+- id: '1530347786562'
+  alias: Entrance presence
+  trigger:
+  - entity_id: light.tradfri_bulb_e14_ws_opal_400lm
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: Precense detected in entrance
+      title: Entrance presence alert
+    service: notify.pushbullet_notifier
+- id: '1531068777832'
+  alias: Nightly rain
+  trigger:
+  - at: '21:00'
+    platform: time
+  condition:
+  - condition: template
+    value_template: '{{ states.sensor.rain_probability.attributes.hourly.data[1:12]
+      | selectattr("precipProbability", "gt", 0.2) | list | selectattr("precipIntensity",
+      "gt", 0.0) | list | length > 0 }}'
+  action:
+  - data:
+      message: Stäng fönster och ta in dynor.
+      title: Rain during night
+    service: notify.pushbullet_notifier
+- id: '1531143646436'
+  alias: Upcoming rain alert
+  trigger:
+  - platform: template
+    value_template: '{{ states.sensor.rain_probability.attributes.hourly.data[1:3]
+      | selectattr("precipProbability", "gt", 0.2) | list | selectattr("precipIntensity",
+      "gt", 0.0) | list | length > 0 }}'
+  condition: []
+  action:
+  - data:
+      message: It will probably rain soon
+      title: Rain alert
+    service: notify.pushbullet_notifier
