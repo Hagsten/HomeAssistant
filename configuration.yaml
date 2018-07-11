@@ -63,6 +63,12 @@ tts:
 # Cloud
 cloud:
 
+device_tracker:
+  - platform: unifi_direct
+    host: 192.168.10.161
+    username: !secret unifi_ap_username
+    password: !secret unifi_ap_password
+
 notify:
   - name: Pushbullet_notifier
     platform: pushbullet
