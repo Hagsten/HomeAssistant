@@ -5,7 +5,15 @@
     from: 'off'
     platform: state
     to: 'on'
-  condition: []
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: device_tracker.huawei_mate_9_pro9daa4a7
+        state: not_home
+      - after: '22:00'
+        before: '08:00'
+        condition: time
   action:
   - data:
       message: Precense detected in entrance
