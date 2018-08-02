@@ -3,8 +3,8 @@ homeassistant:
   # Name of the location where Home Assistant is running
   name: Home
   # Location required to calculate the time the sun rises and sets
-  latitude: 59.2602773
-  longitude: 15.364732
+  latitude: 59.2672456
+  longitude: 15.374619
   # Impacts weather/sunrise data (altitude above sea level in meters)
   elevation: 29
   # metric for Metric, imperial for Imperial
@@ -88,7 +88,20 @@ sensor:
     unit_of_measurement: "%"
     value_template: '{{ value_json.hourly.data[1].precipProbability }}'
     json_attributes:
-      - hourly  
+      - hourly
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /home
+      - type: memory_free
+      - type: processor_use  
+  - platform: tibber
+    access_token: !secret tibber_token
+
+xiaomi_aqara:
+  discovery_retry: 5
+  gateways:
+    - key: !secret xiaomi_gateway_key
 
 group: !include groups.yaml
 automation: !include automations.yaml
