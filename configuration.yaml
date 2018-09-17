@@ -13,9 +13,8 @@ homeassistant:
   time_zone: Europe/Stockholm
   # Customization file
   customize: !include customize.yaml
-
-# Show links to resources in log and frontend
-introduction:
+  auth_providers:
+   - type: legacy_api_password
 
 # Enables the frontend
 frontend:
@@ -25,7 +24,7 @@ config:
 
 http:
   # Secrets are defined in the file secrets.yaml
-  # api_password: !secret http_password
+  api_password: !secret http_password
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
   # base_url: example.duckdns.org:8123
 
@@ -78,7 +77,6 @@ notify:
     platform: pushbullet
     api_key: !secret pushbullet_secret
 
-
 sensor:
   - platform: yr
   - platform: rest
@@ -102,6 +100,11 @@ xiaomi_aqara:
   discovery_retry: 5
   gateways:
     - key: !secret xiaomi_gateway_key
+
+counter:
+  light_dim_step:
+    initial: 1
+    step: 1
 
 group: !include groups.yaml
 automation: !include automations.yaml

@@ -1,0 +1,35 @@
+
+  doors:
+    name: Doors
+    entities:
+      - binary_sensor.door_window_sensor_158d0002048620
+      - binary_sensor.door_window_sensor_158d0002049a62
+      - binary_sensor.door_window_sensor_158d000204bac9
+      - binary_sensor.door_window_sensor_158d00022eff91
+  tv_room_rgb_lights:
+    name: Tv room RGB
+    entities:
+      - light.yeelight_color2_7c49ebb319e7
+      - light.yeelight_color2_7c49ebb31c16
+  hallway_lights:
+    name: Hallway lights
+    entities:
+      - light.tradfri_bulb_e14_ws_opal_400lm
+      - light.tradfri_bulb_e14_ws_opal_400lm_2 
+  trusted_people:
+    name: Family
+    entities:
+      - device_tracker.johannas_mobil
+      - device_tracker.huawei_mate_9_pro9daa4a7
+      - device_tracker.annchriesiphone
+  motion_sensors:
+    name: Motion sensors
+    entities:
+      - binary_sensor.motion_sensor_158d00023db75a
+      - binary_sensor.motion_sensor_158d00023db6f4
+  closed_windows:
+    name: Windows
+    entities:
+      - binary_sensor.door_window_sensor_158d00022d2f29
+      - binary_sensor.door_window_sensor_158d00022efeb6
+      - binary_sensor.door_window_sensor_158d0002386a40

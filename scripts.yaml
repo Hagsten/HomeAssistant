@@ -1,0 +1,24 @@
+'1535468161232':
+  alias: Dim lights
+  sequence:
+  - service: light.turn_on
+    data_template:
+      entity_id: group.tv_room_rgb_lights
+      brightness_pct: '{{ states(''counter.light_dim_step'') | int * 25 }}'
+'1536574687151':
+  alias: Turn on lights
+  sequence:
+  - service: light.turn_on
+    data_template:
+      entity_id: 'group.tv_room_rgb_lights'
+      brightness_pct: >
+       {% if now().hour >= 01 and now().hour <= 06 -%}
+         {{ 10 }}
+       {% elif states.sensor.illumination_158d00023db75a.state | float > 20 -%}
+         {{ 100 }}
+       {% elif states.sensor.illumination_158d00023db75a.state | float > 10 %}
+         {{ 70 }}
+       {% else %}
+         {{ 50 }}
+       {%- endif %}
+ 
