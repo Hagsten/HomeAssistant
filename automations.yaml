@@ -42,19 +42,6 @@
       message: It will probably rain soon
       title: Rain alert
     service: notify.pushbullet_notifier
-- id: '1531325215883'
-  alias: Welcome home
-  trigger:
-  - entity_id: device_tracker.huawei_mate_9_pro9daa4a7
-    from: not_home
-    platform: state
-    to: home
-  condition: []
-  action:
-  - data:
-      message: Du är kung :)
-      title: Välkommen hem
-    service: notify.pushbullet_notifier
 - id: '1532183349901'
   alias: Sunset
   trigger:
@@ -101,14 +88,19 @@
       gw_mac: 78:11:DC:DF:0C:FA
     service: xiaomi_aqara.stop_ringtone
 - id: '1533203776840'
-  alias: Light test
+  alias: Labb
   trigger:
-  - entity_id: light.tradfri_bulb_e14_ws_opal_400lm
-    from: 'off'
-    platform: state
-    to: 'on'
+  - event_data:
+      click_Type: single
+      entity_id: binary_sensor.switch_doorbell
+    event_type: click
+    platform: event
   condition: []
-  action: []
+  action:
+  - data_template:
+      ringtone: 10
+      volume: 50
+    service: script.1537340978223
 - id: '1533223349979'
   alias: Terrass doors opens
   trigger:
@@ -222,57 +214,6 @@
   - after: '18:00'
     before: 06:00
     condition: time
-  action:
-  - data:
-      entity_id: script.1536574687151
-    service: script.turn_on
-- id: '1535143299194'
-  alias: Tv room switch off
-  trigger:
-  - event_data:
-      click_Type: single
-      entity_id: binary_sensor.switch_158d000215c957
-    event_type: click
-    platform: event
-  condition:
-  - condition: state
-    entity_id: group.tv_room_rgb_lights
-    state: 'on'
-  action:
-  - data:
-      entity_id: group.tv_room_rgb_lights
-    service: light.turn_off
-- id: '1535283683970'
-  alias: Tv room button on
-  trigger:
-  - event_data:
-      click_Type: single
-      entity_id: binary_sensor.switch_158d000215c957
-    event_type: click
-    platform: event
-  condition:
-  - condition: state
-    entity_id: group.tv_room_rgb_lights
-    state: 'off'
-  action:
-  - data:
-      entity_id: script.1536574687151
-    service: script.turn_on
-- id: '1535389805060'
-  alias: Motion detected
-  trigger:
-  - entity_id: binary_sensor.motion_sensor_158d00023db75a
-    platform: state
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: group.tv_room_rgb_lights
-    state: 'off'
-  - below: '6'
-    condition: numeric_state
-    entity_id: sensor.illumination_158d00023db75a
-  - condition: template
-    value_template: '{{states.media_player.vardagsrum.state != "playing" }}'
   action:
   - data:
       entity_id: script.1536574687151

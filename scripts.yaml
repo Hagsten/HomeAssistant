@@ -10,15 +10,16 @@
   sequence:
   - service: light.turn_on
     data_template:
-      entity_id: 'group.tv_room_rgb_lights'
-      brightness_pct: >
-       {% if now().hour >= 01 and now().hour <= 06 -%}
-         {{ 10 }}
-       {% elif states.sensor.illumination_158d00023db75a.state | float > 20 -%}
-         {{ 100 }}
-       {% elif states.sensor.illumination_158d00023db75a.state | float > 10 %}
-         {{ 70 }}
-       {% else %}
-         {{ 50 }}
-       {%- endif %}
- 
+      entity_id: group.tv_room_rgb_lights
+      brightness_pct: "{% if now().hour >= 01 and now().hour <= 06 -%}\n  {{ 10 }}\n\
+        {% elif states.sensor.illumination_158d00023db75a.state | float > 20 -%}\n\
+        \  {{ 100 }}\n{% elif states.sensor.illumination_158d00023db75a.state | float\
+        \ > 10 %}\n  {{ 70 }}\n{% else %}\n  {{ 50 }}\n{%- endif %}\n"
+'1537340978223':
+  alias: 'Play sound '
+  sequence:
+  - data_template:
+      gw_mac: 78:11:DC:DF:0C:FA
+      ringtone_id: "{{ringtone}}"
+      ringtone_vol: "{{volume }}"
+    service: xiaomi_aqara.play_ringtone
