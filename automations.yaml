@@ -58,6 +58,10 @@
       - 255
       - 35
     service: light.turn_on
+  - data:
+      brightness_pct: '100'
+      entity_id: light.yeelight_color2_7c49ebb91e8a
+    service: light.turn_on
 - id: '1532183940727'
   alias: Sunrise
   trigger:
@@ -68,6 +72,9 @@
   action:
   - data:
       entity_id: light.gateway_light_7811dcdf0cfa
+    service: light.turn_off
+  - data:
+      entity_id: light.yeelight_color2_7c49ebb91e8a
     service: light.turn_off
 - id: '1533203159068'
   alias: Front door opens
@@ -90,14 +97,15 @@
 - id: '1533203776840'
   alias: Labb
   trigger:
-  - event_data:
-      click_Type: single
-      entity_id: binary_sensor.switch_doorbell
-    event_type: click
+  - event_data: {}
+    event_type: lights_on_2
     platform: event
   condition: []
   action:
-  - data_template:
+  - data:
+      ringtone: 10
+      volume: 10
+    data_template:
       ringtone: 10
       volume: 50
     service: script.1537340978223
@@ -132,10 +140,6 @@
   alias: Alarm
   trigger:
   - entity_id: group.doors
-    from: 'off'
-    platform: state
-    to: 'on'
-  - entity_id: light.tradfri_bulb_e14_ws_opal_400lm
     from: 'off'
     platform: state
     to: 'on'
@@ -242,10 +246,13 @@
   - entity_id: binary_sensor.smoke_sensor_158d00023117bb
     platform: state
     to: 'on'
+  - entity_id: binary_sensor.smoke_sensor_158d000215ab06
+    platform: state
+    to: 'on'
   condition: []
   action:
   - data:
-      message: Possible fire in kitchen
+      message: Possible fire in kitchen/tvroom
       title: Possible fire
     service: notify.pushbullet_notifier
 - id: '1536961274860'
@@ -261,3 +268,15 @@
   - data:
       entity_id: group.hallway_lights
     service: light.turn_on
+- id: '1538080363136'
+  alias: 'Leaving home '
+  trigger:
+  - entity_id: group.trusted_people
+    from: home
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - data:
+      entity_id: ''
+    service: light.turn_off
