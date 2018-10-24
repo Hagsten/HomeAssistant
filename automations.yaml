@@ -199,7 +199,7 @@
       entity_id: group.hallway_lights
     service: light.turn_on
 - id: '1538080363136'
-  alias: 'Leaving home'
+  alias: Leaving home
   trigger:
   - entity_id: group.trusted_people
     from: home
@@ -208,8 +208,37 @@
   condition: []
   action:
   - data:
-      entity_id: 'group.tv_room_rgb_lights'
+      entity_id: group.tv_room_rgb_lights
     service: light.turn_off
   - data:
-      entity_id: 'group.hallway_lights'
+      entity_id: group.hallway_lights
     service: light.turn_off
+- id: '1540397582929'
+  alias: Sleeping
+  trigger:
+  - entity_id: input_boolean.sleeping
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: light.yeelight_color2_7c49ebb91e8a
+    service: light.turn_off
+  - data:
+      entity_id: group.tv_room_rgb_lights
+    service: light.turn_off
+- id: '1540397737368'
+  alias: Waking up
+  trigger:
+  - entity_id: input_boolean.sleeping
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      brightness_pct: '100'
+      entity_id: light.yeelight_color2_7c49ebb91e8a
+      kelvin: 2700
+    service: light.turn_on
