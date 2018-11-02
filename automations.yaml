@@ -60,9 +60,19 @@
     service: light.turn_on
   - data:
       brightness_pct: '100'
-      kelvin: 2700
       entity_id: light.yeelight_color2_7c49ebb91e8a
+      kelvin: 2700
     service: light.turn_on
+  - data:
+      brightness_pct: '100'
+      entity_id: light.yeelight_color2_7c49ebb9114a
+    service: light.turn_on
+  - data:
+      entity_id: switch.light_livingroom_1
+    service: switch.turn_on
+  - data:
+      entity_id: switch.light_livingroom_2
+    service: switch.turn_on
 - id: '1532183940727'
   alias: Sunrise
   trigger:
@@ -77,6 +87,15 @@
   - data:
       entity_id: light.yeelight_color2_7c49ebb91e8a
     service: light.turn_off
+  - data:
+      entity_id: light.yeelight_color2_7c49ebb9114a
+    service: light.turn_off
+  - data:
+      entity_id: switch.light_livingroom_1
+    service: switch.turn_off
+  - data:
+      entity_id: switch.light_livingroom_2
+    service: switch.turn_off
 - id: '1533203159068'
   alias: Front door opens
   trigger:
@@ -213,6 +232,9 @@
   - data:
       entity_id: group.hallway_lights
     service: light.turn_off
+  - data:
+      entity_id: switch.kaffebryggaren
+    service: switch.turn_off
 - id: '1540397582929'
   alias: Sleeping
   trigger:
@@ -228,6 +250,15 @@
   - data:
       entity_id: group.tv_room_rgb_lights
     service: light.turn_off
+  - data:
+      entity_id: light.yeelight_color2_7c49ebb9114a
+    service: light.turn_off
+  - data:
+      entity_id: switch.light_livingroom_1
+    service: switch.turn_off
+  - data:
+      entity_id: switch.light_livingroom_2
+    service: switch.turn_off
 - id: '1540397737368'
   alias: Waking up
   trigger:
@@ -235,10 +266,34 @@
     from: 'on'
     platform: state
     to: 'off'
-  condition: []
+  condition:
+  - before: sunrise
+    condition: sun
   action:
   - data:
       brightness_pct: '100'
       entity_id: light.yeelight_color2_7c49ebb91e8a
       kelvin: 2700
     service: light.turn_on
+  - data:
+      brightness_pct: '100'
+      entity_id: light.yeelight_color2_7c49ebb9114a
+    service: light.turn_on
+  - data:
+      entity_id: switch.light_livingroom_1
+    service: switch.turn_on
+  - data:
+      entity_id: switch.light_livingroom_2
+    service: switch.turn_on
+- id: '1541183654317'
+  alias: Coffee maker
+  trigger:
+  - entity_id: switch.kaffebryggaren
+    for: '1200'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.kaffebryggaren
+    service: switch.turn_off
