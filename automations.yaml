@@ -211,8 +211,12 @@
     platform: state
     to: home
   condition:
-  - after: sunset
-    condition: sun
+    condition: or
+    conditions:  
+      - condition: sun
+        before: sunrise
+      - condition: sun
+        after: sunset
   action:
   - data:
       entity_id: group.hallway_lights
@@ -267,8 +271,12 @@
     platform: state
     to: 'off'
   condition:
-  - before: sunrise
-    condition: sun
+    condition: or
+    conditions:  
+      - condition: sun
+        before: sunrise
+      - condition: sun
+        after: sunset
   action:
   - data:
       brightness_pct: '100'
