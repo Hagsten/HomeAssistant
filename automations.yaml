@@ -289,7 +289,7 @@
   alias: Coffee maker
   trigger:
   - entity_id: switch.kaffebryggaren
-    for: '1200'
+    for: '1800'
     platform: state
     to: 'on'
   condition: []
