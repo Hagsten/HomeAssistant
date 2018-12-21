@@ -207,16 +207,22 @@
 - id: '1536961274860'
   alias: Coming home
   trigger:
+  - entity_id: device_tracker.johannas_mobil
+    platform: state
+    to: home
+  - entity_id: device_tracker.huawei_mate_9_pro9daa4a7
+    platform: state
+    to: home
   - entity_id: group.trusted_people
     platform: state
     to: home
   condition:
-    condition: or
-    conditions:  
-      - condition: sun
-        before: sunrise
-      - condition: sun
-        after: sunset
+  - condition: or
+    conditions:
+    - before: sunrise
+      condition: sun
+    - after: sunset
+      condition: sun
   action:
   - data:
       entity_id: group.hallway_lights
@@ -272,11 +278,11 @@
     to: 'off'
   condition:
     condition: or
-    conditions:  
-      - condition: sun
-        before: sunrise
-      - condition: sun
-        after: sunset
+    conditions:
+    - condition: sun
+      before: sunrise
+    - condition: sun
+      after: sunset
   action:
   - data:
       brightness_pct: '100'
