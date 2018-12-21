@@ -140,6 +140,14 @@ input_boolean:
   sleeping:
     name: Sover
     initial: off
+  silent_mode:
+    name: "Tyst läge"
+    initial: off
+    icon: mdi:bell-off
+  guest_mode:
+    name: Gästläge
+    initial: off
+    icon: mdi:account-multiple
 
 input_select:
   light_presets:
