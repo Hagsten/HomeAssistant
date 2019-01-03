@@ -129,6 +129,10 @@ xiaomi_aqara:
 ifttt:
   key: 9Rfbtkpj63qmsIkv2itVz2tEpnr2Unj0tSgNclbkNx
 
+media_player: 
+  - platform: lg_soundbar
+    name: Soundbar
+
 input_boolean:
   alarm_state:
     name: Larm

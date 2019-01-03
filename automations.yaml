@@ -103,7 +103,10 @@
     from: 'off'
     platform: state
     to: 'on'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.silent_mode
+    state: 'off'
   action:
   - data:
       gw_mac: 78:11:DC:DF:0C:FA
@@ -129,15 +132,17 @@
     from: 'off'
     platform: state
     to: 'on'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.silent_mode
+    state: 'off'
   action:
   - data:
       gw_mac: 78:11:DC:DF:0C:FA
       ringtone_id: 20
       ringtone_vol: 8
     service: xiaomi_aqara.play_ringtone
-  - delay:
-      milliseconds: 850
+  - delay: '[object Object]'
   - data:
       gw_mac: 78:11:DC:DF:0C:FA
     service: xiaomi_aqara.stop_ringtone
