@@ -152,6 +152,9 @@ input_boolean:
     name: Gästläge
     initial: off
     icon: mdi:account-multiple
+  testing:
+    name: testing
+    initial: off
 
 input_select:
   light_presets:
