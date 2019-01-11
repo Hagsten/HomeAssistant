@@ -71,6 +71,8 @@ device_tracker:
     consider_home: 120
     username: !secret unifi_ap_username
     password: !secret unifi_ap_password
+    new_device_defaults:
+      hide_if_away: true
   - platform: unifi_direct
     host: 192.168.10.238
     consider_home: 120
