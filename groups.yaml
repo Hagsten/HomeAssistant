@@ -22,6 +22,7 @@
       - device_tracker.johannas_mobil
       - device_tracker.huawei_mate_9_pro9daa4a7
       - device_tracker.annchriesiphone
+      - device_tracker.honor_8
   motion_sensors:
     name: Motion sensors
     entities:
