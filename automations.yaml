@@ -222,17 +222,14 @@
   - entity_id: group.trusted_people
     platform: state
     to: home
-  condition:
-  - condition: or
-    conditions:
-    - before: sunrise
-      condition: sun
-    - after: sunset
-      condition: sun
+  condition: []
   action:
   - data:
       entity_id: group.hallway_lights
     service: light.turn_on
+  - data:
+      entity_id: input_boolean.alarm_state
+    service: input_boolean.turn_off
 - id: '1538080363136'
   alias: Leaving home
   trigger:
@@ -251,6 +248,9 @@
   - data:
       entity_id: switch.kaffebryggaren
     service: switch.turn_off
+  - data:
+      entity_id: input_boolean.alarm_state
+    service: input_boolean.turn_on
 - id: '1540397582929'
   alias: Sleeping
   trigger:
@@ -275,6 +275,9 @@
   - data:
       entity_id: switch.light_livingroom_2
     service: switch.turn_off
+  - data:
+      entity_id: input_boolean.alarm_state
+    service: input_boolean.turn_on
 - id: '1540397737368'
   alias: Waking up
   trigger:
@@ -283,12 +286,12 @@
     platform: state
     to: 'off'
   condition:
-    condition: or
+  - condition: or
     conditions:
-    - condition: sun
-      before: sunrise
-    - condition: sun
-      after: sunset
+    - before: sunrise
+      condition: sun
+    - after: sunset
+      condition: sun
   action:
   - data:
       brightness_pct: '100'
@@ -305,6 +308,9 @@
   - data:
       entity_id: switch.light_livingroom_2
     service: switch.turn_on
+  - data:
+      entity_id: input_boolean.alarm_state
+    service: input_boolean.turn_off
 - id: '1541183654317'
   alias: Coffee maker
   trigger:
@@ -317,3 +323,16 @@
   - data:
       entity_id: switch.kaffebryggaren
     service: switch.turn_off
+- id: '1547903815352'
+  alias: On reboot
+  trigger:
+  - event: start
+    platform: homeassistant
+  condition:
+  - condition: state
+    entity_id: group.trusted_people
+    state: not_home
+  action:
+  - data:
+      entity_id: input_boolean.alarm_state
+    service: input_boolean.turn_on
