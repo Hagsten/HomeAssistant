@@ -138,25 +138,19 @@ media_player:
 input_boolean:
   alarm_state:
     name: Larm
-    initial: off
     icon: mdi:bell
   alarm_triggered:
     name: Larm utlöst
-    initial: off
   sleeping:
     name: Sover
-    initial: off
   silent_mode:
     name: "Tyst läge"
-    initial: off
     icon: mdi:bell-off
   guest_mode:
     name: Gästläge
-    initial: off
     icon: mdi:account-multiple
   testing:
     name: testing
-    initial: off
 
 input_select:
   light_presets:
