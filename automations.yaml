@@ -1,5 +1,6 @@
 - id: '1531068777832'
   alias: Nightly rain
+  initial_state: 'off'
   trigger:
   - at: '21:00'
     platform: time
@@ -22,6 +23,7 @@
     service: notify.pushbullet_notifier
 - id: '1531143646436'
   alias: Upcoming rain alert
+  initial_state: 'off'
   trigger:
   - platform: template
     value_template: '{% set p = states.sensor.rain_probability.attributes.hourly.data[1:4]
@@ -44,6 +46,7 @@
     service: notify.pushbullet_notifier
 - id: '1532183349901'
   alias: Sunset
+  initial_state: 'on'
   trigger:
   - event: sunset
     offset: -00:30
@@ -75,6 +78,7 @@
     service: switch.turn_on
 - id: '1532183940727'
   alias: Sunrise
+  initial_state: 'on'
   trigger:
   - event: sunrise
     offset: 00:15
@@ -98,6 +102,7 @@
     service: switch.turn_off
 - id: '1533203159068'
   alias: Front door opens
+  initial_state: 'on'
   trigger:
   - entity_id: binary_sensor.door_window_sensor_158d0002049a62
     from: 'off'
@@ -119,6 +124,7 @@
     service: xiaomi_aqara.stop_ringtone
 - id: '1533223349979'
   alias: Terrass doors opens
+  initial_state: 'on'
   trigger:
   - entity_id: binary_sensor.door_window_sensor_158d000204bac9
     from: 'off'
@@ -148,7 +154,8 @@
       gw_mac: 78:11:DC:DF:0C:FA
     service: xiaomi_aqara.stop_ringtone
 - id: '1535117514847'
-  alias: 'Play media '
+  alias: 'Play media'
+  initial_state: 'on'
   trigger:
   - entity_id: media_player.vardagsrum
     platform: state
@@ -167,7 +174,8 @@
       kelvin: 3000
     service: light.turn_on
 - id: '1535128483194'
-  alias: 'Stop media '
+  alias: 'Stop media'
+  initial_state: 'on'
   trigger:
   - entity_id: media_player.vardagsrum
     for:
@@ -196,7 +204,8 @@
       entity_id: script.1536574687151
     service: script.turn_on
 - id: '1536864983273'
-  alias: 'Fire alarm '
+  alias: 'Fire alarm'
+  initial_state: 'on'
   trigger:
   - entity_id: binary_sensor.smoke_sensor_158d00023117bb
     platform: state
@@ -212,6 +221,7 @@
     service: notify.pushbullet_notifier
 - id: '1536961274860'
   alias: Coming home
+  initial_state: 'on'
   trigger:
   - entity_id: device_tracker.johannas_mobil
     platform: state
@@ -232,6 +242,7 @@
     service: input_boolean.turn_off
 - id: '1538080363136'
   alias: Leaving home
+  initial_state: 'on'
   trigger:
   - entity_id: group.trusted_people
     from: home
@@ -253,6 +264,7 @@
     service: input_boolean.turn_on
 - id: '1540397582929'
   alias: Sleeping
+  initial_state: 'on'
   trigger:
   - entity_id: input_boolean.sleeping
     from: 'off'
@@ -278,8 +290,12 @@
   - data:
       entity_id: input_boolean.alarm_state
     service: input_boolean.turn_on
+  - data:
+      entity_id: input_boolean.silent_mode
+    service: input_boolean.turn_off
 - id: '1540397737368'
   alias: Waking up
+  initial_state: 'on'
   trigger:
   - entity_id: input_boolean.sleeping
     from: 'on'
@@ -313,6 +329,7 @@
     service: input_boolean.turn_off
 - id: '1541183654317'
   alias: Coffee maker
+  initial_state: 'on'
   trigger:
   - entity_id: switch.kaffebryggaren
     for: '1800'
@@ -325,6 +342,7 @@
     service: switch.turn_off
 - id: '1547903815352'
   alias: On reboot
+  initial_state: 'on'
   trigger:
   - event: start
     platform: homeassistant
