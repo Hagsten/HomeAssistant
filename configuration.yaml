@@ -14,13 +14,18 @@ homeassistant:
   # Customization file
   customize: !include customize.yaml
   auth_providers:
+   - type: homeassistant
    - type: legacy_api_password
+
+system_health:
 
 # Enables the frontend
 frontend:
+  themes: !include themes.yaml
 
 # Enables configuration UI
 config:
+  themes: !include themes.yaml
 
 http:
   # Secrets are defined in the file secrets.yaml
@@ -163,6 +168,20 @@ input_select:
      - Rotate
     initial: Rotate
     icon: mdi:panda
+
+
+light:
+  - platform: group
+    name: Tvroom_lights
+    entities:
+      - light.yeelight_color2_7c49ebb319e7
+      - light.yeelight_color2_7c49ebb31c16
+  - platform: group
+    name: Hallway_lights
+    entities:
+      - light.tradfri_bulb_e14_ws_opal_400lm
+      - light.tradfri_bulb_e14_ws_opal_400lm_2
+
 
 camera:
   - platform: generic
