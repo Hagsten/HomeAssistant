@@ -89,8 +89,11 @@ notify:
     platform: pushbullet
     api_key: !secret pushbullet_secret
 
+weather:
+  - platform: darksky
+    api_key: !secret dark_sky_key
+
 sensor:
-  - platform: yr
   - platform: rest
     name: rain probability
     scan_interval: 600
