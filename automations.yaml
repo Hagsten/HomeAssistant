@@ -363,6 +363,10 @@
   - entity_id: media_player.overvaning
     platform: state
     to: playing
+  - entity_id: media_player.overvaning
+    from: 'off'
+    platform: state
+    to: idle
   condition: []
   action:
   - data:
@@ -387,3 +391,15 @@
   - data:
       entity_id: switch.stereo
     service: switch.turn_off
+- id: '1555055523241'
+  alias: Alarm off
+  trigger:
+  - entity_id: input_boolean.sleeping
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.alarm_state
+    service: input_boolean.turn_off
