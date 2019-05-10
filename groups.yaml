@@ -34,6 +34,8 @@
       - binary_sensor.door_window_sensor_158d00022d2f29
       - binary_sensor.door_window_sensor_158d00022efeb6
       - binary_sensor.door_window_sensor_158d0002386a40
+      - binary_sensor.door_window_sensor_158d00031b5702
+      - binary_sensor.door_window_sensor_158d00031e2c27
   house_shell:
     name: Skalskydd
     entities:
@@ -46,6 +48,8 @@
       - sensor.temperature_158d0002320527
       - sensor.temperature_158d000272c66a
       - sensor.temperature_158d000272c69f
+      - sensor.temperature_158d0003498df2
+      - sensor.temperature_158d0003499f6f
   humidity:
     name: Luftfuktigheter
     entities:
@@ -53,6 +57,8 @@
       - sensor.humidity_158d00023279ba
       - sensor.humidity_158d000272c69f
       - sensor.humidity_158d000272c66a
+      - sensor.humidity_158d0003499f6f
+      - sensor.humidity_158d0003498df2
   smoke_detectors:
     name: Brandvarnare
     entities:
