@@ -171,6 +171,8 @@ input_boolean:
     icon: mdi:account-multiple
   testing:
     name: testing
+  identification_pending:
+    name: Waiting for identification
 
 input_select:
   light_presets:
