@@ -173,6 +173,8 @@ input_boolean:
     name: testing
   identification_pending:
     name: Waiting for identification
+  doorbell_ringing:
+    name: Doorbell is ringing  
 
 input_select:
   light_presets:
