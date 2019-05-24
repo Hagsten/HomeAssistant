@@ -23,3 +23,11 @@
       ringtone_id: "{{ringtone}}"
       ringtone_vol: "{{volume }}"
     service: xiaomi_aqara.play_ringtone
+'play_sound_basement_gateway':
+  alias: 'Play sound '
+  sequence:
+  - data_template:
+      gw_mac: 04:CF:8C:91:62:CB
+      ringtone_id: "{{ringtone}}"
+      ringtone_vol: "{{volume }}"
+    service: xiaomi_aqara.play_ringtone
