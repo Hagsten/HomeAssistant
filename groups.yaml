@@ -10,6 +10,11 @@
     entities:
       - light.yeelight_color2_7c49ebb319e7
       - light.yeelight_color2_7c49ebb31c16
+  tv_room_cieling_lights:
+    name: TV-rum taklampor
+    entities:
+      - light.yeelight_ceiling3_04cf8c9adab1
+      - light.yeelight_ceiling3_04cf8c9b01f8
   hallway_lights:
     name: Hallway lights
     entities:

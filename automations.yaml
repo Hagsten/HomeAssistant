@@ -102,7 +102,6 @@
     service: switch.turn_off
 - id: '1533203159068'
   alias: Front door opens
-  initial_state: 'on'
   trigger:
   - entity_id: binary_sensor.door_window_sensor_158d0002049a62
     from: 'off'
@@ -114,14 +113,15 @@
     state: 'off'
   action:
   - data:
-      gw_mac: 78:11:DC:DF:0C:FA
+      gw_mac: 04:CF:8C:91:62:CB
       ringtone_id: 29
       ringtone_vol: 8
     service: xiaomi_aqara.play_ringtone
   - delay: 00:00:01
   - data:
-      gw_mac: 78:11:DC:DF:0C:FA
+      gw_mac: 04:CF:8C:91:62:CB
     service: xiaomi_aqara.stop_ringtone
+  initial_state: 'on'
 - id: '1533223349979'
   alias: Terrass doors opens
   initial_state: 'on'
@@ -221,7 +221,6 @@
     service: notify.pushbullet_notifier
 - id: '1536961274860'
   alias: Coming home
-  initial_state: 'on'
   trigger:
   - entity_id: device_tracker.johannas_mobil
     platform: state
@@ -240,6 +239,10 @@
   - data:
       entity_id: input_boolean.alarm_state
     service: input_boolean.turn_off
+  - data:
+      entity_id: input_boolean.identification_pending
+    service: input_boolean.turn_off
+  initial_state: 'on'
 - id: '1538080363136'
   alias: Leaving home
   initial_state: 'on'
@@ -402,4 +405,75 @@
   action:
   - data:
       entity_id: input_boolean.alarm_state
+    service: input_boolean.turn_off
+- id: '1557508975938'
+  alias: Basement door opens
+  trigger:
+  - entity_id: binary_sensor.door_window_sensor_158d000313441b
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: light.gateway_light_04cf8c9162cb
+    service: light.turn_on
+- id: '1557509032847'
+  alias: Basement door closes
+  trigger:
+  - entity_id: binary_sensor.door_window_sensor_158d000313441b
+    for: 00:01:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: light.gateway_light_04cf8c9162cb
+    service: light.turn_off
+- id: '1558249105875'
+  alias: Sitting at the desk
+  trigger:
+  - event_data:
+      entity_id: binary_sensor.vibration_158d0002afd810
+      movement_type: tilt
+    event_type: xiaomi_aqara.movement
+    platform: event
+  condition: []
+  action:
+  - data:
+      brightness_pct: 100
+      entity_id: light.yeelight_color2_7c49ebb91e8a
+    service: light.turn_on
+- id: '1558408108538'
+  alias: Awaiting identification
+  trigger:
+  - entity_id: group.house_shell
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: group.trusted_people
+    state: not_home
+  action:
+  - data:
+      entity_id: input_boolean.identification_pending
+    service: input_boolean.turn_on
+- id: '1558638170121'
+  alias: Doorbell ringing
+  trigger:
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.switch_doorbell
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.doorbell_ringing
+    service: input_boolean.turn_on
+  - delay: 00:00:15
+  - data:
+      entity_id: input_boolean.doorbell_ringing
     service: input_boolean.turn_off
