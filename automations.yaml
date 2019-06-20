@@ -245,13 +245,15 @@
   initial_state: 'on'
 - id: '1538080363136'
   alias: Leaving home
-  initial_state: 'on'
   trigger:
   - entity_id: group.trusted_people
     from: home
     platform: state
     to: not_home
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
   action:
   - data:
       entity_id: group.tv_room_rgb_lights
@@ -265,6 +267,7 @@
   - data:
       entity_id: input_boolean.alarm_state
     service: input_boolean.turn_on
+  initial_state: 'on'
 - id: '1540397582929'
   alias: Sleeping
   initial_state: 'on'
