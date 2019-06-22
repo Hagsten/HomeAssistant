@@ -203,6 +203,13 @@ light:
     entities:
       - light.yeelight_ceiling3_04cf8c9adab1
       - light.yeelight_ceiling3_04cf8c9b01f8
+  - platform: group
+    name: All TV-room lights
+    entities:
+      - light.yeelight_ceiling3_04cf8c9adab1
+      - light.yeelight_ceiling3_04cf8c9b01f8
+      - light.yeelight_color2_7c49ebb319e7
+      - light.yeelight_color2_7c49ebb31c16
 
 camera:
   - platform: generic
