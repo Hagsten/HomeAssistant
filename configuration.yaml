@@ -198,7 +198,11 @@ light:
     entities:
       - light.tradfri_bulb_e14_ws_opal_400lm
       - light.tradfri_bulb_e14_ws_opal_400lm_2
-
+  - platform: group
+    name: TV-room cieling lights
+    entities:
+      - light.yeelight_ceiling3_04cf8c9adab1
+      - light.yeelight_ceiling3_04cf8c9b01f8
 
 camera:
   - platform: generic

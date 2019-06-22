@@ -270,7 +270,6 @@
   initial_state: 'on'
 - id: '1540397582929'
   alias: Sleeping
-  initial_state: 'on'
   trigger:
   - entity_id: input_boolean.sleeping
     from: 'off'
@@ -294,11 +293,9 @@
       entity_id: switch.light_livingroom_2
     service: switch.turn_off
   - data:
-      entity_id: input_boolean.alarm_state
-    service: input_boolean.turn_on
-  - data:
       entity_id: input_boolean.silent_mode
     service: input_boolean.turn_off
+  initial_state: 'on'
 - id: '1540397737368'
   alias: Waking up
   initial_state: 'on'
@@ -480,3 +477,35 @@
   - data:
       entity_id: input_boolean.doorbell_ringing
     service: input_boolean.turn_off
+- id: '1561036012875'
+  alias: Turn on alarm when sleeping
+  trigger:
+  - entity_id: input_boolean.sleeping
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  action:
+  - data:
+      entity_id: input_boolean.alarm_state
+    service: input_boolean.turn_on
+- id: '1561103142057'
+  alias: Water leak
+  trigger:
+  - entity_id: binary_sensor.water_leak_sensor_158d0002334525
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: binary_sensor.water_leak_sensor_158d00027955e3
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: Bathroom or basement
+      title: Water Leak alert
+    service: notify.pushbullet_notifier
