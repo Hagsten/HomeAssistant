@@ -267,6 +267,9 @@
   - data:
       entity_id: input_boolean.alarm_state
     service: input_boolean.turn_on
+  - data:
+      entity_id: light.tv_room_cieling_lights
+    service: light.turn_off
   initial_state: 'on'
 - id: '1540397582929'
   alias: Sleeping
@@ -509,3 +512,21 @@
       message: Bathroom or basement
       title: Water Leak alert
     service: notify.pushbullet_notifier
+- id: '1561320522889'
+  alias: Play media - cieling
+  trigger:
+  - entity_id: media_player.vardagsrum
+    platform: state
+    to: playing
+  condition:
+  - after: '18:00'
+    before: 06:00
+    condition: time
+  - condition: state
+    entity_id: light.tv_room_cieling_lights
+    state: 'on'
+  action:
+  - data:
+      brightness_pct: 10
+      entity_id: light.tv_room_cieling_lights
+    service: light.turn_on
