@@ -31,7 +31,7 @@ play_sound_basement_gateway:
       ringtone_id: '{{ringtone}}'
       ringtone_vol: '{{volume }}'
     service: xiaomi_aqara.play_ringtone
-Flash_notification:
+flash_notification:
   alias: Flash notification
   sequence:
   - data_template:
