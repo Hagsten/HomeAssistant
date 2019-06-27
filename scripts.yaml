@@ -31,12 +31,12 @@ play_sound_basement_gateway:
       ringtone_id: '{{ringtone}}'
       ringtone_vol: '{{volume }}'
     service: xiaomi_aqara.play_ringtone
-'1561653075391':
+'Flash_notification':
   alias: Flash notification
   sequence:
-  - data:
+  - data_template:
       count: 3
-      entity_id: '{{light}}'
+      entity_id: '{{ light }}'
       transitions:
       - TemperatureTransition:
         - 1900
