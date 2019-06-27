@@ -20,14 +20,30 @@
   sequence:
   - data_template:
       gw_mac: 78:11:DC:DF:0C:FA
-      ringtone_id: "{{ringtone}}"
-      ringtone_vol: "{{volume }}"
+      ringtone_id: '{{ringtone}}'
+      ringtone_vol: '{{volume }}'
     service: xiaomi_aqara.play_ringtone
-'play_sound_basement_gateway':
-  alias: 'Play sound basement gateway'
+play_sound_basement_gateway:
+  alias: Play sound basement gateway
   sequence:
   - data_template:
       gw_mac: 04:CF:8C:91:62:CB
-      ringtone_id: "{{ringtone}}"
-      ringtone_vol: "{{volume }}"
+      ringtone_id: '{{ringtone}}'
+      ringtone_vol: '{{volume }}'
     service: xiaomi_aqara.play_ringtone
+'1561653075391':
+  alias: Flash notification
+  sequence:
+  - data:
+      count: 3
+      entity_id: '{{light}}'
+      transitions:
+      - TemperatureTransition:
+        - 1900
+        - 750
+        - 50
+      - TemperatureTransition:
+        - 1900
+        - 750
+        - 0
+    service: yeelight.start_flow

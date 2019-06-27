@@ -527,6 +527,53 @@
     state: 'on'
   action:
   - data:
-      brightness_pct: 10
+      entity_id: light.yeelight_ceiling3_04cf8c9adab1
+      mode: moonlight
+    service: yeelight.set_mode
+  - data:
+      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+      mode: moonlight
+    service: yeelight.set_mode
+  - data:
+      brightness_pct: 5
       entity_id: light.tv_room_cieling_lights
+    service: light.turn_on
+- id: '1561567490842'
+  alias: Stop media - cieling
+  trigger:
+  - entity_id: media_player.vardagsrum
+    for: 0:00:10
+    from: playing
+    platform: state
+    to: idle
+  - entity_id: media_player.vardagsrum
+    for: 0:00:10
+    platform: state
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: light.tv_room_cieling_lights
+    state: 'on'
+  - after: '18:00'
+    before: 06:00
+    condition: time
+  action:
+  - data:
+      entity_id: light.yeelight_ceiling3_04cf8c9adab1
+      mode: normal
+    service: yeelight.set_mode
+  - data:
+      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+      mode: normal
+    service: yeelight.set_mode
+  - data:
+      brightness_pct: '25'
+      entity_id: light.tv_room_cieling_lights
+      kelvin: 3000
+    service: light.turn_on
+  - delay: 00:01:00
+  - data:
+      brightness_pct: '50'
+      entity_id: light.tv_room_cieling_lights
+      kelvin: 3000
     service: light.turn_on
