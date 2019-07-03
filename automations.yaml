@@ -298,6 +298,9 @@
   - data:
       entity_id: input_boolean.silent_mode
     service: input_boolean.turn_off
+  - data:
+      entity_id: input_boolean.tv_room_light_switched_recently_pressed
+    service: input_boolean.turn_off
   initial_state: 'on'
 - id: '1540397737368'
   alias: Waking up
@@ -560,20 +563,97 @@
   action:
   - data:
       entity_id: light.yeelight_ceiling3_04cf8c9adab1
-      mode: normal
+      mode: moonlight
     service: yeelight.set_mode
+  - data:
+      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+      mode: moonlight
+    service: yeelight.set_mode
+  - data:
+      brightness_pct: '100'
+      entity_id: light.tv_room_cieling_lights
+    service: light.turn_on
+  - delay: 00:01:00
   - data:
       entity_id: light.yeelight_ceiling3_04cf8c9b01f8
       mode: normal
     service: yeelight.set_mode
   - data:
-      brightness_pct: '25'
-      entity_id: light.tv_room_cieling_lights
-      kelvin: 3000
-    service: light.turn_on
-  - delay: 00:01:00
+      entity_id: light.yeelight_ceiling3_04cf8c9adab1
+      mode: normal
+    service: yeelight.set_mode
   - data:
-      brightness_pct: '50'
+      brightness_pct: '10'
       entity_id: light.tv_room_cieling_lights
-      kelvin: 3000
+      kelvin: 2000
     service: light.turn_on
+- id: '1561735682681'
+  alias: Guest arrived
+  trigger:
+  - entity_id: binary_sensor.door_window_sensor_158d0002049a62
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: group.trusted_people
+    state: not_home
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'on'
+  action:
+  - delay: 00:05:00
+  - condition: state
+    entity_id: group.trusted_people
+    state: not_home
+  - data:
+      message: A guest arrived while noone was home
+      title: Guest arrived
+    service: notify.pushbullet_notifier
+- id: '1562184118629'
+  alias: Mark Tv-room lights as manually set
+  trigger:
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.switch_158d000215c957
+    event_type: xiaomi_aqara.click
+    platform: event
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.switch_158d000215c8ca
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.tv_room_light_switched_recently_pressed
+    service: input_boolean.turn_on
+- id: '1562185409909'
+  alias: 'Reset tv-room light manual mark '
+  trigger:
+  - entity_id: input_boolean.tv_room_light_switched_recently_pressed
+    for: 02:00:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.tv_room_light_switched_recently_pressed
+    service: input_boolean.turn_off
+- id: '1562186516375'
+  alias: Manual alarm arming
+  trigger:
+  - entity_id: input_boolean.alarm_arming_pending
+    for: 00:02:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.alarm_arming_pending
+    service: input_boolean.turn_off
+  - data:
+      entity_id: input_boolean.alarm_state
+    service: input_boolean.turn_on

@@ -177,14 +177,10 @@ input_boolean:
     name: Waiting for identification
   doorbell_ringing:
     name: Doorbell is ringing  
-  andreas_arrived:
-    name: Andreas came home
-  johanna_arrived:
-    name: Johanna came home
-  tina_arrived:
-    name: Tina came home
   tv_room_light_switched_recently_pressed:
     name: Tv-room light switch recently pressed
+  notification_goodmornikg:
+    name: Good morning notification
 
 input_select:
   light_presets:
