@@ -161,6 +161,8 @@ input_boolean:
     icon: mdi:bell
   alarm_triggered:
     name: Larm utlöst
+  alarm_arming_pending:
+    name: Larm kommer aktiveras
   sleeping:
     name: Sover
   silent_mode:
@@ -175,6 +177,14 @@ input_boolean:
     name: Waiting for identification
   doorbell_ringing:
     name: Doorbell is ringing  
+  andreas_arrived:
+    name: Andreas came home
+  johanna_arrived:
+    name: Johanna came home
+  tina_arrived:
+    name: Tina came home
+  tv_room_light_switched_recently_pressed:
+    name: Tv-room light switch recently pressed
 
 input_select:
   light_presets:
