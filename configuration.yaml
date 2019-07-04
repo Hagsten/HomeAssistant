@@ -179,7 +179,7 @@ input_boolean:
     name: Doorbell is ringing  
   tv_room_light_switched_recently_pressed:
     name: Tv-room light switch recently pressed
-  notification_goodmornikg:
+  notification_goodmorning:
     name: Good morning notification
 
 input_select:

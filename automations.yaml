@@ -657,3 +657,31 @@
   - data:
       entity_id: input_boolean.alarm_state
     service: input_boolean.turn_on
+- id: '1562190311457'
+  alias: Good morning notification
+  trigger:
+  - entity_id: input_boolean.sleeping
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition:
+  - after: 06:00
+    before: 08:00
+    condition: time
+  action:
+  - data:
+      entity_id: input_boolean.notification_goodmorning
+    service: input_boolean.turn_on
+- id: '1562220236800'
+  alias: Clear good morning notification
+  trigger:
+  - entity_id: binary_sensor.motion_sensor_kitchen
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - delay: 00:00:05
+  - data:
+      entity_id: input_boolean.notification_goodmorning
+    service: input_boolean.turn_off
