@@ -701,8 +701,53 @@
     entity_id: input_boolean.alarm_state
     state: 'on'
   - condition: template
-    value_template: "{{ states.automation.trigger_alarm.attributes.last_triggered == None or as_timestamp(now()) - as_timestamp(states.automation.trigger_alarm.attributes.last_triggered) > 900  }}"
+    value_template: '{{ states.automation.trigger_alarm.attributes.last_triggered
+      == None or as_timestamp(now()) - as_timestamp(states.automation.trigger_alarm.attributes.last_triggered)
+      > 900  }}'
   action:
+  - delay: 00:02:00
+  - condition: state
+    entity_id: input_boolean.alarm_state
+    state: 'on'
   - data:
       entity_id: input_boolean.alarm_triggered
     service: input_boolean.turn_on
+  - data:
+      message: 'Sensor: TBD'
+      title: Larm utlöst
+    service: notify.pushbullet_notifier
+- id: '1562225953598'
+  alias: Disarm
+  trigger:
+  - entity_id: input_boolean.alarm_state
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.alarm_triggered
+    service: input_boolean.turn_off
+  - after: 07:00
+    condition: time
+  - data:
+      message: ''
+      target:
+      - channel/sundbyvik-larm
+      title: Avlarmat
+    service: notify.pushbullet_notifier
+- id: '1562226659809'
+  alias: Arming
+  trigger:
+  - entity_id: input_boolean.alarm_state
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: Larmet är aktivt i hela huset
+      target:
+      - channel/sundbyvik-larm
+      title: Pålarmat
+    service: notify.pushbullet_notifier
