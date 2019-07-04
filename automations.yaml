@@ -265,9 +265,6 @@
       entity_id: switch.kaffebryggaren
     service: switch.turn_off
   - data:
-      entity_id: input_boolean.alarm_state
-    service: input_boolean.turn_on
-  - data:
       entity_id: light.tv_room_cieling_lights
     service: light.turn_off
   initial_state: 'on'
@@ -739,11 +736,18 @@
 - id: '1562226659809'
   alias: Arming
   trigger:
-  - entity_id: input_boolean.alarm_state
+  - entity_id: group.trusted_people
+    from: home
+    platform: state
+    to: not_home
+  - entity_id: input_boolean.sleeping
     from: 'off'
     platform: state
     to: 'on'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
   action:
   - data:
       message: Larmet är aktivt i hela huset
@@ -751,3 +755,6 @@
       - channel/sundbyvik-larm
       title: Pålarmat
     service: notify.pushbullet_notifier
+  - data:
+      entity_id: input_boolean.alarm_state
+    service: input_boolean.turn_on
