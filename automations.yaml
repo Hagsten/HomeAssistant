@@ -237,9 +237,6 @@
       entity_id: group.hallway_lights
     service: light.turn_on
   - data:
-      entity_id: input_boolean.alarm_state
-    service: input_boolean.turn_off
-  - data:
       entity_id: input_boolean.identification_pending
     service: input_boolean.turn_off
   initial_state: 'on'
@@ -404,6 +401,10 @@
     from: 'on'
     platform: state
     to: 'off'
+  - entity_id: group.trusted_people
+    from: not_home
+    platform: state
+    to: home
   condition: []
   action:
   - data:
@@ -719,7 +720,7 @@
       title: Avlarmat
     service: notify.pushbullet_notifier
 - id: '1562226659809'
-  alias: Arming
+  alias: Arm whole house
   trigger:
   - entity_id: group.trusted_people
     from: home
