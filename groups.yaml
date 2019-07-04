@@ -34,6 +34,10 @@
       - binary_sensor.motion_sensor_158d00023db6f4
       - binary_sensor.motion_sensor_upper_floor
       - binary_sensor.motion_sensor_kitchen
+  motion_sensors:
+    name: Upper floor Motion sensors
+    entities:
+      - binary_sensor.motion_sensor_upper_floor
   closed_windows:
     name: Windows
     entities:
