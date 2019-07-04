@@ -159,6 +159,9 @@ input_boolean:
   alarm_state:
     name: Larm
     icon: mdi:bell
+  upperfloor_alarm_state:
+    name: Larm övervåning
+    icon: mdi:bell
   alarm_triggered:
     name: Larm utlöst
   alarm_arming_pending:
