@@ -685,3 +685,22 @@
   - data:
       entity_id: input_boolean.notification_goodmorning
     service: input_boolean.turn_off
+- id: '1562224730116'
+  alias: Trigger alarm
+  trigger:
+  - entity_id: group.motion_sensors
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: group.house_shell
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.alarm_state
+    state: 'on'
+  action:
+  - data:
+      entity_id: input_boolean.alarm_triggered
+    service: input_boolean.turn_on
