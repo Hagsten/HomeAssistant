@@ -800,18 +800,6 @@
   - data:
       entity_id: input_boolean.alarm_triggered
     service: input_boolean.turn_on
-- id: '1562431456779'
-  alias: Wake up
-  trigger:
-  - entity_id: binary_sensor.motion_sensor_upper_floor
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition: []
-  action:
-  - data:
-      entity_id: input_boolean.sleeping
-    service: input_boolean.turn_off
 - id: '1562445668628'
   alias: Alarm - Manual semi arm
   trigger:
