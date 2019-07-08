@@ -823,7 +823,10 @@
     from: 'off'
     platform: state
     to: 'on'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: group.stair_adjacent_motion_sensors
+    state: 'off'
   action:
   - data:
       entity_id: input_boolean.sleeping
@@ -850,3 +853,20 @@
   - data:
       entity_id: input_boolean.sleeping
     service: input_boolean.turn_on
+- id: '1562593639527'
+  alias: Sleep - Force sleep trigger
+  trigger:
+  - entity_id: group.motion_sensors
+    for: 01:00:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition:
+  - after: 01:00
+    before: 06:00
+    condition: time
+  - condition: state
+    entity_id: group.trusted_people
+    state: home
+  action:
+  - service: input_boolean.turn_on
