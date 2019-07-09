@@ -147,8 +147,8 @@
       ringtone_id: 20
       ringtone_vol: 8
     service: xiaomi_aqara.play_ringtone
-   - delay:
-      milliseconds: 850
+  - delay:
+     milliseconds: 850
   - data:
       gw_mac: 78:11:DC:DF:0C:FA
     service: xiaomi_aqara.stop_ringtone
