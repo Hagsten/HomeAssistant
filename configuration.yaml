@@ -203,6 +203,8 @@ input_boolean:
     name: Tv-room light switch recently pressed
   notification_goodmorning:
     name: Good morning notification
+  doors_recently_closed:
+    name: Doors recently closed
 
 input_select:
   light_presets:
