@@ -147,7 +147,8 @@
       ringtone_id: 20
       ringtone_vol: 8
     service: xiaomi_aqara.play_ringtone
-  - delay: '[object Object]'
+   - delay:
+      milliseconds: 850
   - data:
       gw_mac: 78:11:DC:DF:0C:FA
     service: xiaomi_aqara.stop_ringtone
@@ -750,26 +751,25 @@
       entity_id: input_boolean.alarm_state
     service: input_boolean.turn_on
 - id: '1562227944523'
-  alias: Alarm - Arm upper floor
+  alias: Alarm - Arm upper floor by leaving home
   trigger:
   - entity_id: group.trusted_people
     from: home
     platform: state
     to: not_home
-  - entity_id: input_boolean.sleeping
-    from: 'off'
-    platform: state
-    to: 'on'
   condition:
   - condition: state
     entity_id: input_boolean.guest_mode
     state: 'on'
+  - condition: state
+    entity_id: input_boolean.doors_recently_closed
+    state: 'on'  
   action:
   - data:
       entity_id: input_boolean.upperfloor_alarm_state
     service: input_boolean.turn_on
   - data:
-      message: Larmet är aktivt på övervåningen
+      message: 'Larmet är aktivt på övervåningen. Orsak: Ingen hemma'
       target:
       - channel/sundbyvik-larm
       title: Delvis pålarmat
@@ -908,3 +908,24 @@
   - data:
       entity_id: input_boolean.alarm_state
     service: input_boolean.turn_on
+- id: '1562681351309'
+  alias: Alarm - Arm upper floor by sleeping
+  trigger:
+  - entity_id: input_boolean.sleeping
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'on'
+  action:
+  - data:
+      entity_id: input_boolean.upperfloor_alarm_state
+    service: input_boolean.turn_on
+  - data:
+      message: 'Larmet är aktivt på övervåningen. Orsak: sover'
+      target:
+      - channel/sundbyvik-larm
+      title: Delvis pålarmat
+    service: notify.pushbullet_notifier
