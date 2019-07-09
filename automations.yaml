@@ -686,7 +686,9 @@
     entity_id: input_boolean.alarm_state
     state: 'on'
   - condition: template
-    value_template: '{{ states.automation.alarm_trigger.attributes.last_triggered == None or as_timestamp(now()) - as_timestamp(states.automation.alarm_trigger.attributes.last_triggered) > 900  }}'
+    value_template: '{{ states.automation.alarm_trigger.attributes.last_triggered
+      == None or as_timestamp(now()) - as_timestamp(states.automation.alarm_trigger.attributes.last_triggered)
+      > 900  }}'
   action:
   - delay: 00:02:00
   - condition: state
@@ -724,23 +726,22 @@
       title: Avlarmat
     service: notify.pushbullet_notifier
 - id: '1562226659809'
-  alias: Alarm - Arm whole house
+  alias: Alarm - Arm house by leaving home
   trigger:
   - entity_id: group.trusted_people
     from: home
     platform: state
     to: not_home
-  - entity_id: input_boolean.sleeping
-    from: 'off'
-    platform: state
-    to: 'on'
   condition:
   - condition: state
     entity_id: input_boolean.guest_mode
     state: 'off'
+  - condition: state
+    entity_id: input_boolean.doors_recently_closed
+    state: 'on'
   action:
   - data:
-      message: Larmet är aktivt i hela huset
+      message: 'Larmet är aktivt i hela huset. Orsak: ingen hemma'
       target:
       - channel/sundbyvik-larm
       title: Pålarmat
@@ -860,11 +861,50 @@
     platform: state
     to: 'off'
   condition:
-  - after: 01:00
+  - after: 00:10
     before: 06:00
     condition: time
   - condition: state
     entity_id: group.trusted_people
     state: home
   action:
-  - service: input_boolean.turn_on
+  - data:
+      entity_id: input_boolean.sleeping
+    service: input_boolean.turn_on
+- id: '1562616685197'
+  alias: Doors - recently closed
+  trigger:
+  - entity_id: group.doors
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.doors_recently_closed
+    service: input_boolean.turn_on
+  - delay: 00:15:00
+  - data:
+      entity_id: input_boolean.doors_recently_closed
+    service: input_boolean.turn_off
+- id: '1562681351305'
+  alias: Alarm - Arm house by sleeping
+  trigger:
+  - entity_id: input_boolean.sleeping
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  action:
+  - data:
+      message: 'Larmet är aktivt i hela huset. Orsak: sover'
+      target:
+      - channel/sundbyvik-larm
+      title: Pålarmat
+    service: notify.pushbullet_notifier
+  - data:
+      entity_id: input_boolean.alarm_state
+    service: input_boolean.turn_on
