@@ -148,7 +148,7 @@
       ringtone_vol: 8
     service: xiaomi_aqara.play_ringtone
   - delay:
-     milliseconds: 850
+      milliseconds: 850
   - data:
       gw_mac: 78:11:DC:DF:0C:FA
     service: xiaomi_aqara.stop_ringtone
@@ -290,10 +290,13 @@
       entity_id: switch.light_livingroom_2
     service: switch.turn_off
   - data:
-      entity_id: input_boolean.silent_mode
-    service: input_boolean.turn_off
-  - data:
       entity_id: input_boolean.tv_room_light_switched_recently_pressed
+    service: input_boolean.turn_off
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  - data:
+      entity_id: input_boolean.silent_mode
     service: input_boolean.turn_off
   initial_state: 'on'
 - id: '1540397737368'
@@ -763,7 +766,7 @@
     state: 'on'
   - condition: state
     entity_id: input_boolean.doors_recently_closed
-    state: 'on'  
+    state: 'on'
   action:
   - data:
       entity_id: input_boolean.upperfloor_alarm_state
@@ -929,3 +932,48 @@
       - channel/sundbyvik-larm
       title: Delvis pålarmat
     service: notify.pushbullet_notifier
+- id: '1562999115892'
+  alias: Dryer
+  trigger:
+  - above: '30'
+    below: '40'
+    entity_id: sensor.washingmachine_activity_158d0002b89f14
+    for: 00:05:00
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: ''
+      title: dryer
+    service: notify.pushbullet_notifier
+- id: '1563472937399'
+  alias: Switch - single left
+  trigger:
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.wall_switch_left_158d00031af8a2
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: light.tv_room_cieling_lights
+    service: light.toggle
+- id: '1563473535525'
+  alias: Switch - double left
+  trigger:
+  - event_data:
+      click_type: double
+      entity_id: binary_sensor.wall_switch_left_158d00031af8a2
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+      mode: normal
+    service: yeelight.set_mode
+  - data:
+      entity_id: light.yeelight_ceiling3_04cf8c9adab1
+      mode: normal
+    service: yeelight.set_mode
