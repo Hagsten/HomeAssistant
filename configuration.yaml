@@ -205,8 +205,8 @@ input_boolean:
     name: Good morning notification
   doors_recently_closed:
     name: Doors recently closed
-  ceiling_yeelight_current_mode:
-    name: Current ceiling light mode
+  ceiling_yeelight_norml_mode:
+    name: Normal ceiling light mode
 
 input_select:
   light_presets:
