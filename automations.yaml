@@ -967,7 +967,10 @@
       entity_id: binary_sensor.wall_switch_left_158d00031af8a2
     event_type: xiaomi_aqara.click
     platform: event
-  condition: []
+  condition:
+  - condition: state
+    entity_id: input_boolean.ceiling_yeelight_norml_mode
+    state: 'off'
   action:
   - data:
       entity_id: light.yeelight_ceiling3_04cf8c9b01f8
@@ -977,3 +980,6 @@
       entity_id: light.yeelight_ceiling3_04cf8c9adab1
       mode: normal
     service: yeelight.set_mode
+  - data:
+      entity_id: input_boolean.ceiling_yeelight_norml_mode
+    service: input_boolean.turn_on
