@@ -22,6 +22,7 @@ dim_lights:
     service: script.turn_on
   - condition: template
     value_template: ''
+  - delay: '500'
 '1536574687151':
   alias: Turn on lights
   sequence:
