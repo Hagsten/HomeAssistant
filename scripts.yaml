@@ -1,10 +1,27 @@
-'1535468161232':
+dim_lights:
   alias: Dim lights
   sequence:
-  - service: light.turn_on
-    data_template:
-      entity_id: group.tv_room_rgb_lights
-      brightness_pct: '{{ states(''counter.light_dim_step'') | int * 25 }}'
+  - condition: state
+    entity_id: input_boolean.ceiling_light_dimming
+    state: 'on'
+  - data_template:
+      brightness: '{{states.light.yeelight_ceiling3_04cf8c9b01f8.attributes.brightness
+        or 10 - 10}}'
+      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+    service: light.turn_on
+  - data_template:
+      brightness: '{{states.light.yeelight_ceiling3_04cf8c9adab1.attributes.brightness
+        or 10 - 10}}'
+      entity_id: light.yeelight_ceiling3_04cf8c9adab1
+    service: light.turn_on
+  - data:
+      entity_id: script.dim_lights
+    service: script.turn_off
+  - data:
+      entity_id: script.dim_lights
+    service: script.turn_on
+  - condition: template
+    value_template: ''
 '1536574687151':
   alias: Turn on lights
   sequence:
@@ -47,3 +64,25 @@ flash_notification_yeelight:
         - 750
         - 0
     service: yeelight.start_flow
+dim_up_lights:
+  alias: Dim up lights
+  sequence:
+  - condition: state
+    entity_id: input_boolean.ceiling_light_increasing
+    state: 'on'
+  - data:
+      data_template: '{{states.light.yeelight_ceiling3_04cf8c9b01f8.attributes.brightness
+        + 10}}'
+      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+    service: light.turn_on
+  - data:
+      data_template: '{{states.light.yeelight_ceiling3_04cf8c9adab1.attributes.brightness
+        + 10}}'
+      entity_id: light.yeelight_ceiling3_04cf8c9adab1
+    service: light.turn_on
+  - data:
+      entity_id: script.dim_up_lights
+    service: script.turn_off
+  - data:
+      entity_id: script.dim_up_lights
+    service: script.turn_on

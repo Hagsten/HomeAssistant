@@ -207,6 +207,10 @@ input_boolean:
     name: Doors recently closed
   ceiling_yeelight_norml_mode:
     name: Normal ceiling light mode
+  ceiling_light_dimming:
+    name: Ceiling lights is dimming
+  ceiling_light_increasing:
+    name: Ceiling lights is increasing
 
 input_select:
   light_presets:
