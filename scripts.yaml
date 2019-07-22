@@ -4,6 +4,9 @@ dim_lights:
   - condition: state
     entity_id: input_boolean.ceiling_light_dimming
     state: 'on'
+  - condition: state
+    entity_id: light.yeelight_ceiling3_04cf8c9adab1
+    state: 'on'
   - condition: template
     value_template: '{{states.light.yeelight_ceiling3_04cf8c9adab1.attributes.brightness > 0}}'
   - data_template:
