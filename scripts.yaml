@@ -27,21 +27,20 @@ dim_up_lights:
   - condition: state
     entity_id: input_boolean.ceiling_light_increasing
     state: 'on'
+  - condition: state
+    entity_id: light.tv_room_cieling_lights
+    state: 'on'
   - condition: template
     value_template: '{{states.light.tv_room_cieling_lights.attributes.brightness < 255}}'
   - data:
-      data_template: '{{states.light.yeelight_ceiling3_04cf8c9b01f8.attributes.brightness or 0 + 10}}'
+      data_template: '{{(states.light.tv_room_cieling_lights.attributes.brightness or 0) + 30}}'
       entity_id: light.yeelight_ceiling3_04cf8c9b01f8
     service: light.turn_on
-  - data:
-      data_template: '{{states.light.tv_room_cieling_lights.attributes.brightness or 0 + 10}}'
-      entity_id: light.tv_room_cieling_lights
-    service: light.turn_on
+  - delay:
+      milliseconds: 100
   - data:
       entity_id: script.dim_up_lights
-    service: script.turn_off
-  - delay:
-      milliseconds: 250 
+    service: script.turn_off 
   - data:
       entity_id: script.dim_up_lights
     service: script.turn_on
