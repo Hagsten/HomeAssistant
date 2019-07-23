@@ -156,6 +156,40 @@ sensor:
               {{ pir.entity_id }}
             {% endif %}
           {% endfor %}
+    switches:
+      moonlight:
+        friendly_name: Ceiling Moonlight
+        value_template: "{{ is_state('light.tv_room_cieling_lights','on') and is_state('input_boolean.ceiling_yeelight_norml_mode', 'off') }}"
+        turn_on:
+          - service: light.yeelight_set_mode
+            data:
+              entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+              mode: moonlight
+          - service: light.yeelight_set_mode
+            data:
+              entity_id: light.yeelight_ceiling3_04cf8c9adab1
+              mode: moonlight
+          - service: input_boolean.turn_off
+            data:
+              entity_id: input_boolean.ceiling_yeelight_norml_mode
+          - service: light.turn_on
+            data:
+              entity_id: light.tv_room_cieling_lights
+        turn_off:
+          - service: light.yeelight_set_mode
+            data:
+              entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+              mode: normal
+          - service: light.yeelight_set_mode
+            data:
+              entity_id: light.yeelight_ceiling3_04cf8c9adab1
+              mode: normal
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.ceiling_yeelight_norml_mode
+          - service: light.turn_on
+            data:
+              entity_id: light.tv_room_cieling_lights
   
 
 xiaomi_aqara:
