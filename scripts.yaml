@@ -10,11 +10,11 @@ dim_lights:
   - condition: template
     value_template: '{{states.light.tv_room_cieling_lights.attributes.brightness > 0}}'
   - data_template:
-      brightness: '{{(states.light.tv_room_cieling_lights.attributes.brightness or 10) - 10}}'
+      brightness: '{{(states.light.tv_room_cieling_lights.attributes.brightness or 30) - 30}}'
       entity_id: light.tv_room_cieling_lights
     service: light.turn_on
   - delay:
-      milliseconds: 200  
+      milliseconds: 100  
   - data:
       entity_id: script.dim_lights
     service: script.turn_off
