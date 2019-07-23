@@ -34,7 +34,7 @@ dim_up_lights:
     value_template: '{{states.light.tv_room_cieling_lights.attributes.brightness < 255}}'
   - data_template: 
       brightness: '{{(states.light.tv_room_cieling_lights.attributes.brightness or 0) + 30}}'
-      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+      entity_id: light.tv_room_cieling_lights
     service: light.turn_on
   - delay:
       milliseconds: 100
