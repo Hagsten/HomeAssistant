@@ -14,7 +14,7 @@ dim_lights:
       entity_id: light.tv_room_cieling_lights
     service: light.turn_on
   - delay:
-      milliseconds: 200  
+      milliseconds: 250  
   - data:
       entity_id: script.dim_lights
     service: script.turn_off
@@ -37,7 +37,7 @@ dim_up_lights:
       entity_id: light.tv_room_cieling_lights
     service: light.turn_on
   - delay:
-      milliseconds: 200
+      milliseconds: 250
   - data:
       entity_id: script.dim_up_lights
     service: script.turn_off 
