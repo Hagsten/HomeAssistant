@@ -17,11 +17,11 @@ dim_lights:
       brightness: '{{states.light.yeelight_ceiling3_04cf8c9adab1.attributes.brightness or 10 - 10}}'
       entity_id: light.yeelight_ceiling3_04cf8c9adab1
     service: light.turn_on
+  - delay:
+      milliseconds: 250  
   - data:
       entity_id: script.dim_lights
     service: script.turn_off
-  - delay:
-      milliseconds: 250
   - data:
       entity_id: script.dim_lights
     service: script.turn_on
