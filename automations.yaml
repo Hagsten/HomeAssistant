@@ -850,7 +850,7 @@
 - id: '1562593639527'
   alias: Sleep - Force sleep trigger
   trigger:
-  - platform: template
+    platform: template
     value_template: '{{ now().hour >= 1 and now().hour < 6 and states.group.motion_sensors.state == 'off' and (as_timestamp(now())-as_timestamp(states.group.motion_sensors.last_changed)) >= (60*60) }}' 
   condition:
   - condition: state
