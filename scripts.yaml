@@ -2,16 +2,16 @@ dim_lights:
   alias: Dim lights
   sequence:
   - condition: state
-    entity_id: '{{ dimming_entity_id }}'
+    entity_id: {{ dimming_entity_id }}
     state: 'on'
   - condition: state
-    entity_id: '{{ entity_id }}'
+    entity_id: {{ entity_id }}
     state: 'on'
   - condition: template
     value_template: '{{state_attr(entity_id, "brightness") > 0}}'
   - data_template:
       brightness: '{{(state_attr(entity_id, "brightness") or 30) - 30}}'
-      entity_id: '{{ entity_id }}'
+      entity_id: {{ entity_id }}
     service: light.turn_on
   - delay:
       milliseconds: 250  
