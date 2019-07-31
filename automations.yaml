@@ -1232,7 +1232,7 @@
     service: input_boolean.turn_off
   - data:
       entity_id: script.dim_lights
-        data:
-          entity_id: light.tvroom_lights
-          dimming_entity_id: input_boolean.tvroom_floor_light_dimming
+      data:
+        entity_id: light.tvroom_lights
+        dimming_entity_id: input_boolean.tvroom_floor_light_dimming
     service: script.turn_on
