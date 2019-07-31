@@ -1149,3 +1149,59 @@
       entity_id: light.tv_room_cieling_lights
       kelvin: 2000
     service: light.turn_on
+- id: '1563472937313'
+  alias: Switch - Single right off
+  trigger:
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.wall_switch_right_158d00031af8a2
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition:
+  - condition: state
+    entity_id: light.tvroom_lights
+    state: 'on'
+  action:
+  - data:
+      entity_id: light.tvroom_lights
+    service: light.turn_off
+- id: '1563472937314'
+  alias: Switch - Single right on day time
+  trigger:
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.wall_switch_right_158d00031af8a2
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition:
+  - condition: state
+    entity_id: light.tvroom_lights
+    state: 'off'
+  - condition: time
+    after: 07:00    
+  action:
+  - data:
+      entity_id: light.tvroom_lights
+      kelvin: 3000
+      brightness_pct: 100
+    service: light.turn_on
+- id: '1563472937315'
+  alias: Switch - Single right on night time
+  trigger:
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.wall_switch_right_158d00031af8a2
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition:
+  - condition: state
+    entity_id: light.tvroom_lights
+    state: 'off'
+  - condition: time
+    before: 07:00    
+  action:
+  - data:
+      entity_id: light.tvroom_lights
+      kelvin: 3000
+      brightness_pct: 10
+    service: light.turn_on
