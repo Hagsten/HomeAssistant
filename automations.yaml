@@ -1061,6 +1061,9 @@
     service: input_boolean.turn_off
   - data:
       entity_id: script.dim_lights
+      data:
+        entity_id: light.tv_room_cieling_lights
+        dimming_entity_id: input_boolean.ceiling_light_dimming
     service: script.turn_on
 - id: '1563547811367'
   alias: Switch - Single left turn off dimming
@@ -1205,3 +1208,31 @@
       kelvin: 3000
       brightness_pct: 10
     service: light.turn_on
+- id: '1563536402999'
+  alias: Switch - Dim floor lights
+  trigger:
+  - event_data:
+      click_type: long
+      entity_id: binary_sensor.wall_switch_right_158d00031af8a2
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition:
+  - condition: state
+    entity_id: input_boolean.tvroom_floor_light_dimming
+    state: 'off'
+  action:
+  - data:
+      entity_id: input_boolean.tvroom_floor_light_dimming
+    service: input_boolean.turn_on
+  - data:
+      entity_id: script.dim_up_lights
+    service: script.turn_off
+  - data:
+      entity_id: input_boolean.tvroom_floor_light_increasing
+    service: input_boolean.turn_off
+  - data:
+      entity_id: script.dim_lights
+        data:
+          entity_id: light.tvroom_lights
+          dimming_entity_id: input_boolean.tvroom_floor_light_dimming
+    service: script.turn_on

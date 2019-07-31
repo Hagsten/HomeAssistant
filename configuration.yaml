@@ -210,6 +210,10 @@ input_boolean:
     name: Ceiling lights is dimming
   ceiling_light_increasing:
     name: Ceiling lights is increasing
+  tvroom_floor_light_dimming:
+    name: TV room floor lights is dimming
+  tvroom_floor_light_increasing:
+    name: TV room floor lights is increasing
 
 input_select:
   light_presets:

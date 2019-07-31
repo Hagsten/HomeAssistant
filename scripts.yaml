@@ -2,16 +2,16 @@ dim_lights:
   alias: Dim lights
   sequence:
   - condition: state
-    entity_id: input_boolean.ceiling_light_dimming
+    entity_id: '{{ dimming_entity_id }}'
     state: 'on'
   - condition: state
-    entity_id: light.tv_room_cieling_lights
+    entity_id: '{{ entity_id }}'
     state: 'on'
   - condition: template
-    value_template: '{{states.light.tv_room_cieling_lights.attributes.brightness > 0}}'
+    value_template: '{{state_attr(entity_id, "brightness") > 0}}'
   - data_template:
-      brightness: '{{(states.light.tv_room_cieling_lights.attributes.brightness or 30) - 30}}'
-      entity_id: light.tv_room_cieling_lights
+      brightness: '{{(state_attr(entity_id, "brightness") or 30) - 30}}'
+      entity_id: '{{ entity_id }}'
     service: light.turn_on
   - delay:
       milliseconds: 250  
