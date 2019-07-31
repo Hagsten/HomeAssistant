@@ -519,20 +519,12 @@
     state: 'on'
   action:
   - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9adab1
-      mode: moonlight
-    service: yeelight.set_mode
-  - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
-      mode: moonlight
-    service: yeelight.set_mode
+      entity_id: switch.moonlight
+    service: switch.turn_on
   - data:
       brightness_pct: 5
       entity_id: light.tv_room_cieling_lights
     service: light.turn_on
-  - data:
-      entity_id: input_boolean.ceiling_yeelight_norml_mode
-    service: input_boolean.turn_off
 - id: '1561567490842'
   alias: Media - Stop - cieling
   trigger:
@@ -554,20 +546,12 @@
     condition: time
   action:
   - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9adab1
-      mode: moonlight
-    service: yeelight.set_mode
-  - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
-      mode: moonlight
-    service: yeelight.set_mode
+      entity_id: switch.moonlight
+    service: switch.turn_on
   - data:
       brightness_pct: '100'
       entity_id: light.tv_room_cieling_lights
     service: light.turn_on
-  - data:
-      entity_id: input_boolean.ceiling_yeelight_norml_mode
-    service: input_boolean.turn_off
 - id: '1561735682681'
   alias: Guest arrived
   trigger:
@@ -851,7 +835,9 @@
   alias: Sleep - Force sleep trigger
   trigger:
     platform: template
-    value_template: "{{ now().hour >= 1 and now().hour < 6 and states.group.motion_sensors.state == 'off' and (as_timestamp(now())-as_timestamp(states.group.motion_sensors.last_changed)) >= (60*60) }}" 
+    value_template: '{{ now().hour >= 1 and now().hour < 6 and states.group.motion_sensors.state
+      == ''off'' and (as_timestamp(now())-as_timestamp(states.group.motion_sensors.last_changed))
+      >= (60*60) }}'
   condition:
   - condition: state
     entity_id: group.trusted_people
@@ -967,16 +953,8 @@
     state: 'off'
   action:
   - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
-      mode: normal
-    service: yeelight.set_mode
-  - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9adab1
-      mode: normal
-    service: yeelight.set_mode
-  - data:
-      entity_id: input_boolean.ceiling_yeelight_norml_mode
-    service: input_boolean.turn_on
+      entity_id: switch.moonlight
+    service: switch.turn_off
 - id: '1563473535526'
   alias: Switch - double left (moonlight)
   trigger:
@@ -991,16 +969,8 @@
     state: 'on'
   action:
   - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
-      mode: moonlight
-    service: yeelight.set_mode
-  - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9adab1
-      mode: moonlight
-    service: yeelight.set_mode
-  - data:
-      entity_id: input_boolean.ceiling_yeelight_norml_mode
-    service: input_boolean.turn_off
+      entity_id: switch.moonlight
+    service: switch.turn_on
 - id: '1563475290805'
   alias: Switch - Single left on day time
   trigger:
@@ -1033,16 +1003,8 @@
       kelvin: 3000
     service: light.turn_on
   - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9adab1
-      mode: normal
-    service: yeelight.set_mode
-  - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
-      mode: normal
-    service: yeelight.set_mode
-  - data:
-      entity_id: input_boolean.ceiling_yeelight_norml_mode
-    service: input_boolean.turn_on
+      entity_id: switch.moonlight
+    service: switch.turn_off
 - id: '1563477770934'
   alias: Switch - Single click left night time
   trigger:
@@ -1065,13 +1027,8 @@
     state: 'off'
   action:
   - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9adab1
-      mode: moonlight
-    service: yeelight.set_mode
-  - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
-      mode: moonlight
-    service: yeelight.set_mode
+      entity_id: switch.moonlight
+    service: switch.turn_on
   - data:
       brightness_pct: 20
       entity_id: light.yeelight_ceiling3_04cf8c9b01f8
@@ -1080,9 +1037,6 @@
       brightness_pct: 20
       entity_id: light.yeelight_ceiling3_04cf8c9adab1
     service: light.turn_on
-  - data:
-      entity_id: input_boolean.ceiling_yeelight_norml_mode
-    service: input_boolean.turn_off
 - id: '1563536402916'
   alias: Switch - Dim ceiling
   trigger:
@@ -1188,16 +1142,8 @@
     condition: time
   action:
   - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
-      mode: normal
-    service: yeelight.set_mode
-  - data:
-      entity_id: light.yeelight_ceiling3_04cf8c9adab1
-      mode: normal
-    service: yeelight.set_mode
-  - data:
-      entity_id: input_boolean.ceiling_yeelight_norml_mode
-    service: input_boolean.turn_on
+      entity_id: switch.moonlight
+    service: switch.turn_off
   - data:
       brightness_pct: '10'
       entity_id: light.tv_room_cieling_lights
