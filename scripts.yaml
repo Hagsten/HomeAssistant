@@ -24,26 +24,25 @@ dim_lights:
 dim_up_lights:
   alias: Dim up lights
   sequence:
-  - condition: state
-    entity_id: input_boolean.ceiling_light_increasing
-    state: 'on'
-  - condition: state
-    entity_id: light.tv_room_cieling_lights
-    state: 'on'
   - condition: template
-    value_template: '{{states.light.tv_room_cieling_lights.attributes.brightness < 255}}'
+    value_template: '{{ is_state(dimming_entity_id, "on") }}'
+  - condition: template
+    value_template: '{{ is_state(light_entity_id, "on") }}'
+  - condition: template
+    value_template: '{{state_attr(light_entity_id, "brightness") < 255 }}'
   - data_template: 
-      brightness: '{{(states.light.tv_room_cieling_lights.attributes.brightness or 0) + 30}}'
-      entity_id: light.tv_room_cieling_lights
+      brightness: '{{(state_attr(light_entity_id, "brightness") or 0) + 30}}'      
+      entity_id: '{{ light_entity_id }}'
     service: light.turn_on
   - delay:
       milliseconds: 250
   - data:
       entity_id: script.dim_up_lights
     service: script.turn_off 
-  - data:
-      entity_id: script.dim_up_lights
-    service: script.turn_on
+  - data_template:
+      light_entity_id: '{{ light_entity_id }}'
+      dimming_entity_id: '{{ dimming_entity_id }}'
+    service: script.dim_up_lights
 '1536574687151':
   alias: Turn on lights
   sequence:

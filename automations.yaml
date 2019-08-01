@@ -1108,8 +1108,9 @@
       entity_id: input_boolean.ceiling_light_increasing
     service: input_boolean.turn_on
   - data:
-      entity_id: script.dim_up_lights
-    service: script.turn_on
+      light_entity_id: light.tv_room_cieling_lights
+      dimming_entity_id: input_boolean.ceiling_light_increasing
+    service: script.dim_up_lights
 - id: '1563895987902'
   alias: Doors - recently closed off
   trigger:
@@ -1232,3 +1233,51 @@
       light_entity_id: light.tvroom_lights
       dimming_entity_id: input_boolean.tvroom_floor_light_dimming
     service: script.dim_lights
+- id: '1563872455399'
+  alias: Switch - Dim increase floor lights
+  trigger:
+  - event_data:
+      click_type: long
+      entity_id: binary_sensor.wall_switch_right_158d00031af8a2
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition:
+  - condition: state
+    entity_id: input_boolean.tvroom_floor_light_increasing
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.tvroom_floor_light_dimming
+    state: 'on'
+  action:
+  - data:
+      entity_id: input_boolean.tvroom_floor_light_dimming
+    service: input_boolean.turn_off
+  - data:
+      entity_id: script.dim_lights
+    service: script.turn_off
+  - data:
+      entity_id: input_boolean.tvroom_floor_light_increasing
+    service: input_boolean.turn_on
+  - data:
+      light_entity_id: light.tvroom_lights
+      dimming_entity_id: input_boolean.tvroom_floor_light_increasing
+    service: script.dim_up_lights
+- id: '1563547812367'
+  alias: Switch - Single right turn off dimming
+  trigger:
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.wall_switch_right_158d00031af8a2
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.tvroom_floor_light_increasing
+    service: input_boolean.turn_off
+  - data:
+      entity_id: input_boolean.tvroom_floor_light_dimming
+    service: input_boolean.turn_off
+  - data:
+      entity_id: script.dim_lights
+    service: script.turn_off
