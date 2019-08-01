@@ -925,6 +925,11 @@
       entity_id: binary_sensor.wall_switch_left_158d00031af8a2
     event_type: xiaomi_aqara.click
     platform: event
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.switch_158d0002ad6c3a
+    event_type: xiaomi_aqara.click
+    platform: event
   condition:
   - condition: state
     entity_id: light.tv_room_cieling_lights
@@ -947,6 +952,11 @@
       entity_id: binary_sensor.wall_switch_left_158d00031af8a2
     event_type: xiaomi_aqara.click
     platform: event
+  - event_data:
+      click_type: double
+      entity_id: binary_sensor.switch_158d0002ad6c3a
+    event_type: xiaomi_aqara.click
+    platform: event
   condition:
   - condition: state
     entity_id: input_boolean.ceiling_yeelight_norml_mode
@@ -963,6 +973,11 @@
       entity_id: binary_sensor.wall_switch_left_158d00031af8a2
     event_type: xiaomi_aqara.click
     platform: event
+  - event_data:
+      click_type: double
+      entity_id: binary_sensor.switch_158d0002ad6c3a
+    event_type: xiaomi_aqara.click
+    platform: event
   condition:
   - condition: state
     entity_id: input_boolean.ceiling_yeelight_norml_mode
@@ -977,6 +992,11 @@
   - event_data:
       click_type: single
       entity_id: binary_sensor.wall_switch_left_158d00031af8a2
+    event_type: xiaomi_aqara.click
+    platform: event
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.switch_158d0002ad6c3a
     event_type: xiaomi_aqara.click
     platform: event
   condition:
@@ -1013,6 +1033,11 @@
       entity_id: binary_sensor.wall_switch_left_158d00031af8a2
     event_type: xiaomi_aqara.click
     platform: event
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.switch_158d0002ad6c3a
+    event_type: xiaomi_aqara.click
+    platform: event
   condition:
   - before: 07:00
     condition: time
@@ -1045,6 +1070,11 @@
       entity_id: binary_sensor.wall_switch_left_158d00031af8a2
     event_type: xiaomi_aqara.click
     platform: event
+  - event_data:
+      click_type: long_click_press
+      entity_id: binary_sensor.switch_158d0002ad6c3a
+    event_type: xiaomi_aqara.click
+    platform: event
   condition:
   - condition: state
     entity_id: input_boolean.ceiling_light_dimming
@@ -1060,8 +1090,8 @@
       entity_id: input_boolean.ceiling_light_increasing
     service: input_boolean.turn_off
   - data:
-      light_entity_id: light.tv_room_cieling_lights
       dimming_entity_id: input_boolean.ceiling_light_dimming
+      light_entity_id: light.tv_room_cieling_lights
     service: script.dim_lights
 - id: '1563547811367'
   alias: Switch - Single left turn off dimming
@@ -1069,6 +1099,11 @@
   - event_data:
       click_type: single
       entity_id: binary_sensor.wall_switch_left_158d00031af8a2
+    event_type: xiaomi_aqara.click
+    platform: event
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.switch_158d0002ad6c3a
     event_type: xiaomi_aqara.click
     platform: event
   condition: []
@@ -1090,6 +1125,11 @@
       entity_id: binary_sensor.wall_switch_left_158d00031af8a2
     event_type: xiaomi_aqara.click
     platform: event
+  - event_data:
+      click_type: long_click_press
+      entity_id: binary_sensor.switch_158d0002ad6c3a
+    event_type: xiaomi_aqara.click
+    platform: event
   condition:
   - condition: state
     entity_id: input_boolean.ceiling_light_increasing
@@ -1108,8 +1148,8 @@
       entity_id: input_boolean.ceiling_light_increasing
     service: input_boolean.turn_on
   - data:
-      light_entity_id: light.tv_room_cieling_lights
       dimming_entity_id: input_boolean.ceiling_light_increasing
+      light_entity_id: light.tv_room_cieling_lights
     service: script.dim_up_lights
 - id: '1563895987902'
   alias: Doors - recently closed off
@@ -1287,3 +1327,37 @@
   - data:
       entity_id: script.dim_lights
     service: script.turn_off
+- id: '1564683183178'
+  alias: Switch - Hold cieling dimmer
+  trigger:
+  - event_data:
+      click_type: hold
+      entity_id: binary_sensor.switch_158d0002ad6c3a
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: script.dim_lights
+    service: script.turn_off
+- id: '1564683379644'
+  alias: Switch - Force dimming off
+  trigger:
+  - entity_id: input_boolean.ceiling_light_dimming
+    for: 00:01:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: input_boolean.ceiling_light_increasing
+    for: 00:01:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.ceiling_light_increasing
+    service: input_boolean.turn_off
+  - data:
+      entity_id: input_boolean.ceiling_light_dimming
+    service: input_boolean.turn_off
