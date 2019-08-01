@@ -1361,3 +1361,20 @@
   - data:
       entity_id: input_boolean.ceiling_light_dimming
     service: input_boolean.turn_off
+- id: '1564684465885'
+  alias: Lights - Dimming - moonlight
+  trigger:
+  - platform: template
+    value_template: '{{ (states.light.tv_room_cieling_lights.attributes.brightness or 30) < 30 }}'
+  condition:
+  - condition: state
+    entity_id: input_boolean.ceiling_light_dimming
+    state: 'on'
+  action:
+  - data:
+      entity_id: switch.moonlight
+    service: switch.turn_on
+  - data:
+      brightness_pct: 100
+      entity_id: light.tv_room_cieling_lights
+    service: light.turn_on
