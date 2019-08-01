@@ -1059,7 +1059,7 @@
   - data:
       entity_id: input_boolean.ceiling_light_increasing
     service: input_boolean.turn_off
-  - data_template:
+  - data:
       entity_id: script.dim_lights
       light_entity_id: light.tv_room_cieling_lights
       dimming_entity_id: input_boolean.ceiling_light_dimming
@@ -1229,7 +1229,7 @@
   - data:
       entity_id: input_boolean.tvroom_floor_light_increasing
     service: input_boolean.turn_off
-  - data_template:
+  - data:
       entity_id: script.dim_lights
       light_entity_id: light.tvroom_lights
       dimming_entity_id: input_boolean.tvroom_floor_light_dimming
