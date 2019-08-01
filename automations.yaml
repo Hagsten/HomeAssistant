@@ -1365,10 +1365,13 @@
   alias: Lights - Dimming - moonlight
   trigger:
   - platform: template
-    value_template: '{{ (states.light.tv_room_cieling_lights.attributes.brightness or 30) < 30 }}'
+    value_template: '{{ (states.light.tv_room_cieling_lights.attributes.brightness or 50) < 50 }}'
   condition:
   - condition: state
     entity_id: input_boolean.ceiling_light_dimming
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.ceiling_yeelight_norml_mode
     state: 'on'
   action:
   - data:
@@ -1376,5 +1379,25 @@
     service: switch.turn_on
   - data:
       brightness_pct: 100
+      entity_id: light.tv_room_cieling_lights
+    service: light.turn_on
+- id: '1564684465886'
+  alias: Lights - Dimming - Normal
+  trigger:
+  - platform: template
+    value_template: '{{ (states.light.tv_room_cieling_lights.attributes.brightness or 0) >= 250 }}'
+  condition:
+  - condition: state
+    entity_id: input_boolean.ceiling_light_increasing
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.ceiling_yeelight_norml_mode
+    state: 'off'
+  action:
+  - data:
+      entity_id: switch.moonlight
+    service: switch.turn_off
+  - data:
+      brightness_pct: 1
       entity_id: light.tv_room_cieling_lights
     service: light.turn_on
