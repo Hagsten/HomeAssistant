@@ -11,7 +11,7 @@ dim_lights:
     value_template: '{{state_attr(entity_id, "brightness") > 0}}'
   - data_template:
       brightness: '{{(state_attr(entity_id, "brightness") or 30) - 30}}'
-      entity_id: light.tv_room_cieling_lights
+      entity_id: {{ entity_id }}
     service: light.turn_on
   - delay:
       milliseconds: 250  
