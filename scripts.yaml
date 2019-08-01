@@ -5,12 +5,12 @@ dim_lights:
   - condition: template
     value_template: '{{ is_state(dimming_entity_id, "on") }}'
   - condition: template
-    value_template: '{{ is_state(entity_id, "on") }}'
+    value_template: '{{ is_state(light_entity_id, "on") }}'
   - condition: template
-    value_template: '{{state_attr(entity_id, "brightness") > 0}}'
+    value_template: '{{state_attr(light_entity_id, "brightness") > 0}}'
   - data_template:
-      brightness: '{{(state_attr(entity_id, "brightness") or 30) - 30}}'
-      entity_id: '{{ entity_id }}'
+      brightness: '{{(state_attr(light_entity_id, "brightness") or 30) - 30}}'
+      entity_id: '{{ light_entity_id }}'
     service: light.turn_on
   - delay:
       milliseconds: 250  
