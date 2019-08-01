@@ -1163,6 +1163,12 @@
   - condition: state
     entity_id: light.tvroom_lights
     state: 'on'
+  - condition: state
+    entity_id: input_boolean.tvroom_floor_light_dimming
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.tvroom_floor_light_increasing
+    state: 'off'
   action:
   - data:
       entity_id: light.tvroom_lights
@@ -1180,7 +1186,7 @@
     entity_id: light.tvroom_lights
     state: 'off'
   - condition: time
-    after: 07:00    
+    after: 07:00
   action:
   - data:
       entity_id: light.tvroom_lights
@@ -1200,7 +1206,7 @@
     entity_id: light.tvroom_lights
     state: 'off'
   - condition: time
-    before: 07:00    
+    before: 07:00
   action:
   - data:
       entity_id: light.tvroom_lights
