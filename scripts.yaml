@@ -17,7 +17,7 @@ dim_lights:
   - data:
       entity_id: script.dim_lights
     service: script.turn_off
-  - data:
+  - data_template:
       light_entity_id: '{{ light_entity_id }}'
       dimming_entity_id: '{{ dimming_entity_id }}'
     service: script.dim_lights
