@@ -18,8 +18,9 @@ dim_lights:
       entity_id: script.dim_lights
     service: script.turn_off
   - data:
-      entity_id: script.dim_lights
-    service: script.turn_on
+      light_entity_id: '{{ light_entity_id }}'
+      dimming_entity_id: '{{ dimming_entity_id }}'
+    service: script.dim_lights
 dim_up_lights:
   alias: Dim up lights
   sequence:
