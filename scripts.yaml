@@ -9,7 +9,7 @@ dim_lights:
   - condition: template
     value_template: '{{state_attr(light_entity_id, "brightness") > 0}}'
   - data_template:
-      brightness: '{{(state_attr(light_entity_id, "brightness") or 50) - 50}}'
+      brightness: '{{ [(state_attr(light_entity_id, "brightness") or 50) - 50, 1] | max }}'
       entity_id: '{{ light_entity_id }}'
     service: light.turn_on
   - delay:
