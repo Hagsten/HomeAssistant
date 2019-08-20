@@ -204,6 +204,7 @@ input_boolean:
     name: Good morning notification
   doors_recently_closed:
     name: Doors recently closed
+    initial: off
   ceiling_yeelight_norml_mode:
     name: Normal ceiling light mode
   ceiling_light_dimming:
@@ -224,7 +225,6 @@ input_select:
      - Rotate
     initial: Rotate
     icon: mdi:panda
-
 
 light:
   - platform: group
@@ -249,10 +249,6 @@ light:
       - light.yeelight_ceiling3_04cf8c9b01f8
       - light.yeelight_color2_7c49ebb319e7
       - light.yeelight_color2_7c49ebb31c16
-
-camera:
-  - platform: generic
-    still_image_url: http://194.218.96.92/jpg/image.jpg
 
 switch:
   - platform: template
