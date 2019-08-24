@@ -826,7 +826,7 @@
     condition: time
   - condition: state
     entity_id: sensor.template_last_motion
-    state: binary_sensor.motion_sensor_upper_floor
+    state: binary_sensor.motion_sensor_158d0003494ced
   action:
   - data:
       entity_id: input_boolean.sleeping
