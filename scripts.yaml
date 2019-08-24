@@ -13,7 +13,7 @@ dim_lights:
       entity_id: '{{ light_entity_id }}'
     service: light.turn_on
   - delay:
-      milliseconds: 250  
+      milliseconds: 350  
   - data:
       entity_id: script.dim_lights
     service: script.turn_off
@@ -35,7 +35,7 @@ dim_up_lights:
       entity_id: '{{ light_entity_id }}'
     service: light.turn_on
   - delay:
-      milliseconds: 250
+      milliseconds: 350
   - data:
       entity_id: script.dim_up_lights
     service: script.turn_off 
