@@ -797,14 +797,11 @@
 - id: '1562446340139'
   alias: Sleep - Trigger wake up
   trigger:
-  - entity_id: binary_sensor.motion_sensor_upper_floor
+  - entity_id: binary_sensor.motion_sensor_158d0003494ced
     from: 'off'
     platform: state
     to: 'on'
-  condition:
-  - condition: state
-    entity_id: group.stair_adjacent_motion_sensors
-    state: 'off'
+  condition: []
   action:
   - data:
       entity_id: input_boolean.sleeping
@@ -1365,7 +1362,8 @@
   alias: Lights - Dimming - moonlight
   trigger:
   - platform: template
-    value_template: '{{ (states.light.tv_room_cieling_lights.attributes.brightness or 50) < 50 }}'
+    value_template: '{{ (states.light.tv_room_cieling_lights.attributes.brightness
+      or 50) < 50 }}'
   condition:
   - condition: state
     entity_id: input_boolean.ceiling_light_dimming
@@ -1385,7 +1383,8 @@
   alias: Lights - Dimming - Normal
   trigger:
   - platform: template
-    value_template: '{{ (states.light.tv_room_cieling_lights.attributes.brightness or 0) >= 250 }}'
+    value_template: '{{ (states.light.tv_room_cieling_lights.attributes.brightness
+      or 0) >= 250 }}'
   condition:
   - condition: state
     entity_id: input_boolean.ceiling_light_increasing
