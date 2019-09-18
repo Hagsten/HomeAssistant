@@ -295,9 +295,6 @@
   - condition: state
     entity_id: input_boolean.guest_mode
     state: 'off'
-  - data:
-      entity_id: input_boolean.silent_mode
-    service: input_boolean.turn_off
   initial_state: 'on'
 - id: '1540397737368'
   alias: Waking up
@@ -585,7 +582,17 @@
     platform: event
   - event_data:
       click_type: single
-      entity_id: binary_sensor.switch_158d000215c8ca
+      entity_id: binary_sensor.switch_158d0002ad6c3a
+    event_type: xiaomi_aqara.click
+    platform: event
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.wall_switch_left_158d00031af8a2
+    event_type: xiaomi_aqara.click
+    platform: event
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.wall_switch_right_158d00031af8a2
     event_type: xiaomi_aqara.click
     platform: event
   condition: []
