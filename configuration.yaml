@@ -216,6 +216,8 @@ input_boolean:
     name: TV room floor lights is dimming
   tvroom_floor_light_increasing:
     name: TV room floor lights is increasing
+  low_brightness_upstairs:
+    name: Low brightness upstairs
 
 input_select:
   light_presets:

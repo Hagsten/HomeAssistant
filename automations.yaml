@@ -1415,12 +1415,9 @@
     platform: state
     to: 'on'
   condition:
-  - below: '15'
-    condition: numeric_state
-    entity_id: sensor.illumination_158d00023db6dc
-  - below: '15'
-    condition: numeric_state
-    entity_id: sensor.illumination_158d0003494ced
+  - state: 'on'
+    condition: state
+    entity_id: input_boolean.low_brightness_upstairs
   - before: sunset
     before_offset: -00:30
     condition: sun
