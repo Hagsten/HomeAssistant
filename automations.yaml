@@ -1415,10 +1415,11 @@
     platform: state
     to: 'on'
   condition:
-  - state: 'on'
-    condition: state
+  - condition: state
     entity_id: input_boolean.low_brightness_upstairs
-  - before: sunset
+    state: 'on'
+  - after: sunrise
+    before: sunset
     before_offset: -00:30
     condition: sun
   action:
@@ -1427,3 +1428,54 @@
       entity_id: light.yeelight_color2_7c49ebb91e8a
       kelvin: 2700
     service: light.turn_on
+- id: '1569877664790'
+  alias: Brightness - Low upstairs
+  trigger:
+  - below: '15'
+    entity_id: sensor.illumination_158d00023db6dc
+    platform: numeric_state
+  - below: '15'
+    entity_id: sensor.illumination_158d0003494ced
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.low_brightness_upstairs
+    service: input_boolean.turn_on
+- id: '1569877772042'
+  alias: Brightness - High upstairs
+  trigger:
+  - above: '15'
+    entity_id: sensor.illumination_158d00023db6dc
+    platform: numeric_state
+  - above: '15'
+    entity_id: sensor.illumination_158d0003494ced
+    platform: numeric_state
+  condition:
+  - above: '15'
+    condition: numeric_state
+    entity_id: sensor.illumination_158d00023db6dc
+  - above: '15'
+    condition: numeric_state
+    entity_id: sensor.illumination_158d0003494ced
+  action:
+  - data:
+      entity_id: input_boolean.low_brightness_upstairs
+    service: input_boolean.turn_off
+- id: '1569877920741'
+  alias: Lights - Computer corner off
+  trigger:
+  - entity_id: binary_sensor.motion_sensor_upper_floor
+    for: 00:15:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition:
+  - after: sunrise
+    before: sunset
+    before_offset: -00:30
+    condition: sun
+  action:
+  - data:
+      entity_id: light.yeelight_color2_7c49ebb91e8a
+    service: light.turn_off
