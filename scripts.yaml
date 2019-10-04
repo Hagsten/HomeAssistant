@@ -85,3 +85,20 @@ flash_notification_yeelight:
         - 750
         - 0
     service: yeelight.start_flow
+
+temp_max_light_yeelight:
+  alias: Temporary maximum light
+  sequence:
+  - data_template:
+      count: 1
+      entity_id: '{{ light }}'
+      transitions:
+      - RGBTransition:
+        - 255
+        - 255
+        - 255
+        - 250
+        - 100
+      - SleepTransition: 
+        - '{{ duration }}'
+    service: yeelight.start_flow
