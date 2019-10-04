@@ -274,10 +274,10 @@
     to: 'on'
   condition: []
   action:
-  - service: light.turn_on
-    data:
+  - data:
+      brightness: 3
       entity_id: light.gateway_light_7811dcdf0cfa
-      brightness_pct: 3
+    service: light.turn_on
   - data:
       entity_id: light.yeelight_color2_7c49ebb91e8a
     service: light.turn_off
