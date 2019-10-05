@@ -89,6 +89,8 @@ flash_notification_yeelight:
 temp_max_light_yeelight:
   alias: Temporary maximum light
   sequence:
+  - condition: template
+    value_template: '{{(as_timestamp(now()) - as_timestamp(states.script.temp_max_light_yeelight.attributes.last_triggered)) > 200}}'
   - data_template:
       count: 1
       entity_id: '{{ light }}'
