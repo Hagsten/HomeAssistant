@@ -278,10 +278,9 @@
     to: 'on'
   condition: []
   action:
-  - service: light.turn_on
-    data:
+  - data:
       entity_id: light.gateway_light_7811dcdf0cfa
-      brightness_pct: 3
+    service: light.turn_off
   - data:
       entity_id: light.yeelight_color2_7c49ebb91e8a
     service: light.turn_off
@@ -1434,10 +1433,9 @@
   - condition: state
     entity_id: input_boolean.low_brightness_upstairs
     state: 'on'
-  - after: sunrise
-    before: sunset
-    before_offset: -00:30
-    condition: sun
+  - condition: state
+    entity_id: light.yeelight_color2_7c49ebb91e8a
+    state: 'off'
   action:
   - data:
       brightness_pct: '100'
@@ -1495,3 +1493,19 @@
   - data:
       entity_id: light.yeelight_color2_7c49ebb91e8a
     service: light.turn_off
+- id: '1570208884470'
+  alias: Doors - Entrance opens - Evening
+  trigger:
+  - entity_id: binary_sensor.door_window_sensor_158d0002049a62
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  action:
+  - data:
+      duration: 180000
+      light: light.yeelight_color2_7c49ebb9114a
+    service: script.temp_max_light_yeelight
