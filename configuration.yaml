@@ -157,6 +157,15 @@ sensor:
               {{ pir.entity_id }}
             {% endif %}
           {% endfor %}
+      silent_at_night:
+        friendly_name: 'Silent at night'
+        entity_id: sensor.time
+        value_template: > 
+          {% if now().hour >= 1 and now().hour < 6 and is_state('group.motion_sensors', 'off') and (as_timestamp(now()) - as_timestamp(states.group.motion_sensors.last_changed)) >= (60*15) %}
+            on
+          {% else %}
+            off
+          {% endif %}
     
 xiaomi_aqara:
   discovery_retry: 5
