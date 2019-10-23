@@ -46,7 +46,6 @@
     service: notify.pushbullet_notifier
 - id: '1532183349901'
   alias: Sunset
-  initial_state: 'on'
   trigger:
   - event: sunset
     offset: -00:30
@@ -69,6 +68,7 @@
   - data:
       brightness_pct: '100'
       entity_id: light.yeelight_color2_7c49ebb9114a
+      kelvin: 5000
     service: light.turn_on
   - data:
       entity_id: switch.light_livingroom_1
@@ -76,6 +76,7 @@
   - data:
       entity_id: switch.light_livingroom_2
     service: switch.turn_on
+  initial_state: 'on'
 - id: '1532183940727'
   alias: Sunrise
   initial_state: 'on'
@@ -731,6 +732,7 @@
   alias: Alarm - Arm house by leaving home
   trigger:
   - entity_id: group.trusted_people
+    for: 00:10:00
     from: home
     platform: state
     to: not_home
@@ -738,9 +740,6 @@
   - condition: state
     entity_id: input_boolean.guest_mode
     state: 'off'
-  - condition: state
-    entity_id: input_boolean.doors_recently_closed
-    state: 'on'
   action:
   - data:
       message: 'Larmet är aktivt i hela huset. Orsak: ingen hemma'
@@ -755,6 +754,7 @@
   alias: Alarm - Arm upper floor by leaving home
   trigger:
   - entity_id: group.trusted_people
+    for: 00:10:00
     from: home
     platform: state
     to: not_home
@@ -763,8 +763,8 @@
     entity_id: input_boolean.guest_mode
     state: 'on'
   - condition: state
-    entity_id: input_boolean.doors_recently_closed
-    state: 'on'
+    entity_id: group.upper_floor_motion_sensors
+    state: 'off'
   action:
   - data:
       entity_id: input_boolean.upperfloor_alarm_state
@@ -853,10 +853,10 @@
 - id: '1562593639527'
   alias: Sleep - Force sleep trigger
   trigger:
-    platform: template
-    value_template: '{{ now().hour >= 1 and now().hour < 6 and states.group.motion_sensors.state
-      == ''off'' and (as_timestamp(now())-as_timestamp(states.group.motion_sensors.last_changed))
-      >= (60*60) }}'
+  - entity_id: sensor.silent_at_night
+    from: 'off'
+    platform: state
+    to: 'on'
   condition:
   - condition: state
     entity_id: group.trusted_people
