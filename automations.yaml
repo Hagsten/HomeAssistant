@@ -530,6 +530,9 @@
   - condition: state
     entity_id: light.tv_room_cieling_lights
     state: 'on'
+  - condition: state
+    entity_id: input_boolean.tv_room_light_switched_recently_pressed
+    state: 'off'
   action:
   - data:
       entity_id: switch.moonlight
@@ -557,6 +560,9 @@
   - after: '18:00'
     before: 06:00
     condition: time
+  - condition: state
+    entity_id: input_boolean.tv_room_light_switched_recently_pressed
+    state: 'off'
   action:
   - data:
       entity_id: switch.moonlight
@@ -1201,6 +1207,9 @@
   - after: '18:00'
     before: 06:00
     condition: time
+  - condition: state
+    entity_id: input_boolean.tv_room_light_switched_recently_pressed
+    state: 'off'
   action:
   - data:
       entity_id: switch.moonlight
@@ -1509,3 +1518,27 @@
       duration: 180000
       light: light.yeelight_color2_7c49ebb9114a
     service: script.temp_max_light_yeelight
+- id: '1572108824608'
+  alias: Lights - Entrance hallway
+  trigger:
+  - entity_id: binary_sensor.motion_sensor_158d00036d598f
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: light.hallway_lights
+    service: light.turn_on
+- id: '1572110432932'
+  alias: Lights - Entrance Hallway off
+  trigger:
+  - entity_id: light.hallway_lights
+    for: 00:03:00
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: light.hallway_lights
+    service: light.turn_off

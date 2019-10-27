@@ -174,7 +174,8 @@ xiaomi_aqara:
       key: !secret xiaomi_gateway_key
     - mac: 04:CF:8C:91:62:CB
       key: !secret xiaomi_gateway_downstairs_key
-    - mac: 04:CF:8C:AA:48:97
+    - mac: 04CF8CAA4897
+      host: 192.168.10.210
       key: !secret xiaomi_gateway_garage_key
 ifttt:
   key: 9Rfbtkpj63qmsIkv2itVz2tEpnr2Unj0tSgNclbkNx
