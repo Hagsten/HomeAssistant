@@ -1542,3 +1542,33 @@
   - data:
       entity_id: light.hallway_lights
     service: light.turn_off
+- id: '1570208884471'
+  alias: Doors - Entrance open too long
+  trigger:
+  - entity_id: binary_sensor.door_window_sensor_158d0002049a62
+    platform: state
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition:
+  - below: '5'
+    condition: numeric_state
+    entity_id: sensor.illumination_158d00023db6dc #Darksky.sensor.temperature
+  action:
+  - data:
+      entity_id: input_boolean.doors_entrance_open_too_long
+    service: input_boolean.turn_on
+- id: '1570208884472'
+  alias: Doors - Entrance - close
+  trigger:
+  - entity_id: binary_sensor.door_window_sensor_158d0002049a62
+    platform: state
+    from: 'on'
+    to: 'off'
+  action:
+  - data:
+      entity_id: input_boolean.doors_entrance_open_too_long
+    service: input_boolean.turn_off
