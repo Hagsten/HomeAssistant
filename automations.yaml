@@ -1555,7 +1555,7 @@
   condition:
   - below: '5'
     condition: numeric_state
-    entity_id: sensor.illumination_158d00023db6dc #Darksky.sensor.temperature
+    entity_id: sensor.dark_sky_temperature
   action:
   - data:
       entity_id: input_boolean.doors_entrance_open_too_long

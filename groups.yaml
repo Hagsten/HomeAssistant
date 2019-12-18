@@ -81,6 +81,7 @@
     entities:
       - binary_sensor.smoke_sensor_158d00023117bb
       - binary_sensor.smoke_sensor_158d000215ab06
+      - binary_sensor.smoke_sensor_158d0004119265
   livingroom_lights:
     name: Lampor sällskapsrum
     entities:
