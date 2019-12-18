@@ -1522,7 +1522,6 @@
   alias: Lights - Entrance hallway
   trigger:
   - entity_id: binary_sensor.motion_sensor_158d00036d598f
-    from: 'off'
     platform: state
     to: 'on'
   condition: []
@@ -1533,10 +1532,10 @@
 - id: '1572110432932'
   alias: Lights - Entrance Hallway off
   trigger:
-  - entity_id: light.hallway_lights
+  - entity_id: binary_sensor.motion_sensor_158d00036d598f
     for: 00:03:00
     platform: state
-    to: 'on'
+    to: 'off'
   condition: []
   action:
   - data:
