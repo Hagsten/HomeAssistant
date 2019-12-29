@@ -171,10 +171,10 @@ xiaomi_aqara:
   discovery_retry: 5
   gateways:
     - mac: 78:11:DC:DF:0C:FA
-      host: 192.168.10.137
+      host: 192.168.10.136
       key: !secret xiaomi_gateway_key
     - mac: 04:CF:8C:91:62:CB
-      host: 192.168.10.158
+      host: 192.168.10.157
       key: !secret xiaomi_gateway_downstairs_key
     - mac: 04CF8CAA4897
       host: 192.168.10.210
