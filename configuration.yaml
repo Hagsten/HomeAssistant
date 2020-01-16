@@ -74,7 +74,7 @@ cloud:
 
 device_tracker:
   - platform: unifi_direct
-    host: 192.168.10.180
+    host: 192.168.10.181
     consider_home: 120
     username: !secret unifi_ap_username
     password: !secret unifi_ap_password
