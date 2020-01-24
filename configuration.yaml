@@ -74,14 +74,14 @@ cloud:
 
 device_tracker:
   - platform: unifi_direct
-    host: 192.168.10.181
+    host: 192.168.10.179
     consider_home: 120
     username: !secret unifi_ap_username
     password: !secret unifi_ap_password
     new_device_defaults:
       hide_if_away: true
   - platform: unifi_direct
-    host: 192.168.10.240
+    host: 192.168.10.238
     consider_home: 120
     username: !secret unifi_ap_username
     password: !secret unifi_ap_password
@@ -171,13 +171,13 @@ xiaomi_aqara:
   discovery_retry: 5
   gateways:
     - mac: 78:11:DC:DF:0C:FA
-      host: 192.168.10.136
+      host: 192.168.10.137
       key: !secret xiaomi_gateway_key
     - mac: 04:CF:8C:91:62:CB
-      host: 192.168.10.157
+      host: 192.168.10.159
       key: !secret xiaomi_gateway_downstairs_key
-    - mac: 04CF8CAA4897
-      host: 192.168.10.210
+    - mac: 50:EC:50:C6:BB:8E
+      host: 192:168:10:185
       key: !secret xiaomi_gateway_garage_key
 ifttt:
   key: 9Rfbtkpj63qmsIkv2itVz2tEpnr2Unj0tSgNclbkNx
