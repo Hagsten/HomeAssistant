@@ -170,14 +170,11 @@ sensor:
 xiaomi_aqara:
   discovery_retry: 5
   gateways:
-    - mac: 78:11:DC:DF:0C:FA
-      host: 192.168.10.137
+    - mac: 7811DCDF0CFA
       key: !secret xiaomi_gateway_key
-    - mac: 04:CF:8C:91:62:CB
-      host: 192.168.10.159
+    - mac: 04CF8C9162CB
       key: !secret xiaomi_gateway_downstairs_key
-    - mac: 50:EC:50:C6:BB:8E
-      host: 192:168:10:185
+    - mac: 50EC50C6BB8E
       key: !secret xiaomi_gateway_garage_key
 ifttt:
   key: 9Rfbtkpj63qmsIkv2itVz2tEpnr2Unj0tSgNclbkNx
