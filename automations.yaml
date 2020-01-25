@@ -1568,3 +1568,28 @@
   - data:
       entity_id: input_boolean.doors_entrance_open_too_long
     service: input_boolean.turn_off
+- id: '1579966435947'
+  alias: Doors - Garage door - opens
+  trigger:
+  - entity_id: binary_sensor.door_window_sensor_158d000428df78
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: light.gateway_light_50ec50c6bb8e
+    service: light.turn_on
+- id: '1579966497413'
+  alias: Doors - Garage door - Closed
+  trigger:
+  - entity_id: binary_sensor.door_window_sensor_158d000428df78
+    for: 00:05:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: light.gateway_light_50ec50c6bb8e
+    service: light.turn_off
