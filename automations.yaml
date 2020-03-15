@@ -226,7 +226,7 @@
   - entity_id: device_tracker.johannas_mobil
     platform: state
     to: home
-  - entity_id: device_tracker.huawei_mate_9_pro9daa4a7
+  - entity_id: device_tracker.huawei_p30_pro_34dabc024f
     platform: state
     to: home
   - entity_id: group.trusted_people
