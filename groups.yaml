@@ -5,6 +5,7 @@
       - binary_sensor.door_window_sensor_158d0002049a62
       - binary_sensor.door_window_sensor_158d000204bac9
       - binary_sensor.door_window_sensor_158d00022eff91
+      - binary_sensor.door_window_sensor_158d000428df78
   tv_room_rgb_lights:
     name: Tv room RGB
     entities:
