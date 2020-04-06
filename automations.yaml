@@ -226,7 +226,7 @@
   - entity_id: device_tracker.johannas_mobil
     platform: state
     to: home
-  - entity_id: device_tracker.huawei_mate_9_pro9daa4a7
+  - entity_id: device_tracker.huawei_p30_pro_34dabc024f
     platform: state
     to: home
   - entity_id: group.trusted_people
@@ -240,10 +240,10 @@
   - data:
       entity_id: input_boolean.identification_pending
     service: input_boolean.turn_off
-  - service: script.temp_max_light_yeelight
-    data:
-      light: light.yeelight_color2_7c49ebb9114a
+  - data:
       duration: 180000
+      light: light.yeelight_color2_7c49ebb9114a
+    service: script.temp_max_light_yeelight
   initial_state: 'on'
 - id: '1538080363136'
   alias: Leaving home
