@@ -69,6 +69,7 @@
       - sensor.temperature_158d000272c69f
       - sensor.temperature_158d0003498df2
       - sensor.temperature_158d0003499f6f
+      - sensor.temperature_158d00044f801d
   humidity:
     name: Luftfuktigheter
     entities:
