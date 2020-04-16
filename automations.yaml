@@ -240,10 +240,10 @@
   - data:
       entity_id: input_boolean.identification_pending
     service: input_boolean.turn_off
-  - service: script.temp_max_light_yeelight
-    data:
-      light: light.yeelight_color2_7c49ebb9114a
+  - data:
       duration: 180000
+      light: light.yeelight_color2_7c49ebb9114a
+    service: script.temp_max_light_yeelight
   initial_state: 'on'
 - id: '1538080363136'
   alias: Leaving home
