@@ -88,5 +88,5 @@
   livingroom_lights:
     name: Lampor sällskapsrum
     entities:
-      - switch.light_livingroom_1
-      - switch.light_livingroom_2
+      - switch.outlet_lamp_living_room
+      - switch.outlet_living_room_right

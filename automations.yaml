@@ -264,7 +264,7 @@
       entity_id: group.hallway_lights
     service: light.turn_off
   - data:
-      entity_id: switch.kaffebryggaren
+      entity_id: switch.outlet_kaffebryggaren
     service: switch.turn_off
   - data:
       entity_id: light.tv_room_cieling_lights
@@ -292,10 +292,10 @@
       entity_id: light.yeelight_color2_7c49ebb9114a
     service: light.turn_off
   - data:
-      entity_id: switch.light_livingroom_1
+      entity_id: switch.outlet_lamp_living_room
     service: switch.turn_off
   - data:
-      entity_id: switch.light_livingroom_2
+      entity_id: switch.outlet_living_room_right
     service: switch.turn_off
   - data:
       entity_id: input_boolean.tv_room_light_switched_recently_pressed
@@ -330,10 +330,10 @@
       entity_id: light.yeelight_color2_7c49ebb9114a
     service: light.turn_on
   - data:
-      entity_id: switch.light_livingroom_1
+      entity_id: switch.outlet_lamp_living_room
     service: switch.turn_on
   - data:
-      entity_id: switch.light_livingroom_2
+      entity_id: switch.outlet_living_room_right
     service: switch.turn_on
   - data:
       entity_id: input_boolean.alarm_state
@@ -385,7 +385,7 @@
   condition: []
   action:
   - data:
-      entity_id: switch.stereo
+      entity_id: switch.outlet_stereo
     service: switch.turn_on
 - id: '1550600530907'
   alias: Turn off stereo
@@ -404,7 +404,7 @@
   condition: []
   action:
   - data:
-      entity_id: switch.stereo
+      entity_id: switch.outlet_stereo
     service: switch.turn_off
 - id: '1555055523241'
   alias: Alarm - off
