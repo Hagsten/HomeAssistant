@@ -71,15 +71,14 @@
       kelvin: 5000
     service: light.turn_on
   - data:
-      entity_id: switch.light_livingroom_1
+      entity_id: switch.outlet_lamp_living_room
     service: switch.turn_on
   - data:
-      entity_id: switch.light_livingroom_2
+      entity_id: switch.outlet_living_room_right
     service: switch.turn_on
   initial_state: 'on'
 - id: '1532183940727'
   alias: Sunrise
-  initial_state: 'on'
   trigger:
   - event: sunrise
     offset: 00:15
@@ -96,11 +95,12 @@
       entity_id: light.yeelight_color2_7c49ebb9114a
     service: light.turn_off
   - data:
-      entity_id: switch.light_livingroom_1
+      entity_id: switch.outlet_lamp_living_room
     service: switch.turn_off
   - data:
-      entity_id: switch.light_livingroom_2
+      entity_id: switch.outlet_living_room_right
     service: switch.turn_off
+  initial_state: 'on'
 - id: '1533203159068'
   alias: Doors - Entrance opens
   trigger:
@@ -344,17 +344,17 @@
       brightness_pct: 10
 - id: '1541183654317'
   alias: Coffee maker
-  initial_state: 'on'
   trigger:
-  - entity_id: switch.kaffebryggaren
+  - entity_id: switch.outlet_kaffebryggaren
     for: '1800'
     platform: state
     to: 'on'
   condition: []
   action:
   - data:
-      entity_id: switch.kaffebryggaren
+      entity_id: switch.outlet_kaffebryggaren
     service: switch.turn_off
+  initial_state: 'on'
 - id: '1547903815352'
   alias: On reboot
   initial_state: 'on'
