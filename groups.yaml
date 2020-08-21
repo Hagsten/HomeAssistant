@@ -16,6 +16,11 @@
     entities:
       - light.yeelight_ceiling3_04cf8c9adab1
       - light.yeelight_ceiling3_04cf8c9b01f8
+  office_cieling_light:
+    name: Office cieling lights
+    entities:
+    - light.kontor_2
+    - light.hallway_1    
   hallway_lights:
     name: Hallway lights
     entities:

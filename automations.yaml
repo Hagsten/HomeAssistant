@@ -1,18 +1,24 @@
-- id: '1531068777832'
-  alias: Nightly rain
-  initial_state: 'off'
+- id: '1569877920741'
+  alias: Lights - Computer corner off
   trigger:
-  - at: '21:00'
-    platform: time
+  - entity_id: binary_sensor.motion_sensor_upper_floor
+    for: 00:15:00
+    from: 'on'
+    platform: state
+    to: 'off'
   condition:
-  - condition: template
-    value_template: '{% set p = states.sensor.rain_probability.attributes.hourly.data[1:12]
-      | map(attribute="precipProbability") | list %}
-
-
-      {% set pNoRain = (1 - p[0]) * (1 - p[1]) * (1 - p[2]) * (1 - p[3]) * (1 - p[4])
-      * (1 - p[5]) * (1 - p[6]) * (1 - p[7]) * (1 - p[8]) * (1 - p[9]) * (1 - p[10])
-      %}
+  - after: sunrise
+    before: sunset
+    before_offset: -00:30
+    condition: sun
+  action:
+  - data:
+      entity_id: light.yeelight_color2_7c49ebb91e8a
+    service: light.turn_off
+  - data:
+      entity_id: group.office_cieling_light
+    service: light.turn_off
+   %}
 
 
       {{ (1 - pNoRain) >= 0.2 }}'
@@ -1502,6 +1508,9 @@
   - data:
       entity_id: light.yeelight_color2_7c49ebb91e8a
     service: light.turn_off
+  - data:
+      entity_id: group.office_cieling_light
+    service: light.turn_off
 - id: '1570208884470'
   alias: Doors - Entrance opens - Evening
   trigger:
@@ -1593,3 +1602,18 @@
   - data:
       entity_id: light.gateway_light_50ec50c6bb8e
     service: light.turn_off
+- id: '1598018258877'
+  alias: Lights - Office cieling
+  trigger:
+  - entity_id: binary_sensor.motion_sensor_upper_floor
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.low_brightness_upstairs
+    state: 'on'
+  action:
+  - data:
+      brightness_pct: '100'
+      entity_id: group.office_cieling_light
+    service: light.turn_on
