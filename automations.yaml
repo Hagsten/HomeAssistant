@@ -7,11 +7,10 @@
   condition:
   - condition: template
     value_template: '{% set p = states.sensor.rain_probability.attributes.hourly.data[1:12]
-      | map(attribute="precipProbability") | list %}
-      {% set pNoRain = (1 - p[0]) * (1 - p[1]) * (1 - p[2]) * (1 - p[3]) * (1 - p[4])
-      * (1 - p[5]) * (1 - p[6]) * (1 - p[7]) * (1 - p[8]) * (1 - p[9]) * (1 - p[10])
-      %}
-      {{ (1 - pNoRain) >= 0.2 }}'
+      | map(attribute="precipProbability") | list %} {% set pNoRain = (1 - p[0]) *
+      (1 - p[1]) * (1 - p[2]) * (1 - p[3]) * (1 - p[4]) * (1 - p[5]) * (1 - p[6])
+      * (1 - p[7]) * (1 - p[8]) * (1 - p[9]) * (1 - p[10]) %} {{ (1 - pNoRain) >=
+      0.2 }}'
   action:
   - data:
       message: Stäng fönster och ta in dynor.
@@ -23,9 +22,8 @@
   trigger:
   - platform: template
     value_template: '{% set p = states.sensor.rain_probability.attributes.hourly.data[1:4]
-      | map(attribute="precipProbability") | list %}
-      {% set pNoRain = (1 - p[0]) * (1 - p[1]) * (1 - p[2]) %}
-      {{ (1 - pNoRain) >= 0.15 }}'
+      | map(attribute="precipProbability") | list %} {% set pNoRain = (1 - p[0]) *
+      (1 - p[1]) * (1 - p[2]) %} {{ (1 - pNoRain) >= 0.15 }}'
   condition:
   - condition: template
     value_template: "{{ \n(states.automation.upcoming_rain_alert.attributes.last_triggered\
@@ -1585,3 +1583,16 @@
   - data:
       entity_id: light.gateway_light_50ec50c6bb8e
     service: light.turn_off
+- id: '1598023301704'
+  alias: Switch - Office cieling
+  trigger:
+  - event_data:
+      click_type: single
+      entity_id: binary_sensor.switch_158d000215c8ca
+    event_type: xiaomi_aqara.click
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: group.office_cieling_light
+    service: light.toggle
