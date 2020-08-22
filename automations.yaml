@@ -168,18 +168,12 @@
   alias: Media - Stop
   trigger:
   - entity_id: media_player.vardagsrum
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 10
+    for: 0:00:15
     from: playing
     platform: state
     to: idle
   - entity_id: media_player.vardagsrum
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 10
+    for: 0:00:15
     platform: state
     to: 'off'
   condition:
@@ -293,6 +287,9 @@
   - condition: state
     entity_id: input_boolean.guest_mode
     state: 'off'
+  - data:
+      entity_id: group.office_cieling_light
+    service: light.turn_off
   initial_state: 'on'
 - id: '1540397737368'
   alias: Waking up
@@ -535,12 +532,12 @@
   alias: Media - Stop - cieling
   trigger:
   - entity_id: media_player.vardagsrum
-    for: 0:00:10
+    for: 0:00:15
     from: playing
     platform: state
     to: idle
   - entity_id: media_player.vardagsrum
-    for: 0:00:10
+    for: 0:00:15
     platform: state
     to: 'off'
   condition:
@@ -558,7 +555,7 @@
       entity_id: switch.moonlight
     service: switch.turn_on
   - data:
-      brightness_pct: '100'
+      brightness_pct: '80'
       entity_id: light.tv_room_cieling_lights
     service: light.turn_on
 - id: '1561735682681'
@@ -1205,7 +1202,7 @@
       entity_id: switch.moonlight
     service: switch.turn_off
   - data:
-      brightness_pct: '10'
+      brightness_pct: '3'
       entity_id: light.tv_room_cieling_lights
       kelvin: 2000
     service: light.turn_on
@@ -1447,9 +1444,6 @@
   - below: '15'
     entity_id: sensor.illumination_158d00023db6dc
     platform: numeric_state
-  - below: '15'
-    entity_id: sensor.illumination_158d0003494ced
-    platform: numeric_state
   condition: []
   action:
   - data:
@@ -1491,6 +1485,9 @@
   action:
   - data:
       entity_id: light.yeelight_color2_7c49ebb91e8a
+    service: light.turn_off
+  - data:
+      entity_id: binary_sensor.switch_158d000215c8ca
     service: light.turn_off
 - id: '1570208884470'
   alias: Doors - Entrance opens - Evening
@@ -1596,3 +1593,21 @@
   - data:
       entity_id: group.office_cieling_light
     service: light.toggle
+- id: '1598023740402'
+  alias: Lights - Office cieling
+  trigger:
+  - entity_id: binary_sensor.motion_sensor_upper_floor
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.low_brightness_upstairs
+    state: 'on'
+  - condition: state
+    entity_id: group.office_cieling_light
+    state: 'off'
+  action:
+  - data:
+      entity_id: group.office_cieling_light
+    service: light.turn_on
