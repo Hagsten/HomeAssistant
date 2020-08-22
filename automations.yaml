@@ -1487,7 +1487,7 @@
       entity_id: light.yeelight_color2_7c49ebb91e8a
     service: light.turn_off
   - data:
-      entity_id: binary_sensor.switch_158d000215c8ca
+      entity_id: group.office_cieling_light
     service: light.turn_off
 - id: '1570208884470'
   alias: Doors - Entrance opens - Evening
