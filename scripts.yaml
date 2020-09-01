@@ -43,6 +43,16 @@ dim_up_lights:
       light_entity_id: '{{ light_entity_id }}'
       dimming_entity_id: '{{ dimming_entity_id }}'
     service: script.dim_up_lights
+turn_on_office_lights:
+  alias: Turn on office lights
+  sequence:
+  - service: light.turn_on
+    data_template:
+      entity_id: group.office_cieling_light
+      brightness_pct: "{% if now().hour >= 01 and now().hour <= 06 -%}\n  {{ 10 }}\n\
+        {% elif states.sensor.illumination_158d00023db6dc.state | float > 35 -%}\n\
+        \  {{ 100 }}\n{% elif states.sensor.illumination_158d00023db6dc.state | float\
+        \ > 10 %}\n  {{ 60 }}\n{% else %}\n  {{ 30 }}\n{%- endif %}\n"
 '1536574687151':
   alias: Turn on lights
   sequence:

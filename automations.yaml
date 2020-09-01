@@ -1486,9 +1486,6 @@
   - data:
       entity_id: light.yeelight_color2_7c49ebb91e8a
     service: light.turn_off
-  - data:
-      entity_id: group.office_cieling_light
-    service: light.turn_off
 - id: '1570208884470'
   alias: Doors - Entrance opens - Evening
   trigger:
@@ -1593,6 +1590,9 @@
   - data:
       entity_id: group.office_cieling_light
     service: light.toggle
+  - data:
+      entity_id: input_boolean.officelight_manually_set
+    service: input_boolean.turn_on
 - id: '1598023740402'
   alias: Lights - Office cieling
   trigger:
@@ -1607,7 +1607,74 @@
   - condition: state
     entity_id: group.office_cieling_light
     state: 'off'
+  - after: 07:00:00
+    before: '19:00:00'
+    condition: time
+  action:
+  - data: {}
+    service: script.turn_on_office_lights
+- id: '1598959837638'
+  alias: Lights - Office cieling off
+  trigger:
+  - entity_id: binary_sensor.motion_sensor_upper_floor
+    for: 00:15:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.officelight_manually_set
+    state: 'off'
   action:
   - data:
+      entity_id: group.office_cieling_light
+    service: light.turn_off
+- id: '1598960955397'
+  alias: Reset Office light manual mark
+  trigger:
+  - entity_id: input_boolean.officelight_manually_set
+    for: 02:00:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.officelight_manually_set
+    service: input_boolean.turn_off
+- id: '1598961361932'
+  alias: Media Upper floor - Play
+  trigger:
+  - entity_id: media_player.guest_room_tv
+    platform: state
+    to: playing
+  condition:
+  - condition: state
+    entity_id: group.office_cieling_light
+    state: 'on'
+  action:
+  - data:
+      brightness_pct: 10
+      entity_id: group.office_cieling_light
+    service: light.turn_on
+- id: '1598961506630'
+  alias: Media Upper floor - Stop
+  trigger:
+  - entity_id: media_player.guest_room_tv
+    for: 00:01:00
+    from: playing
+    platform: state
+    to: idle
+  - entity_id: media_player.guest_room_tv
+    for: 00:01:00
+    platform: state
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: group.office_cieling_light
+    state: 'on'
+  action:
+  - data:
+      brightness_pct: 70
       entity_id: group.office_cieling_light
     service: light.turn_on
