@@ -34,6 +34,7 @@
       - device_tracker.annchriesiphone
       - device_tracker.honor_8
       - device_tracker.huawei_p30_pro_34dabc024f
+      - device_tracker.galaxy_note10
   motion_sensors:
     name: Motion sensors
     entities:
