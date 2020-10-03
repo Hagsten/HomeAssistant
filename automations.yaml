@@ -1688,16 +1688,6 @@
   - data:
       entity_id: switch.engineheater
     service: switch.turn_on
-- id: '1601723076867'
-  alias: Car - Engine heater - off
-  trigger:
-  - at: 08:00
-    platform: time
-  condition: []
-  action:
-  - data:
-      entity_id: switch.engineheater
-    service: switch.turn_off
 - id: '1601723199769'
   alias: Car - Engine heater - auto off
   trigger:
