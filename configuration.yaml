@@ -102,14 +102,14 @@ sensor:
       - 'date'
       - 'date_time'
       - 'time_date'
-  - platform: rest
-    name: rain probability
-    scan_interval: 600
-    resource: !secret darksky_forecast_url
-    unit_of_measurement: "%"
-    value_template: '{{ value_json.hourly.data[1].precipProbability }}'
-    json_attributes:
-      - hourly
+  #- platform: rest
+  #  name: rain probability
+  #  scan_interval: 600
+  #  resource: !secret darksky_forecast_url
+  #  unit_of_measurement: "%"
+  #  value_template: '{{ value_json.hourly.data[1].precipProbability }}'
+  #  json_attributes:
+  #    - hourly
   - platform: systemmonitor
     resources:
       - type: disk_use_percent
