@@ -285,7 +285,14 @@ switch:
           - service: input_boolean.turn_on
             data:
               entity_id: input_boolean.ceiling_yeelight_norml_mode
-  
+influxdb:
+  host: a0d7b954-influxdb
+  port: 8086
+  database: homeassistant
+  username: homeassistant
+  password: !secret influxdb
+  max_retries: 3
+  default_measurement: state  
 
 
 group: !include groups.yaml
