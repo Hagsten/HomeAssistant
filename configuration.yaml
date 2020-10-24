@@ -116,8 +116,6 @@ sensor:
         arg: /home
       - type: memory_free
       - type: processor_use  
-  - platform: tibber
-    access_token: !secret tibber_token
   - platform: darksky
     forecast:
       - 1
@@ -135,7 +133,6 @@ sensor:
       - wind_bearing
       - cloud_cover
       - humidity
-      - temperature_max
       - temperature_min
       - icon
       - apparent_temperature
@@ -276,11 +273,11 @@ switch:
         turn_on:
           - service: yeelight.set_mode
             data:
-              entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+              entity_id: light.yeelight_ceiling3_0x0000000007e76b83
               mode: moonlight
           - service: yeelight.set_mode
             data:
-              entity_id: light.yeelight_ceiling3_04cf8c9adab1
+              entity_id: light.yeelight_ceiling3_0x0000000007e792ca
               mode: moonlight
           - service: input_boolean.turn_off
             data:
@@ -288,11 +285,11 @@ switch:
         turn_off:
           - service: yeelight.set_mode
             data:
-              entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+              entity_id: light.yeelight_ceiling3_0x0000000007e76b83
               mode: normal
           - service: yeelight.set_mode
             data:
-              entity_id: light.yeelight_ceiling3_04cf8c9adab1
+              entity_id: light.yeelight_ceiling3_0x0000000007e792ca
               mode: normal
           - service: input_boolean.turn_on
             data:

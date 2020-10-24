@@ -1023,12 +1023,12 @@
   action:
   - data:
       brightness_pct: 70
-      entity_id: light.yeelight_ceiling3_04cf8c9adab1
+      entity_id: light.yeelight_ceiling3_0x0000000007e76b83
       kelvin: 3000
     service: light.turn_on
   - data:
       brightness_pct: 70
-      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+      entity_id: light.yeelight_ceiling3_0x0000000007e792ca
       kelvin: 3000
     service: light.turn_on
   - data:
@@ -1065,11 +1065,11 @@
     service: switch.turn_on
   - data:
       brightness_pct: 20
-      entity_id: light.yeelight_ceiling3_04cf8c9b01f8
+      entity_id: light.yeelight_ceiling3_0x0000000007e792ca
     service: light.turn_on
   - data:
       brightness_pct: 20
-      entity_id: light.yeelight_ceiling3_04cf8c9adab1
+      entity_id: light.yeelight_ceiling3_0x0000000007e76b83
     service: light.turn_on
 - id: '1563536402916'
   alias: Switch - Dim ceiling
