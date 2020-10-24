@@ -82,8 +82,7 @@
   - data:
       entity_id: light.yeelight_color2_7c49ebb91e8a
     service: light.turn_off
-  - data:
-      entity_id: light.yeelight_color2_7c49ebb9114a
+  - entity_id: light.yeelight_color_0x0000000005ed2368
     service: light.turn_off
   - data:
       entity_id: switch.outlet_lamp_living_room
@@ -227,7 +226,7 @@
     service: input_boolean.turn_off
   - data:
       duration: 180000
-      light: light.yeelight_color2_7c49ebb9114a
+      light: light.yeelight_color_0x0000000005ed2368
     service: script.temp_max_light_yeelight
   initial_state: 'on'
 - id: '1538080363136'
@@ -273,8 +272,7 @@
   - data:
       entity_id: group.tv_room_rgb_lights
     service: light.turn_off
-  - data:
-      entity_id: light.yeelight_color2_7c49ebb9114a
+  - entity_id: light.yeelight_color_0x0000000005ed2368
     service: light.turn_off
   - data:
       entity_id: switch.outlet_lamp_living_room
@@ -315,8 +313,8 @@
     service: light.turn_on
   - data:
       brightness_pct: '100'
-      entity_id: light.yeelight_color2_7c49ebb9114a
     service: light.turn_on
+    entity_id: light.yeelight_color_0x0000000005ed2368
   - data:
       entity_id: switch.outlet_lamp_living_room
     service: switch.turn_on
@@ -1501,7 +1499,7 @@
   action:
   - data:
       duration: 180000
-      light: light.yeelight_color2_7c49ebb9114a
+      light: light.yeelight_color_0x0000000005ed2368
     service: script.temp_max_light_yeelight
 - id: '1572108824608'
   alias: Lights - Entrance hallway
