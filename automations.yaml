@@ -52,8 +52,8 @@
     service: light.turn_on
   - data:
       brightness_pct: '100'
-      entity_id: light.yeelight_color2_7c49ebb91e8a
       kelvin: 2700
+    entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_on
   - data:
       brightness_pct: '100'
@@ -79,8 +79,7 @@
   - data:
       entity_id: light.gateway_light_7811dcdf0cfa
     service: light.turn_off
-  - data:
-      entity_id: light.yeelight_color2_7c49ebb91e8a
+  - entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_off
   - entity_id: light.yeelight_color_0x0000000005ed2368
     service: light.turn_off
@@ -266,8 +265,7 @@
   - data:
       entity_id: light.gateway_light_7811dcdf0cfa
     service: light.turn_off
-  - data:
-      entity_id: light.yeelight_color2_7c49ebb91e8a
+  - entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_off
   - data:
       entity_id: group.tv_room_rgb_lights
@@ -308,8 +306,8 @@
   action:
   - data:
       brightness_pct: '100'
-      entity_id: light.yeelight_color2_7c49ebb91e8a
       kelvin: 2700
+    entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_on
   - data:
       brightness_pct: '100'
@@ -448,7 +446,7 @@
   action:
   - data:
       brightness_pct: 100
-      entity_id: light.yeelight_color2_7c49ebb91e8a
+    entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_on
 - id: '1558408108538'
   alias: Awaiting identification
@@ -1429,13 +1427,13 @@
     entity_id: input_boolean.low_brightness_upstairs
     state: 'on'
   - condition: state
-    entity_id: light.yeelight_color2_7c49ebb91e8a
+    entity_id: light.yeelight_color_0x0000000005ed30a8
     state: 'off'
   action:
   - data:
-      brightness_pct: '100'
-      entity_id: light.yeelight_color2_7c49ebb91e8a
+      brightness_pct: '100'      
       kelvin: 2700
+    entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_on
 - id: '1569877664790'
   alias: Brightness - Low upstairs
@@ -1482,8 +1480,7 @@
     before_offset: -00:30
     condition: sun
   action:
-  - data:
-      entity_id: light.yeelight_color2_7c49ebb91e8a
+  - entity_id: light.yeelight_color_0x0000000005ed30a8      
     service: light.turn_off
 - id: '1570208884470'
   alias: Doors - Entrance opens - Evening
