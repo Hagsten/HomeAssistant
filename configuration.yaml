@@ -247,8 +247,8 @@ light:
   - platform: group
     name: Tvroom_lights
     entities:
-      - light.yeelight_color2_7c49ebb319e7
-      - light.yeelight_color2_7c49ebb31c16
+      - light.yeelight_color_0x0000000005e72c05
+      - light.yeelight_color_0x0000000005e72e34
   - platform: group
     name: Hallway_lights
     entities:
@@ -257,15 +257,15 @@ light:
   - platform: group
     name: TV-room cieling lights
     entities:
-      - light.yeelight_ceiling3_04cf8c9adab1
-      - light.yeelight_ceiling3_04cf8c9b01f8
+      - light.yeelight_ceiling3_0x0000000007e76b83
+      - light.yeelight_ceiling3_0x0000000007e792ca
   - platform: group
     name: All TV-room lights
     entities:
-      - light.yeelight_ceiling3_04cf8c9adab1
-      - light.yeelight_ceiling3_04cf8c9b01f8
-      - light.yeelight_color2_7c49ebb319e7
-      - light.yeelight_color2_7c49ebb31c16
+      - light.yeelight_ceiling3_0x0000000007e76b83
+      - light.yeelight_ceiling3_0x0000000007e792ca
+      - light.yeelight_color_0x0000000005e72c05
+      - light.yeelight_color_0x0000000005e72e34
 
 switch:
   - platform: template
