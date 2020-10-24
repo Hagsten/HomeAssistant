@@ -57,9 +57,9 @@
     service: light.turn_on
   - data:
       brightness_pct: '100'
-      entity_id: light.yeelight_color2_7c49ebb9114a
       kelvin: 5000
     service: light.turn_on
+    entity_id: light.yeelight_color_0x0000000005ed2368
   - data:
       entity_id: switch.outlet_lamp_living_room
     service: switch.turn_on
@@ -67,6 +67,7 @@
       entity_id: switch.outlet_living_room_right
     service: switch.turn_on
   initial_state: 'on'
+  mode: single
 - id: '1532183940727'
   alias: Sunrise
   trigger:
