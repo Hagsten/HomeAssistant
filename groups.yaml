@@ -9,13 +9,13 @@
   tv_room_rgb_lights:
     name: Tv room RGB
     entities:
-      - light.yeelight_color2_7c49ebb319e7
-      - light.yeelight_color2_7c49ebb31c16
+      - light.yeelight_color_0x0000000005e72c05
+      - light.yeelight_color_0x0000000005e72e34
   tv_room_cieling_lights:
     name: TV-rum taklampor
     entities:
-      - light.yeelight_ceiling3_04cf8c9adab1
-      - light.yeelight_ceiling3_04cf8c9b01f8
+      - light.yeelight_ceiling3_0x0000000007e76b83
+      - light.yeelight_ceiling3_0x0000000007e792ca
   office_cieling_light:
     name: Office cieling lights
     entities:
