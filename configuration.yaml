@@ -131,13 +131,7 @@ sensor:
     sensors:
       template_last_motion:
         friendly_name: 'Last Motion'
-        icon_template: 'mdi:walk'
-        entity_id:
-          - binary_sensor.motion_sensor_upper_floor
-          - binary_sensor.motion_sensor_kitchen
-          - binary_sensor.motion_sensor_158d00023db75a
-          - binary_sensor.motion_sensor_158d00023db6f4
-          - binary_sensor.motion_sensor_158d0003494ced
+        icon_template: 'mdi:walk'        
         value_template: >
           {%- set pirs = [states.binary_sensor.motion_sensor_upper_floor,  states.binary_sensor.motion_sensor_kitchen, states.binary_sensor.motion_sensor_158d00023db75a, states.binary_sensor.motion_sensor_158d00023db6f4, states.binary_sensor.motion_sensor_158d0003494ced] %}
           {% for pir in pirs %}
@@ -147,7 +141,6 @@ sensor:
           {% endfor %}
       silent_at_night:
         friendly_name: 'Silent at night'
-        entity_id: sensor.time
         value_template: > 
           {% if now().hour >= 1 and now().hour < 6 and is_state('group.motion_sensors', 'off') and (as_timestamp(now()) - as_timestamp(states.group.motion_sensors.last_changed)) >= (60*15) %}
             on
