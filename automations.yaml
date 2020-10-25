@@ -160,7 +160,7 @@
   - data:
       brightness_pct: 10
       entity_id: group.tv_room_rgb_lights
-      kelvin: 2500
+      color_temp: 431
     service: light.turn_on
   initial_state: 'on'
 - id: '1535128483194'
@@ -1241,7 +1241,7 @@
   action:
   - data:
       entity_id: light.tvroom_lights
-      kelvin: 2500
+      color_temp: 431
       brightness_pct: 100
     service: light.turn_on
   mode: single
@@ -1262,7 +1262,7 @@
   action:
   - data:
       entity_id: light.tvroom_lights
-      kelvin: 2500
+      color_temp: 431
       brightness_pct: 10
     service: light.turn_on
   mode: single
