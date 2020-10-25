@@ -1242,9 +1242,10 @@
   action:
   - data:
       entity_id: light.tvroom_lights
-      kelvin: 3000
+      kelvin: 2700
       brightness_pct: 100
     service: light.turn_on
+  mode: single
 - id: '1563472937315'
   alias: Switch - Single right on night time
   trigger:
@@ -1262,9 +1263,10 @@
   action:
   - data:
       entity_id: light.tvroom_lights
-      kelvin: 3000
+      kelvin: 2700
       brightness_pct: 10
     service: light.turn_on
+  mode: single
 - id: '1563536402999'
   alias: Switch - Dim floor lights
   trigger:
@@ -1431,7 +1433,7 @@
     state: 'off'
   action:
   - data:
-      brightness_pct: '100'      
+      brightness_pct: '100'
       kelvin: 2700
     entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_on
@@ -1480,7 +1482,7 @@
     before_offset: -00:30
     condition: sun
   action:
-  - entity_id: light.yeelight_color_0x0000000005ed30a8      
+  - entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_off
 - id: '1570208884470'
   alias: Doors - Entrance opens - Evening
