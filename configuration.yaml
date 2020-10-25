@@ -263,28 +263,26 @@ switch:
         value_template: "{{ is_state('light.tv_room_cieling_lights','on') and is_state('input_boolean.ceiling_yeelight_norml_mode', 'off') }}"
         turn_on:
           - service: yeelight.set_mode
-            data:
-              entity_id: light.yeelight_ceiling3_0x0000000007e76b83
+            entity_id: light.yeelight_ceiling3_0x0000000007e76b83
+            data:              
               mode: moonlight
           - service: yeelight.set_mode
-            data:
-              entity_id: light.yeelight_ceiling3_0x0000000007e792ca
+            entity_id: light.yeelight_ceiling3_0x0000000007e792ca
+            data:              
               mode: moonlight
           - service: input_boolean.turn_off
-            data:
-              entity_id: input_boolean.ceiling_yeelight_norml_mode
+            entity_id: input_boolean.ceiling_yeelight_norml_mode
         turn_off:
           - service: yeelight.set_mode
-            data:
-              entity_id: light.yeelight_ceiling3_0x0000000007e76b83
+            entity_id: light.yeelight_ceiling3_0x0000000007e76b83
+            data:              
               mode: normal
           - service: yeelight.set_mode
-            data:
-              entity_id: light.yeelight_ceiling3_0x0000000007e792ca
+            entity_id: light.yeelight_ceiling3_0x0000000007e792ca
+            data:              
               mode: normal
           - service: input_boolean.turn_on
-            data:
-              entity_id: input_boolean.ceiling_yeelight_norml_mode
+            entity_id: input_boolean.ceiling_yeelight_norml_mode
 influxdb:
   host: a0d7b954-influxdb
   port: 8086
