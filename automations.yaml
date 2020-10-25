@@ -160,7 +160,7 @@
   - data:
       brightness_pct: 10
       entity_id: group.tv_room_rgb_lights
-      kelvin: 3000
+      kelvin: 2500
     service: light.turn_on
   initial_state: 'on'
 - id: '1535128483194'
@@ -468,7 +468,7 @@
   trigger:
   - event_data:
       click_type: single
-      entity_id: binary_sensor.switch_doorbell
+      entity_id: binary_sensor.switch_158d0002132b17
     event_type: xiaomi_aqara.click
     platform: event
   condition: []
@@ -1024,12 +1024,12 @@
   - data:
       brightness_pct: 70
       entity_id: light.yeelight_ceiling3_0x0000000007e76b83
-      kelvin: 3000
+      kelvin: 2700
     service: light.turn_on
   - data:
       brightness_pct: 70
       entity_id: light.yeelight_ceiling3_0x0000000007e792ca
-      kelvin: 3000
+      kelvin: 2700
     service: light.turn_on
   - data:
       entity_id: switch.moonlight
@@ -1242,7 +1242,7 @@
   action:
   - data:
       entity_id: light.tvroom_lights
-      kelvin: 2700
+      kelvin: 2500
       brightness_pct: 100
     service: light.turn_on
   mode: single
@@ -1263,7 +1263,7 @@
   action:
   - data:
       entity_id: light.tvroom_lights
-      kelvin: 2700
+      kelvin: 2500
       brightness_pct: 10
     service: light.turn_on
   mode: single
