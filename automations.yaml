@@ -1642,7 +1642,7 @@
 - id: '1598961361932'
   alias: Media Upper floor - Play
   trigger:
-  - entity_id: media_player.guest_room_tv
+  - entity_id: media_player.overvaning
     platform: state
     to: playing
   condition:
@@ -1654,18 +1654,19 @@
       brightness_pct: 10
       entity_id: group.office_cieling_light
     service: light.turn_on
+  mode: single
 - id: '1598961506630'
   alias: Media Upper floor - Stop
   trigger:
-  - entity_id: media_player.guest_room_tv
+  - entity_id: media_player.overvaning
     for: 00:01:00
     from: playing
     platform: state
     to: idle
-  - entity_id: media_player.guest_room_tv
-    for: 00:01:00
+  - for: 00:01:00
     platform: state
     to: 'off'
+    entity_id: media_player.overvaning
   condition:
   - condition: state
     entity_id: group.office_cieling_light
@@ -1675,6 +1676,7 @@
       brightness_pct: 70
       entity_id: group.office_cieling_light
     service: light.turn_on
+  mode: single
 - id: '1601723199769'
   alias: Car - Engine heater - auto off
   trigger:
