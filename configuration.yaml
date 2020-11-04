@@ -257,6 +257,11 @@ light:
       - light.yeelight_ceiling3_0x0000000007e792ca
       - light.yeelight_color_0x0000000005e72c05
       - light.yeelight_color_0x0000000005e72e34
+  - platform: group
+    name: Office lights
+    entities:
+      - light.kontor_2
+      - light.kontor_1
 
 switch:
   - platform: template
