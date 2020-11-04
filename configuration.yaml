@@ -75,8 +75,10 @@ cloud:
 binary_sensor:
   - platform: ping
     host: 192.168.10.162
+    count: 2
     name: "binary_sensor.ping_andreas_work_laptop"
   - platform: ping
+    count: 2
     host: 192.168.10.140
     name: "binary_sensor.ping_johanna_work_laptop"
 
