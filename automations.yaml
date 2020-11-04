@@ -1613,19 +1613,26 @@
 - id: '1598959837638'
   alias: Lights - Office cieling off
   trigger:
-  - entity_id: binary_sensor.motion_sensor_upper_floor
+  - entity_id: group.upper_floor_motion_sensors
     for: 00:15:00
     from: 'on'
     platform: state
     to: 'off'
   condition:
   - condition: state
-    entity_id: input_boolean.officelight_manually_set
+    entity_id: binary_sensor.binary_sensor_ping_andreas_work_laptop
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.binary_sensor_ping_johanna_work_laptop
     state: 'off'
   action:
-  - data:
-      entity_id: group.office_cieling_light
-    service: light.turn_off
+  - service: light.turn_off
+    data: {}
+    entity_id: light.kontor_1
+  - service: light.turn_off
+    data: {}
+    entity_id: light.kontor_2
+  mode: single
 - id: '1598960955397'
   alias: Reset Office light manual mark
   trigger:
@@ -1688,5 +1695,20 @@
   action:
   - service: switch.turn_off
     entity_id: switch.engineheater
+    data: {}
+  mode: single
+- id: '1604495295561'
+  alias: Lights - Office cieling - On by laptops
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.binary_sensor_ping_andreas_work_laptop
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.binary_sensor_ping_johanna_work_laptop
+    to: 'on'
+  condition: []
+  action:
+  - service: script.turn_on_office_lights
     data: {}
   mode: single
