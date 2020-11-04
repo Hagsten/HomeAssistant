@@ -1686,6 +1686,7 @@
     to: 'on'
   condition: []
   action:
-  - data:
-      entity_id: switch.engineheater
-    service: switch.turn_off
+  - service: switch.turn_off
+    entity_id: switch.engineheater
+    data: {}
+  mode: single
