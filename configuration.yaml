@@ -72,6 +72,14 @@ tts:
 # Cloud
 cloud:
 
+binary_sensor:
+  - platform: ping
+    host: 192.168.10.162
+    name: "binary_sensor.ping_andreas_work_laptop"
+  - platform: ping
+    host: 192.168.10.140
+    name: "binary_sensor.ping_johanna_work_laptop"
+
 device_tracker:
   - platform: unifi_direct
     host: 192.168.10.179
