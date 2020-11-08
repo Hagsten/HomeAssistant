@@ -243,8 +243,15 @@ light:
   - platform: group
     name: Hallway_lights
     entities:
-      - light.tradfri_bulb_e14_ws_opal_400lm
-      - light.tradfri_bulb_e14_ws_opal_400lm_2
+      - light.hallway_1_1000lm
+      - light.hallway_2_1000lm
+      - light.hallway_3_1000lm
+  - platform: group
+    name: Playroom_lights
+    entities:
+      - light.playroom_1
+      - light.playroom_2
+      - light.playroom_3  
   - platform: group
     name: TV-room cieling lights
     entities:
