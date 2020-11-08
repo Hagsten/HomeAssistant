@@ -1584,14 +1584,15 @@
     platform: event
   condition: []
   action:
-  - data:
-      entity_id: group.office_cieling_light
-    service: light.toggle
-  - data:
-      entity_id: input_boolean.officelight_manually_set
-    service: input_boolean.turn_on
+  - service: light.toggle
+    entity_id: light.office_lights
+    data: {}
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.officelight_manually_set
+    data: {}
+  mode: single
 - id: '1598023740402'
-  alias: Lights - Office cieling
+  alias: Lights - Office cieling - On by motion
   trigger:
   - entity_id: binary_sensor.motion_sensor_upper_floor
     from: 'off'
@@ -1604,12 +1605,10 @@
   - condition: state
     entity_id: group.office_cieling_light
     state: 'off'
-  - after: 07:00:00
-    before: '19:00:00'
-    condition: time
   action:
   - data: {}
     service: script.turn_on_office_lights
+  mode: single
 - id: '1598959837638'
   alias: Lights - Office cieling off
   trigger:
@@ -1628,10 +1627,7 @@
   action:
   - service: light.turn_off
     data: {}
-    entity_id: light.kontor_1
-  - service: light.turn_off
-    data: {}
-    entity_id: light.kontor_2
+    entity_id: light.office_lights
   mode: single
 - id: '1598960955397'
   alias: Reset Office light manual mark
@@ -1707,7 +1703,16 @@
   - platform: state
     entity_id: binary_sensor.binary_sensor_ping_johanna_work_laptop
     to: 'on'
-  condition: []
+  condition:
+  - condition: time
+    after: 07:30
+    before: '18:00'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
   action:
   - service: script.turn_on_office_lights
     data: {}

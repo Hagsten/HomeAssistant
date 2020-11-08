@@ -50,7 +50,7 @@ turn_on_office_lights:
     data_template:
       entity_id: group.office_cieling_light
       brightness_pct: "{% if now().hour >= 01 and now().hour <= 06 -%}\n  {{ 10 }}\n\
-        {% elif now().hour >= 20 and now().hour <= 23 -%}\n  {{ 10 }}\n{% else %}\n\
+        {% elif now().hour >= 19 and now().hour <= 23 -%}\n  {{ 10 }}\n{% else %}\n\
         \  {{ 100 }}\n{%- endif %}\n"
   mode: single
 '1536574687151':
