@@ -66,6 +66,10 @@
   - data:
       entity_id: switch.outlet_living_room_right
     service: switch.turn_on
+  - type: turn_on
+    device_id: 4a5d7ecc446411eb837211f387a5a096
+    entity_id: switch.tv_room_window_lamps_switch
+    domain: switch
   initial_state: 'on'
   mode: single
 - id: '1532183940727'
@@ -89,7 +93,12 @@
   - data:
       entity_id: switch.outlet_living_room_right
     service: switch.turn_off
+  - type: turn_off
+    device_id: 4a5d7ecc446411eb837211f387a5a096
+    entity_id: switch.tv_room_window_lamps_switch
+    domain: switch
   initial_state: 'on'
+  mode: single
 - id: '1533203159068'
   alias: Doors - Entrance opens
   trigger:
@@ -206,9 +215,6 @@
 - id: '1536961274860'
   alias: Coming home
   trigger:
-  - entity_id: device_tracker.johannas_mobil
-    platform: state
-    to: home
   - entity_id: device_tracker.huawei_p30_pro_34dabc024f
     platform: state
     to: home
@@ -217,17 +223,18 @@
     to: home
   condition: []
   action:
-  - data:
-      entity_id: group.hallway_lights
-    service: light.turn_on
-  - data:
-      entity_id: input_boolean.identification_pending
-    service: input_boolean.turn_off
+  - service: light.turn_on
+    entity_id: light.hallway_lights
+    data: {}
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.identification_pending
+    data: {}
   - data:
       duration: 180000
       light: light.yeelight_color_0x0000000005ed2368
     service: script.temp_max_light_yeelight
   initial_state: 'on'
+  mode: single
 - id: '1538080363136'
   alias: Leaving home
   trigger:
@@ -287,10 +294,13 @@
   - data:
       entity_id: group.office_cieling_light
     service: light.turn_off
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.tv_room_window_lamps_switch
   initial_state: 'on'
+  mode: single
 - id: '1540397737368'
   alias: Waking up
-  initial_state: 'on'
   trigger:
   - entity_id: input_boolean.sleeping
     from: 'on'
@@ -326,6 +336,11 @@
     data:
       entity_id: light.gateway_light_7811dcdf0cfa
       brightness_pct: 10
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.tv_room_window_lamps_switch
+  initial_state: 'on'
+  mode: single
 - id: '1541183654317'
   alias: Coffee maker
   trigger:
@@ -356,13 +371,13 @@
 - id: '1550599967723'
   alias: Turn on stereo
   trigger:
-  - entity_id: media_player.overvaning
+  - entity_id: media_player.stereo_nere
     platform: state
     to: 'on'
-  - entity_id: media_player.overvaning
+  - entity_id: media_player.stereo_nere
     platform: state
     to: playing
-  - entity_id: media_player.overvaning
+  - entity_id: media_player.stereo_nere
     from: 'off'
     platform: state
     to: idle
@@ -371,17 +386,18 @@
   - data:
       entity_id: switch.outlet_stereo
     service: switch.turn_on
+  mode: single
 - id: '1550600530907'
   alias: Turn off stereo
   trigger:
-  - entity_id: media_player.overvaning
+  - entity_id: media_player.stereo_nere
     platform: state
     to: 'off'
-  - entity_id: media_player.overvaning
+  - entity_id: media_player.stereo_nere
     for: 00:15:00
     platform: state
     to: idle
-  - entity_id: media_player.overvaning
+  - entity_id: media_player.stereo_nere
     for: 00:15:00
     platform: state
     to: paused
@@ -390,6 +406,7 @@
   - data:
       entity_id: switch.outlet_stereo
     service: switch.turn_off
+  mode: single
 - id: '1555055523241'
   alias: Alarm - off
   trigger:
@@ -1505,11 +1522,15 @@
   - entity_id: binary_sensor.motion_sensor_158d00036d598f
     platform: state
     to: 'on'
+  - platform: state
+    entity_id: binary_sensor.door_window_sensor_158d0002049a62
+    to: 'on'
   condition: []
   action:
-  - data:
-      entity_id: light.hallway_lights
-    service: light.turn_on
+  - service: light.turn_on
+    entity_id: light.hallway_lights
+    data: {}
+  mode: single
 - id: '1572110432932'
   alias: Lights - Entrance Hallway off
   trigger:
@@ -1517,11 +1538,16 @@
     for: 00:03:00
     platform: state
     to: 'off'
+  - platform: state
+    entity_id: binary_sensor.door_window_sensor_158d0002049a62
+    to: 'off'
+    for: 00:07:00
   condition: []
   action:
-  - data:
-      entity_id: light.hallway_lights
+  - data: {}
     service: light.turn_off
+    entity_id: light.hallway_lights
+  mode: single
 - id: '1570208884471'
   alias: Doors - Entrance open too long
   trigger:
@@ -1624,6 +1650,9 @@
   - condition: state
     entity_id: binary_sensor.binary_sensor_ping_johanna_work_laptop
     state: 'off'
+  - condition: state
+    entity_id: input_boolean.officelight_manually_set
+    state: 'off'
   action:
   - service: light.turn_off
     data: {}
@@ -1716,4 +1745,65 @@
   action:
   - service: script.turn_on_office_lights
     data: {}
+  mode: single
+- id: '1605531798053'
+  alias: Lights - Playroom - On
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d00053fcc36
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_on
+    data: {}
+    entity_id: light.playroom_lights
+  mode: single
+- id: '1605531961559'
+  alias: Lights - Playroom - Off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d00053fcc36
+    from: 'on'
+    to: 'off'
+    for: 00:07:00
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.playroom_lights
+  mode: single
+- id: '1606080819269'
+  alias: Media - Baseline sound
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.vardagsrum
+    to: playing
+  condition: []
+  action:
+  - service: media_player.volume_set
+    data: {}
+    entity_id: media_player.hogtalare_tvrummet
+  mode: single
+- id: '1608673020793'
+  alias: Motion - Night - TV room
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 8b0af8761d3211eba4c1ed791bcf32e3
+    entity_id: binary_sensor.motion_sensor_158d00023db75a
+    domain: binary_sensor
+  condition:
+  - condition: time
+    after: '23:00'
+    before: 07:00
+  action:
+  - type: turn_on
+    device_id: 4a5d7ecc446411eb837211f387a5a096
+    entity_id: switch.tv_room_window_lamps_switch
+    domain: switch
   mode: single
