@@ -157,6 +157,10 @@ sensor:
           {% else %}
             off
           {% endif %}
+      car_charging:
+        friendly_name: 'Car charging'
+        device_class: power
+        value_template: "{{ states.switch.car_charger_switch.attributes.current_power_w > 100 }}"
     
 xiaomi_aqara:
   discovery_retry: 5
