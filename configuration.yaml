@@ -162,6 +162,7 @@ sensor:
         device_class: power
         value_template: "{{ states.switch.car_charger_switch.attributes.current_power_w > 100 }}"
       car_charging_current_hour_cost:
+        unit_of_measurement: 'SEK/h'
         friendly_name: 'Charging cost per hour'        
         value_template: "{{ (states.switch.car_charger_switch.attributes.current_power_w / 1000 | float * states.sensor.electricity_price_sundbyviksvagen_9.state | float) | round(2) }}"
     
