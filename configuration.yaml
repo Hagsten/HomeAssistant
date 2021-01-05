@@ -95,6 +95,11 @@ device_tracker:
     consider_home: 120
     username: !secret unifi_ap_username
     password: !secret unifi_ap_password
+  - platform: unifi_direct
+    host: 192.168.10.239
+    consider_home: 120
+    username: !secret unifi_ap_username
+    password: !secret unifi_ap_password
 
 notify:
   - name: Pushbullet_notifier
