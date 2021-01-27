@@ -1781,11 +1781,12 @@
   trigger:
   - platform: state
     entity_id: media_player.vardagsrum
-    to: playing
+    from: 'off'
   condition: []
   action:
   - service: media_player.volume_set
-    data: {}
+    data:
+      volume_level: 0.09
     entity_id: media_player.hogtalare_tvrummet
   mode: single
 - id: '1608673020793'
