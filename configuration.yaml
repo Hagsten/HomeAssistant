@@ -185,6 +185,10 @@ xiaomi_aqara:
 ifttt:
   key: 9Rfbtkpj63qmsIkv2itVz2tEpnr2Unj0tSgNclbkNx
 
+verisure:
+  username: andreas.hagsten@gmail.com
+  password: !secret verisure_pw
+
 media_player: 
   - platform: lg_soundbar
     name: Soundbar
