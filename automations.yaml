@@ -1722,6 +1722,12 @@
     entity_id: switch.engineheater
     data: {}
   mode: single
+
+
+
+
+
+
 - id: '1604495295561'
   alias: Lights - Office cieling - On by laptops
   description: ''
@@ -1746,6 +1752,11 @@
   - service: script.turn_on_office_lights
     data: {}
   mode: single
+
+
+
+
+  
 - id: '1605531798053'
   alias: Lights - Playroom - On
   description: ''
@@ -1808,6 +1819,9 @@
     entity_id: switch.tv_room_window_lamps_switch
     domain: switch
   mode: single
+
+
+
 - id: '1608722078148'
   alias: Car - Charging - Started
   description: ''
@@ -1845,6 +1859,11 @@
     entity_id: light.gateway_light_50ec50c6bb8e
     domain: light
   mode: single
+
+
+
+
+
 - id: '1608726715915'
   alias: Car - Charging - Ended
   description: ''

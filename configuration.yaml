@@ -245,6 +245,8 @@ input_boolean:
     name: Entrance door open too long
   officelight_manually_set:
     name: Office light manually set
+  front_door_unlocked:
+    name: Front door unlocked
 input_select:
   light_presets:
     name: Ljusmiljö
