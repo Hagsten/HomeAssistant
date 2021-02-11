@@ -754,9 +754,9 @@
       - channel/sundbyvik-larm
       title: Pålarmat
     service: notify.pushbullet_notifier
-  - data:
-      entity_id: input_boolean.alarm_state
-    service: input_boolean.turn_on
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.alarm_state
+  mode: single
 - id: '1562227944523'
   alias: Alarm - Arm upper floor by leaving home
   trigger:
@@ -854,9 +854,10 @@
     entity_id: sensor.template_last_motion
     state: binary_sensor.motion_sensor_158d0003494ced
   action:
-  - data:
-      entity_id: input_boolean.sleeping
+  - data: {}
     service: input_boolean.turn_on
+    entity_id: input_boolean.sleeping
+  mode: single
 - id: '1562593639527'
   alias: Sleep - Force sleep trigger
   trigger:
