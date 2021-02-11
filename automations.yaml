@@ -221,6 +221,11 @@
   - entity_id: group.trusted_people
     platform: state
     to: home
+  - platform: state
+    entity_id: input_boolean.front_door_unlocked
+    from: 'off'
+    to: 'on'
+    for: 00:01:45
   condition: []
   action:
   - service: light.turn_on
@@ -418,6 +423,11 @@
     from: not_home
     platform: state
     to: home
+  - platform: state
+    entity_id: input_boolean.front_door_unlocked
+    from: 'off'
+    to: 'on'
+    for: 00:01:45
   condition: []
   action:
   - data:
@@ -426,6 +436,7 @@
   - data:
       entity_id: input_boolean.upperfloor_alarm_state
     service: input_boolean.turn_off
+  mode: single
 - id: '1557508975938'
   alias: Doors - Basement opens
   trigger:
@@ -1723,12 +1734,6 @@
     entity_id: switch.engineheater
     data: {}
   mode: single
-
-
-
-
-
-
 - id: '1604495295561'
   alias: Lights - Office cieling - On by laptops
   description: ''
@@ -1753,11 +1758,6 @@
   - service: script.turn_on_office_lights
     data: {}
   mode: single
-
-
-
-
-  
 - id: '1605531798053'
   alias: Lights - Playroom - On
   description: ''
@@ -1820,9 +1820,6 @@
     entity_id: switch.tv_room_window_lamps_switch
     domain: switch
   mode: single
-
-
-
 - id: '1608722078148'
   alias: Car - Charging - Started
   description: ''
@@ -1860,11 +1857,6 @@
     entity_id: light.gateway_light_50ec50c6bb8e
     domain: light
   mode: single
-
-
-
-
-
 - id: '1608726715915'
   alias: Car - Charging - Ended
   description: ''
@@ -1901,4 +1893,21 @@
     data:
       message: Car finished charging
       title: Car finished charging
+  mode: single
+- id: '1613069833201'
+  alias: Doors - Front door unlocked
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: lock.dorr
+    to: 'on'
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.front_door_unlocked
+  - delay: 00:01:50
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.front_door_unlocked
   mode: single
