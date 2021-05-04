@@ -1554,7 +1554,10 @@
     entity_id: binary_sensor.door_window_sensor_158d0002049a62
     to: 'off'
     for: 00:07:00
-  condition: []
+  condition:
+  - condition: state
+    entity_id: binary_sensor.motion_sensor_158d00036d598f
+    state: 'off'
   action:
   - data: {}
     service: light.turn_off
@@ -1798,8 +1801,9 @@
   action:
   - service: media_player.volume_set
     data:
-      volume_level: 0.09
-    entity_id: media_player.hogtalare_tvrummet
+      volume_level: 0.23
+    target:
+      entity_id: media_player.audiocast
   mode: single
 - id: '1608673020793'
   alias: Motion - Night - TV room
@@ -1900,7 +1904,7 @@
   trigger:
   - platform: state
     entity_id: lock.dorr
-    to: 'on'
+    to: unlocked
   condition: []
   action:
   - service: input_boolean.turn_on
@@ -1910,4 +1914,27 @@
   - service: input_boolean.turn_off
     data: {}
     entity_id: input_boolean.front_door_unlocked
+  mode: single
+- id: '1618035182394'
+  alias: AC Off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.vardagsrum
+    to: playing
+  condition: []
+  action:
+  - service: script.send_power_ac
+  mode: single
+- id: '1618346299747'
+  alias: AC - On
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sleeping
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: script.send_power_on_ac
   mode: single
