@@ -142,16 +142,17 @@
     state: 'off'
   action:
   - data:
-      gw_mac: 78:11:DC:DF:0C:FA
+      gw_mac: 04:CF:8C:91:62:CB
       ringtone_id: 20
       ringtone_vol: 8
     service: xiaomi_aqara.play_ringtone
   - delay:
       milliseconds: 850
   - data:
-      gw_mac: 78:11:DC:DF:0C:FA
+      gw_mac: 04:CF:8C:91:62:CB
     service: xiaomi_aqara.stop_ringtone
   initial_state: 'on'
+  mode: single
 - id: '1535117514847'
   alias: Media - Play
   trigger:
