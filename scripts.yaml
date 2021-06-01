@@ -111,3 +111,57 @@ temp_max_light_yeelight:
       - SleepTransition:
         - '{{ duration }}'
     service: yeelight.start_flow
+learn_tv_power:
+  alias: Learn tv power
+  sequence:
+  - service: remote.learn_command
+    data:
+      entity_id: remote.tv_room_remote_remote
+      command: power
+      device: television
+  mode: single
+send_power:
+  alias: Send power
+  sequence:
+  - service: remote.send_command
+    data:
+      entity_id: remote.tv_room_remote_remote
+      command: power
+      device: television
+  mode: single
+learn_ac_power:
+  alias: Learn ac power off
+  sequence:
+  - service: remote.learn_command
+    data:
+      entity_id: remote.tv_room_remote_remote
+      command: power
+      device: ac
+  mode: single
+send_power_ac:
+  alias: AC Off
+  sequence:
+  - service: remote.send_command
+    data:
+      entity_id: remote.tv_room_remote_remote
+      command: power
+      device: ac
+  mode: single
+learn_ac_power_on:
+  alias: Learn ac power on
+  sequence:
+  - service: remote.learn_command
+    data:
+      entity_id: remote.tv_room_remote_remote
+      command: power_on
+      device: ac
+  mode: single
+send_power_on_ac:
+  alias: AC On
+  sequence:
+  - service: remote.send_command
+    data:
+      entity_id: remote.tv_room_remote_remote
+      command: power_on
+      device: ac
+  mode: single
