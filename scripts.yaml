@@ -165,3 +165,21 @@ send_power_on_ac:
       command: power_on
       device: ac
   mode: single
+learn_ac_on_cold:
+  alias: Learn AC on Cold
+  sequence:
+  - service: remote.learn_command
+    data:
+      entity_id: remote.tv_room_remote_remote
+      command: power_on_cold
+      device: ac
+  mode: single
+ac_on_cold:
+  alias: AC On cold
+  sequence:
+  - service: remote.send_command
+    data:
+      entity_id: remote.tv_room_remote_remote
+      command: power_on_cold
+      device: ac
+  mode: single

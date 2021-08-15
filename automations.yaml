@@ -497,7 +497,7 @@
   trigger:
   - event_data:
       click_type: single
-      entity_id: binary_sensor.switch_158d0002ad90dd
+      entity_id: binary_sensor.switch_158d0002ad8fad
     event_type: xiaomi_aqara.click
     platform: event
   condition: []
@@ -1923,12 +1923,15 @@
   - platform: state
     entity_id: media_player.vardagsrum
     to: playing
-  condition: []
+  condition:
+  - condition: time
+    after: '18:00'
+    before: '23:59'
   action:
   - service: script.send_power_ac
   mode: single
 - id: '1618346299747'
-  alias: AC - On
+  alias: AC - On - cold
   description: ''
   trigger:
   - platform: state
@@ -1937,5 +1940,41 @@
     to: 'on'
   condition: []
   action:
-  - service: script.send_power_on_ac
+  - service: script.ac_on_cold
+  mode: single
+- id: '1628975592295'
+  alias: Blinds - Close when warm and sunny
+  description: ''
+  trigger:
+  - platform: numeric_state
+    above: '23'
+    for: 00:10:00
+    entity_id: sensor.temperature_158d0003498df2
+  condition:
+  - condition: time
+    after: 09:00
+    before: '18:00'
+  - condition: template
+    value_template: '{{states. sensor.dark_sky_cloud_coverage.state | int <= 30}}'
+  action:
+  - device_id: 74bfb7929c1b993b38a08968de553594
+    domain: cover
+    entity_id: cover.00660024a4e57c13f58e
+    type: close
+  mode: single
+- id: '1629009652404'
+  alias: Blinds - Open cloudy
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{states. sensor.dark_sky_cloud_coverage.state | int > 49}}'
+  condition:
+  - condition: time
+    after: 09:00
+    before: '18:00'
+  action:
+  - device_id: 74bfb7929c1b993b38a08968de553594
+    domain: cover
+    entity_id: cover.00660024a4e57c13f58e
+    type: open
   mode: single
