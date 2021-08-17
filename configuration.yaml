@@ -177,7 +177,7 @@ sensor:
         value_template: "{{ (states.sensor.temperature_158d0003498df2.state | float >= 23.0) and (states.sensor.dark_sky_cloud_coverage.state | int <= 30) and states.sun.sun.state == 'above_horizon' }}"
       should_open_blinds:
         friendly_name: 'Can open blinds'
-        value_template: "{{ (states.sensor.dark_sky_cloud_coverage.state | int >= 50) or states.sun.sun.state == 'below_horizon' }}"  
+        value_template: "{{ (states.sensor.dark_sky_cloud_coverage.state | int >= 50) and states.sun.sun.state == 'above_horizon' }}"  
     
 xiaomi_aqara:
   discovery_retry: 5
