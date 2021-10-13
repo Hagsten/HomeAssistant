@@ -1946,16 +1946,15 @@
   alias: Blinds - Close when warm and sunny
   description: ''
   trigger:
-  - platform: numeric_state
-    above: '23'
+  - platform: state
+    entity_id: sensor.should_close_blinds
+    to: 'False'
+    from: 'True'
     for: 00:10:00
-    entity_id: sensor.temperature_158d0003498df2
   condition:
   - condition: time
-    after: 09:00
+    after: 09:30
     before: '18:00'
-  - condition: template
-    value_template: '{{states. sensor.dark_sky_cloud_coverage.state | int <= 30}}'
   action:
   - device_id: 74bfb7929c1b993b38a08968de553594
     domain: cover
@@ -1966,15 +1965,47 @@
   alias: Blinds - Open cloudy
   description: ''
   trigger:
-  - platform: template
-    value_template: '{{states. sensor.dark_sky_cloud_coverage.state | int > 49}}'
+  - platform: state
+    entity_id: sensor.should_open_blinds
+    to: 'True'
+    for: 00:10:00
+    from: 'False'
   condition:
   - condition: time
-    after: 09:00
+    after: 09:30
     before: '18:00'
   action:
   - device_id: 74bfb7929c1b993b38a08968de553594
     domain: cover
     entity_id: cover.00660024a4e57c13f58e
     type: open
+  mode: single
+- id: '1629044630083'
+  alias: Blinds - Open morning
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:15
+  condition:
+  - condition: state
+    entity_id: input_boolean.sleeping
+    state: 'off'
+  action:
+  - device_id: 74bfb7929c1b993b38a08968de553594
+    domain: cover
+    entity_id: cover.00660024a4e57c13f58e
+    type: open
+  mode: single
+- id: '1632932769379'
+  alias: 'Blinds - Close at night '
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:30'
+  condition: []
+  action:
+  - device_id: 74bfb7929c1b993b38a08968de553594
+    domain: cover
+    entity_id: cover.00660024a4e57c13f58e
+    type: close
   mode: single
