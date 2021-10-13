@@ -72,6 +72,7 @@
       - sensor.temperature_158d0003498df2
       - sensor.temperature_158d0003499f6f
       - sensor.temperature_158d00044f801d
+      - sensor.temperature_158d00036b8ea9
   humidity:
     name: Luftfuktigheter
     entities:
@@ -81,6 +82,7 @@
       - sensor.humidity_158d000272c66a
       - sensor.humidity_158d0003499f6f
       - sensor.humidity_158d0003498df2
+      - sensor.humidity_158d00036b8ea9
   smoke_detectors:
     name: Brandvarnare
     entities:
