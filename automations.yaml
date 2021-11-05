@@ -964,20 +964,6 @@
       - channel/sundbyvik-larm
       title: Delvis pålarmat
     service: notify.pushbullet_notifier
-- id: '1562999115892'
-  alias: Dryer
-  trigger:
-  - above: '30'
-    below: '40'
-    entity_id: sensor.washingmachine_activity_158d0002b89f14
-    for: 00:05:00
-    platform: numeric_state
-  condition: []
-  action:
-  - data:
-      message: ''
-      title: dryer
-    service: notify.pushbullet_notifier
 - id: '1563472937399'
   alias: Switch - Single left off
   trigger:
