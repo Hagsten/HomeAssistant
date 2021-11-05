@@ -261,8 +261,8 @@ light:
   - platform: group
     name: Tvroom_lights
     entities:
-      - light.yeelight_color_0x0000000005e72c05
-      - light.yeelight_color_0x0000000005e72e34
+      - light.yeelight_color_0x5e72c05
+      - light.yeelight_color_0x5e72e34
   - platform: group
     name: Hallway_lights
     entities:
@@ -278,15 +278,15 @@ light:
   - platform: group
     name: TV-room cieling lights
     entities:
-      - light.yeelight_ceiling3_0x0000000007e76b83
-      - light.yeelight_ceiling3_0x0000000007e792ca
+      - light.yeelight_ceiling3_0x7e76b83
+      - light.yeelight_ceiling3_0x7e792ca
   - platform: group
     name: All TV-room lights
     entities:
-      - light.yeelight_ceiling3_0x0000000007e76b83
-      - light.yeelight_ceiling3_0x0000000007e792ca
-      - light.yeelight_color_0x0000000005e72c05
-      - light.yeelight_color_0x0000000005e72e34
+      - light.yeelight_ceiling3_0x7e76b83
+      - light.yeelight_ceiling3_0x7e792ca
+      - light.yeelight_color_0x5e72c05
+      - light.yeelight_color_0x5e72e34
   - platform: group
     name: Office lights
     entities:
@@ -301,22 +301,22 @@ switch:
         value_template: "{{ is_state('light.tv_room_cieling_lights','on') and is_state('input_boolean.ceiling_yeelight_norml_mode', 'off') }}"
         turn_on:
           - service: yeelight.set_mode
-            entity_id: light.yeelight_ceiling3_0x0000000007e76b83
+            entity_id: light.yeelight_ceiling3_0x7e76b83
             data:              
               mode: moonlight
           - service: yeelight.set_mode
-            entity_id: light.yeelight_ceiling3_0x0000000007e792ca
+            entity_id: light.yeelight_ceiling3_0x7e792ca
             data:              
               mode: moonlight
           - service: input_boolean.turn_off
             entity_id: input_boolean.ceiling_yeelight_norml_mode
         turn_off:
           - service: yeelight.set_mode
-            entity_id: light.yeelight_ceiling3_0x0000000007e76b83
+            entity_id: light.yeelight_ceiling3_0x7e76b83
             data:              
               mode: normal
           - service: yeelight.set_mode
-            entity_id: light.yeelight_ceiling3_0x0000000007e792ca
+            entity_id: light.yeelight_ceiling3_0x7e792ca
             data:              
               mode: normal
           - service: input_boolean.turn_on
