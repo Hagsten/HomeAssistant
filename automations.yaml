@@ -53,13 +53,17 @@
   - data:
       brightness_pct: '100'
       kelvin: 2700
-    entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_on
+    target:
+      entity_id:
+      - light.yeelight_color_0x5ed30a8
   - data:
-      brightness_pct: '100'
+      brightness_pct: 100
       kelvin: 5000
     service: light.turn_on
-    entity_id: light.yeelight_color_0x0000000005ed2368
+    target:
+      entity_id:
+      - light.yeelight_color_0x5ed2368
   - data:
       entity_id: switch.outlet_lamp_living_room
     service: switch.turn_on
@@ -83,10 +87,16 @@
   - data:
       entity_id: light.gateway_light_7811dcdf0cfa
     service: light.turn_off
-  - entity_id: light.yeelight_color_0x0000000005ed30a8
-    service: light.turn_off
-  - entity_id: light.yeelight_color_0x0000000005ed2368
-    service: light.turn_off
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.yeelight_color_0x5ed30a8
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.yeelight_color_0x5ed2368
   - data:
       entity_id: switch.outlet_lamp_living_room
     service: switch.turn_off
@@ -278,13 +288,19 @@
   - data:
       entity_id: light.gateway_light_7811dcdf0cfa
     service: light.turn_off
-  - entity_id: light.yeelight_color_0x0000000005ed30a8
-    service: light.turn_off
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.yeelight_color_0x5ed30a8
   - data:
       entity_id: group.tv_room_rgb_lights
     service: light.turn_off
-  - entity_id: light.yeelight_color_0x0000000005ed2368
-    service: light.turn_off
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.yeelight_color_0x5ed2368
   - data:
       entity_id: switch.outlet_lamp_living_room
     service: switch.turn_off
@@ -323,12 +339,16 @@
   - data:
       brightness_pct: '100'
       kelvin: 2700
-    entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_on
+    target:
+      entity_id:
+      - light.yeelight_color_0x5ed30a8
   - data:
-      brightness_pct: '100'
+      brightness_pct: 100
     service: light.turn_on
-    entity_id: light.yeelight_color_0x0000000005ed2368
+    target:
+      entity_id:
+      - light.yeelight_color_0x5ed2368
   - data:
       entity_id: switch.outlet_lamp_living_room
     service: switch.turn_on
@@ -475,8 +495,10 @@
   action:
   - data:
       brightness_pct: 100
-    entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_on
+    target:
+      entity_id:
+      - light.yeelight_color_0x5ed30a8
 - id: '1558408108538'
   alias: Awaiting identification
   trigger:
@@ -1053,14 +1075,18 @@
   action:
   - data:
       brightness_pct: 70
-      entity_id: light.yeelight_ceiling3_0x0000000007e76b83
       kelvin: 2700
     service: light.turn_on
+    target:
+      entity_id:
+      - light.yeelight_ceiling3_0x7e76b83
   - data:
       brightness_pct: 70
-      entity_id: light.yeelight_ceiling3_0x0000000007e792ca
       kelvin: 2700
     service: light.turn_on
+    target:
+      entity_id:
+      - light.yeelight_ceiling3_0x7e792ca
   - data:
       entity_id: switch.moonlight
     service: switch.turn_off
@@ -1095,12 +1121,15 @@
     service: switch.turn_on
   - data:
       brightness_pct: 20
-      entity_id: light.yeelight_ceiling3_0x0000000007e792ca
     service: light.turn_on
+    target:
+      entity_id:
+      - light.yeelight_ceiling3_0x7e792ca
   - data:
       brightness_pct: 20
-      entity_id: light.yeelight_ceiling3_0x0000000007e76b83
     service: light.turn_on
+    target:
+      entity_id: light.yeelight_ceiling3_0x7e76b83
 - id: '1563536402916'
   alias: Switch - Dim ceiling
   trigger:
@@ -1462,10 +1491,12 @@
     state: 'off'
   action:
   - data:
-      brightness_pct: '100'
+      brightness_pct: 100
       kelvin: 2700
-    entity_id: light.yeelight_color_0x0000000005ed30a8
     service: light.turn_on
+    target:
+      entity_id:
+      - light.yeelight_color_0x5ed30a8
 - id: '1569877664790'
   alias: Brightness - Low upstairs
   trigger:
@@ -1511,8 +1542,11 @@
     before_offset: -00:30
     condition: sun
   action:
-  - entity_id: light.yeelight_color_0x0000000005ed30a8
-    service: light.turn_off
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.yeelight_color_0x5ed30a8
 - id: '1570208884470'
   alias: Doors - Entrance opens - Evening
   trigger:
@@ -1954,12 +1988,13 @@
   condition:
   - condition: time
     after: 09:30
-    before: '18:00'
+    before: '18:00:00'
   action:
-  - device_id: 74bfb7929c1b993b38a08968de553594
+  - device_id: 76d329213e6531314e86643974320d61
     domain: cover
-    entity_id: cover.00660024a4e57c13f58e
-    type: close
+    entity_id: cover.rd_intelligent_blindmotor_curtain
+    type: set_position
+    position: 0
   mode: single
 - id: '1629009652404'
   alias: Blinds - Open cloudy
@@ -1973,39 +2008,42 @@
   condition:
   - condition: time
     after: 09:30
-    before: '18:00'
+    before: '18:00:00'
   action:
-  - device_id: 74bfb7929c1b993b38a08968de553594
+  - device_id: 76d329213e6531314e86643974320d61
     domain: cover
-    entity_id: cover.00660024a4e57c13f58e
-    type: open
+    entity_id: cover.rd_intelligent_blindmotor_curtain
+    type: set_position
+    position: 100
   mode: single
 - id: '1629044630083'
   alias: Blinds - Open morning
   description: ''
   trigger:
   - platform: time
-    at: 09:15
+    at: 09:15:00
   condition:
   - condition: state
     entity_id: input_boolean.sleeping
     state: 'off'
   action:
-  - device_id: 74bfb7929c1b993b38a08968de553594
+  - device_id: 76d329213e6531314e86643974320d61
     domain: cover
-    entity_id: cover.00660024a4e57c13f58e
-    type: open
+    entity_id: cover.rd_intelligent_blindmotor_curtain
+    type: set_position
+    position: 100
   mode: single
 - id: '1632932769379'
   alias: 'Blinds - Close at night '
   description: ''
   trigger:
   - platform: time
-    at: '21:30'
+    at: '21:30:00'
   condition: []
   action:
-  - device_id: 74bfb7929c1b993b38a08968de553594
+  - device_id: 76d329213e6531314e86643974320d61
     domain: cover
-    entity_id: cover.00660024a4e57c13f58e
-    type: close
+    entity_id: cover.rd_intelligent_blindmotor_curtain
+    type: set_position
+    position: 0
   mode: single
