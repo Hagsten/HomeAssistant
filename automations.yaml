@@ -1824,7 +1824,8 @@
     data:
       volume_level: 0.23
     target:
-      entity_id: media_player.audiocast
+      entity_id:
+      - media_player.mtk8530
   mode: single
 - id: '1608673020793'
   alias: Motion - Night - TV room
