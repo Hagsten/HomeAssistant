@@ -170,7 +170,7 @@ sensor:
       car_charging_current_hour_cost:
         unit_of_measurement: 'SEK/h'
         unique_id: car_charging_current_hour_cost
-        friendly_name: 'Charging cost per hour'        
+        friendly_name: 'Charging cost per hour'
         value_template: "{{ (states.sensor.car_charger_current_power.state / 1000 | float * states.sensor.electricity_price_sundbyviksvagen_9.state | float) | round(2) }}"
       should_close_blinds:
         friendly_name: 'Close blinds to keep cool'
@@ -178,7 +178,7 @@ sensor:
       should_open_blinds:
         friendly_name: 'Can open blinds'
         value_template: "{{ (states.sensor.dark_sky_cloud_coverage.state | int >= 50) and states.sun.sun.state == 'above_horizon' }}"  
-    
+
 xiaomi_aqara:
   discovery_retry: 5
   gateways:
