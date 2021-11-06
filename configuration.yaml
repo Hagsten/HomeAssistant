@@ -166,12 +166,12 @@ sensor:
         friendly_name: 'Car charging'
         unique_id: car_charging
         device_class: power
-        value_template: "{{ states.switch.car_charger_switch.attributes.current_power_w > 100 }}"
+        value_template: "{{ states.sensor.car_charger_current_power.state > 100 }}"
       car_charging_current_hour_cost:
         unit_of_measurement: 'SEK/h'
         unique_id: car_charging_current_hour_cost
         friendly_name: 'Charging cost per hour'        
-        value_template: "{{ (states.switch.car_charger_switch.attributes.current_power_w / 1000 | float * states.sensor.electricity_price_sundbyviksvagen_9.state | float) | round(2) }}"
+        value_template: "{{ (states.sensor.car_charger_current_power.state / 1000 | float * states.sensor.electricity_price_sundbyviksvagen_9.state | float) | round(2) }}"
       should_close_blinds:
         friendly_name: 'Close blinds to keep cool'
         value_template: "{{ (states.sensor.temperature_158d0003498df2.state | float >= 23.0) and (states.sensor.dark_sky_cloud_coverage.state | int <= 30) and states.sun.sun.state == 'above_horizon' }}"
