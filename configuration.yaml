@@ -274,7 +274,7 @@ light:
     entities:
       - light.playroom_1
       - light.playroom_2
-      - light.playroom_3  
+      - light.tradfri_light_7e226152044000ec_65565
   - platform: group
     name: TV-room cieling lights
     entities:
