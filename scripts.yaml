@@ -46,8 +46,8 @@ dim_up_lights:
 turn_on_office_lights:
   alias: Turn on office lights
   sequence:
-  - service: light.turn_on
-    data_template:
+  - data_template:
+      service: light.turn_on
       entity_id: group.office_cieling_light
       brightness_pct: "{% if now().hour >= 01 and now().hour <= 06 -%}\n  {{ 10 }}\n\
         {% elif now().hour >= 19 and now().hour <= 23 -%}\n  {{ 10 }}\n{% else %}\n\
