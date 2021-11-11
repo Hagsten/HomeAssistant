@@ -47,12 +47,11 @@ turn_on_office_lights:
   alias: Turn on office lights
   sequence:
   - data_template:
-      service: light.turn_on
       entity_id: group.office_cieling_light
       brightness_pct: "{% if now().hour >= 01 and now().hour <= 06 -%}\n  {{ 10 }}\n\
         {% elif now().hour >= 19 and now().hour <= 23 -%}\n  {{ 10 }}\n{% else %}\n\
         \  {{ 100 }}\n{%- endif %}\n"
-  mode: single
+    service: light.turn_on    
 '1536574687151':
   alias: Turn on lights
   sequence:
