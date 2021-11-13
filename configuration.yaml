@@ -292,6 +292,12 @@ light:
     entities:
       - light.kontor_2
       - light.kontor_1
+  - platform: group
+    name: Kitchen spotlights
+    entities:
+      - light.kitchen_spot_1
+      - light.kitchen_spot_2
+      - light.kitchen_spot_3
 
 switch:
   - platform: template
