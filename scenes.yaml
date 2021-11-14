@@ -1,26 +1,3 @@
-- id: '1636835679817'
-  name: 'Test '
-  entities:
-    input_boolean.alarm_state:
-      editable: false
-      friendly_name: Larm
-      icon: mdi:bell
-      state: 'off'
-  icon: mdi:account
-- id: '1636837318512'
-  name: Hmm
-  entities:
-    light.basement_2:
-      min_mireds: 175
-      max_mireds: 333
-      supported_color_modes:
-      - color_temp
-      scene: 0
-      delayed_turn_off:
-      friendly_name: Basement 2
-      supported_features: 3
-      state: 'off'
-  icon: mdi:bathtub
 - id: '1636891233886'
   name: Kitchen daytime
   entities:
