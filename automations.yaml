@@ -263,18 +263,16 @@
     entity_id: input_boolean.guest_mode
     state: 'off'
   action:
-  - data:
-      entity_id: group.tv_room_rgb_lights
+  - data: {}
     service: light.turn_off
-  - data:
-      entity_id: group.hallway_lights
-    service: light.turn_off
+    target:
+      entity_id:
+      - group.tv_room_rgb_lights
+      - light.hallway_lights
+      - light.tv_room_cieling_lights
   - data:
       entity_id: switch.outlet_kaffebryggaren
     service: switch.turn_off
-  - data:
-      entity_id: light.tv_room_cieling_lights
-    service: light.turn_off
   initial_state: 'on'
 - id: '1540397582929'
   alias: Sleeping
@@ -285,28 +283,22 @@
     to: 'on'
   condition: []
   action:
-  - data:
-      entity_id: light.gateway_light_7811dcdf0cfa
+  - data: {}
     service: light.turn_off
-  - service: light.turn_off
-    data: {}
     target:
       entity_id:
+      - light.gateway_light_7811dcdf0cfa
       - light.yeelight_color_0x5ed30a8
+      - light.yeelight_color_0x5ed2368
   - data:
       entity_id: group.tv_room_rgb_lights
     service: light.turn_off
-  - service: light.turn_off
-    data: {}
+  - data: {}
+    service: switch.turn_off
     target:
       entity_id:
-      - light.yeelight_color_0x5ed2368
-  - data:
-      entity_id: switch.outlet_lamp_living_room
-    service: switch.turn_off
-  - data:
-      entity_id: switch.outlet_living_room_right
-    service: switch.turn_off
+      - switch.outlet_lamp_living_room
+      - switch.outlet_living_room_right
   - data:
       entity_id: input_boolean.tv_room_light_switched_recently_pressed
     service: input_boolean.turn_off
@@ -337,24 +329,20 @@
       condition: sun
   action:
   - data:
-      brightness_pct: '100'
+      brightness_pct: 100
       kelvin: 2700
     service: light.turn_on
     target:
       entity_id:
       - light.yeelight_color_0x5ed30a8
-  - data:
-      brightness_pct: 100
-    service: light.turn_on
+      - light.yeelight_color_0x5ed2368
+  - data: {}
+    service: switch.turn_on
     target:
       entity_id:
-      - light.yeelight_color_0x5ed2368
-  - data:
-      entity_id: switch.outlet_lamp_living_room
-    service: switch.turn_on
-  - data:
-      entity_id: switch.outlet_living_room_right
-    service: switch.turn_on
+      - switch.outlet_lamp_living_room
+      - switch.outlet_living_room_right
+      - switch.tv_room_window_lamps_switch
   - data:
       entity_id: input_boolean.alarm_state
     service: input_boolean.turn_off
@@ -362,9 +350,11 @@
     data:
       entity_id: light.gateway_light_7811dcdf0cfa
       brightness_pct: 10
-  - service: switch.turn_on
-    data: {}
-    entity_id: switch.tv_room_window_lamps_switch
+  - service: light.turn_on
+    target:
+      entity_id: light.kitchen_spotlights
+    data:
+      brightness_pct: 100
   initial_state: 'on'
   mode: single
 - id: '1541183654317'
@@ -1473,7 +1463,7 @@
     entity_id: input_boolean.low_brightness_upstairs
     state: 'on'
   - condition: state
-    entity_id: light.yeelight_color_0x0000000005ed30a8
+    entity_id: light.yeelight_color_0x5ed30a8
     state: 'off'
   action:
   - data:
