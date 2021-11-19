@@ -290,6 +290,7 @@
       - light.gateway_light_7811dcdf0cfa
       - light.yeelight_color_0x5ed30a8
       - light.yeelight_color_0x5ed2368
+      - light.kitchen_spotlights
   - data:
       entity_id: group.tv_room_rgb_lights
     service: light.turn_off
@@ -350,11 +351,7 @@
     data:
       entity_id: light.gateway_light_7811dcdf0cfa
       brightness_pct: 10
-  - service: light.turn_on
-    target:
-      entity_id: light.kitchen_spotlights
-    data:
-      brightness_pct: 100
+  - scene: scene.kitchen_passive
   initial_state: 'on'
   mode: single
 - id: '1541183654317'
@@ -2023,4 +2020,128 @@
     entity_id: cover.rd_intelligent_blindmotor_curtain
     type: set_position
     position: 0
+  mode: single
+- id: '1636956079153'
+  alias: 'Lights - Kitchen - Adjust to daytime '
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: '0'
+  condition:
+  - condition: state
+    entity_id: light.kitchen_spotlights
+    state: 'on'
+  action:
+  - scene: scene.kitchen_daytime
+  mode: single
+- id: '1636956179767'
+  alias: Lights - Kitchen - Adjust to evening
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+  condition:
+  - condition: state
+    entity_id: light.kitchen_spotlights
+    state: 'on'
+  action:
+  - scene: scene.kitchen_nigthtime
+  mode: single
+- id: '1636958440127'
+  alias: Lights - Kitchen - On daytime
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_kitchen
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: light.kitchen_spotlights
+    state: 'off'
+  - condition: state
+    entity_id: sun.sun
+    state: above_horizon
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.kitchen_daytime
+    data:
+      transition: 3
+  mode: single
+- id: '1636958839522'
+  alias: Lights - Kitchen - On Evening
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_kitchen
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: light.kitchen_spotlights
+    state: 'off'
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  - condition: time
+    before: '23:59'
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.kitchen_nigthtime
+    data:
+      transition: 3
+  mode: single
+- id: '1636958937460'
+  alias: 'Lights - Kitchen - On night '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_kitchen
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: numeric_state
+    entity_id: light.kitchen_spotlights
+    attribute: brightness
+    below: '136'
+  - condition: time
+    after: 00:00
+    before: 09:00
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  action:
+  - scene: scene.kitchen_passive
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: scene.turn_on
+    target:
+      entity_id: scene.kitchen_nigthtime
+    data:
+      transition: 300
+  mode: single
+- id: '1636995387249'
+  alias: Lights - Kitchen off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_kitchen
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.kitchen_spotlights
   mode: single
