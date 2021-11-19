@@ -298,7 +298,14 @@ light:
       - light.kitchen_spot_1
       - light.kitchen_spot_2
       - light.kitchen_spot_3
-
+  - platform: group
+    name: All lights
+    entities:
+      - light.kitchen_spotlights
+      - light.office_lights
+      - light.all_tv_room_lights
+      - light.playroom_lights
+      - light.hallway_lights
 switch:
   - platform: template
     switches:
@@ -327,6 +334,7 @@ switch:
               mode: normal
           - service: input_boolean.turn_on
             entity_id: input_boolean.ceiling_yeelight_norml_mode
+
 influxdb:
   host: a0d7b954-influxdb
   port: 8086

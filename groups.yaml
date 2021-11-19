@@ -94,3 +94,10 @@
     entities:
       - switch.outlet_lamp_living_room
       - switch.outlet_living_room_right
+  all_lighting:
+    name: Alla lampor
+    entities:
+      - group.livingroom_lights
+      - light.all_lights
+      - switch.tv_room_window_lamps_switch
+
