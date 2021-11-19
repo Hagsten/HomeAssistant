@@ -306,6 +306,7 @@ light:
       - light.all_tv_room_lights
       - light.playroom_lights
       - light.hallway_lights
+      - light.yeelight_color_0x5ed30a8
 switch:
   - platform: template
     switches:
