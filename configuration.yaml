@@ -307,6 +307,12 @@ light:
       - light.playroom_lights
       - light.hallway_lights
       - light.yeelight_color_0x5ed30a8
+  - platform: group
+    name: Basement
+    entities:
+      - light.basement_1
+      - light.basement_2
+
 switch:
   - platform: template
     switches:
