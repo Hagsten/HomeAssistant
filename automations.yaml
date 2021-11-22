@@ -51,7 +51,7 @@
       - 35
     service: light.turn_on
   - data:
-      brightness_pct: '100'
+      brightness_pct: 100
       kelvin: 2700
     service: light.turn_on
     target:
@@ -64,16 +64,15 @@
     target:
       entity_id:
       - light.yeelight_color_0x5ed2368
-  - data:
-      entity_id: switch.outlet_lamp_living_room
+  - data: {}
     service: switch.turn_on
-  - data:
-      entity_id: switch.outlet_living_room_right
-    service: switch.turn_on
-  - type: turn_on
-    device_id: 4a5d7ecc446411eb837211f387a5a096
-    entity_id: switch.tv_room_window_lamps_switch
-    domain: switch
+    target:
+      entity_id:
+      - switch.outlet_lamp_living_room
+      - switch.outlet_living_room_right
+      - switch.tv_room_window_lamps_switch
+  - service: script.turn_on_left_closet
+  - service: script.turn_on_right_closet
   initial_state: 'on'
   mode: single
 - id: '1532183940727'
@@ -506,7 +505,7 @@
   trigger:
   - event_data:
       click_type: single
-      entity_id: binary_sensor.switch_158d0002ad8fad
+      entity_id: binary_sensor.switch_158d0002ad8fad_doorbell
     event_type: xiaomi_aqara.click
     platform: event
   condition: []
@@ -2063,6 +2062,9 @@
   - condition: state
     entity_id: sun.sun
     state: above_horizon
+  - condition: numeric_state
+    entity_id: sensor.illumination_158d000276e193
+    below: '300'
   action:
   - service: scene.turn_on
     target:
@@ -2137,6 +2139,14 @@
     for:
       hours: 0
       minutes: 20
+      seconds: 0
+      milliseconds: 0
+  - platform: numeric_state
+    entity_id: sensor.illumination_158d000276e193
+    above: '300'
+    for:
+      hours: 0
+      minutes: 1
       seconds: 0
       milliseconds: 0
   condition: []

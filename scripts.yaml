@@ -51,7 +51,7 @@ turn_on_office_lights:
       brightness_pct: "{% if now().hour >= 01 and now().hour <= 06 -%}\n  {{ 10 }}\n\
         {% elif now().hour >= 19 and now().hour <= 23 -%}\n  {{ 10 }}\n{% else %}\n\
         \  {{ 100 }}\n{%- endif %}\n"
-    service: light.turn_on    
+    service: light.turn_on
 '1536574687151':
   alias: Turn on lights
   sequence:
@@ -181,4 +181,37 @@ ac_on_cold:
       entity_id: remote.tv_room_remote_remote
       command: power_on_cold
       device: ac
+  mode: single
+learn_left_closet:
+  alias: Learn right closet
+  sequence:
+  - service: remote.learn_command
+    target:
+      entity_id: remote.tv_room_remote_remote
+    data:
+      command: toggle_right_closet
+      command_type: rf
+      device: closet
+  mode: single
+turn_on_left_closet:
+  alias: Toggle on left closet
+  sequence:
+  - service: remote.send_command
+    data:
+      command: toggle_left_closet
+      hold_secs: 1
+      device: closet
+    target:
+      entity_id: remote.tv_room_remote_remote
+  mode: single
+turn_on_right_closet:
+  alias: Toggle right closet
+  sequence:
+  - service: remote.send_command
+    target:
+      entity_id: remote.tv_room_remote_remote
+    data:
+      device: closet
+      command: toggle_right_closet
+      hold_secs: 1
   mode: single
