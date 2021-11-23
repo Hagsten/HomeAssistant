@@ -179,6 +179,11 @@ sensor:
         friendly_name: 'Can open blinds'
         value_template: "{{ (states.sensor.dark_sky_cloud_coverage.state | int >= 50) and states.sun.sun.state == 'above_horizon' }}"  
 
+vacuum:
+  - platform: xiaomi_miio
+    host: 192.168.8.1
+    token: "723275564d4538743136353951483542"
+
 xiaomi_aqara:
   discovery_retry: 5
   gateways:
