@@ -100,18 +100,18 @@
       supported_color_modes:
       - color_temp
       color_mode: color_temp
-      brightness: 59
-      color_temp: 338
+      brightness: 255
+      color_temp: 370
       hs_color:
-      - 27.896
-      - 58.048
+      - 28.391
+      - 65.659
       rgb_color:
       - 255
-      - 175
-      - 106
+      - 166
+      - 87
       xy_color:
-      - 0.501
-      - 0.384
+      - 0.526
+      - 0.387
       entity_id:
       - light.yeelight_ceiling3_0x7e76b83
       - light.yeelight_ceiling3_0x7e792ca
@@ -119,11 +119,230 @@
       icon: mdi:lightbulb-group
       supported_features: 44
       state: 'on'
-    group.tv_room_rgb_lights:
+    light.tvroom_lights:
+      min_mireds: 153
+      max_mireds: 588
+      effect_list:
+      - Alarm
+      - Candle Flicker
+      - Christmas
+      - Date Night
+      - Disco
+      - Facebook
+      - Fast Random Loop
+      - Happy Birthday
+      - Home
+      - LSD
+      - Movie
+      - Night Mode
+      - Police
+      - Police2
+      - RGB
+      - Random Loop
+      - Romance
+      - Slow Temp
+      - Slowdown
+      - Stop
+      - Strobe color
+      - Strobe epilepsy!
+      - Sunrise
+      - Sunset
+      - Twitter
+      - WhatsApp
+      supported_color_modes:
+      - color_temp
+      - hs
+      - rgb
+      color_mode: color_temp
+      brightness: 74
+      color_temp: 523
+      hs_color:
+      - 31.021
+      - 99.551
+      rgb_color:
+      - 255
+      - 132
+      - 1
+      xy_color:
+      - 0.606
+      - 0.379
       entity_id:
       - light.yeelight_color_0x5e72c05
       - light.yeelight_color_0x5e72e34
-      order: 1
-      friendly_name: Tv room RGB
+      friendly_name: Tvroom_lights
+      icon: mdi:lightbulb-group
+      supported_features: 44
       state: 'on'
   icon: mdi:ceiling-light
+- id: '1637646497846'
+  name: 'TV rum passive '
+  entities:
+    light.tv_room_cieling_lights:
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Slow Temp
+      - Stop
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 31
+      color_temp: 370
+      hs_color:
+      - 28.391
+      - 65.659
+      rgb_color:
+      - 255
+      - 166
+      - 87
+      xy_color:
+      - 0.526
+      - 0.387
+      entity_id:
+      - light.yeelight_ceiling3_0x7e76b83
+      - light.yeelight_ceiling3_0x7e792ca
+      friendly_name: TV-room cieling lights
+      icon: mdi:lightbulb-group
+      supported_features: 44
+      state: 'on'
+    light.tvroom_lights:
+      min_mireds: 153
+      max_mireds: 588
+      effect_list:
+      - Alarm
+      - Candle Flicker
+      - Christmas
+      - Date Night
+      - Disco
+      - Facebook
+      - Fast Random Loop
+      - Happy Birthday
+      - Home
+      - LSD
+      - Movie
+      - Night Mode
+      - Police
+      - Police2
+      - RGB
+      - Random Loop
+      - Romance
+      - Slow Temp
+      - Slowdown
+      - Stop
+      - Strobe color
+      - Strobe epilepsy!
+      - Sunrise
+      - Sunset
+      - Twitter
+      - WhatsApp
+      supported_color_modes:
+      - color_temp
+      - hs
+      - rgb
+      color_mode: color_temp
+      brightness: 3
+      color_temp: 523
+      hs_color:
+      - 31.021
+      - 99.551
+      rgb_color:
+      - 255
+      - 132
+      - 1
+      xy_color:
+      - 0.606
+      - 0.379
+      entity_id:
+      - light.yeelight_color_0x5e72c05
+      - light.yeelight_color_0x5e72e34
+      friendly_name: Tvroom_lights
+      icon: mdi:lightbulb-group
+      supported_features: 44
+      state: 'on'
+  icon: mdi:lightbulb-group-outline
+- id: '1637646733301'
+  name: 'TV room day '
+  entities:
+    light.tv_room_cieling_lights:
+      min_mireds: 153
+      max_mireds: 370
+      effect_list:
+      - Slow Temp
+      - Stop
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 153
+      color_temp: 332
+      hs_color:
+      - 27.806
+      - 56.57
+      rgb_color:
+      - 255
+      - 177
+      - 110
+      xy_color:
+      - 0.496
+      - 0.383
+      entity_id:
+      - light.yeelight_ceiling3_0x7e76b83
+      - light.yeelight_ceiling3_0x7e792ca
+      friendly_name: TV-room cieling lights
+      icon: mdi:lightbulb-group
+      supported_features: 44
+      state: 'on'
+    light.tvroom_lights:
+      min_mireds: 153
+      max_mireds: 588
+      effect_list:
+      - Alarm
+      - Candle Flicker
+      - Christmas
+      - Date Night
+      - Disco
+      - Facebook
+      - Fast Random Loop
+      - Happy Birthday
+      - Home
+      - LSD
+      - Movie
+      - Night Mode
+      - Police
+      - Police2
+      - RGB
+      - Random Loop
+      - Romance
+      - Slow Temp
+      - Slowdown
+      - Stop
+      - Strobe color
+      - Strobe epilepsy!
+      - Sunrise
+      - Sunset
+      - Twitter
+      - WhatsApp
+      supported_color_modes:
+      - color_temp
+      - hs
+      - rgb
+      color_mode: color_temp
+      brightness: 255
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      entity_id:
+      - light.yeelight_color_0x5e72c05
+      - light.yeelight_color_0x5e72e34
+      friendly_name: Tvroom_lights
+      icon: mdi:lightbulb-group
+      supported_features: 44
+      state: 'on'
+  icon: mdi:lightbulb-group
