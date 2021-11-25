@@ -69,7 +69,7 @@ tts:
   - platform: amazon_polly
     aws_access_key_id: !secret aws_key
     aws_secret_access_key: !secret aws_secret
-    voice: "Astrid"
+    voice: "Emma"
 
 # Cloud
 cloud:

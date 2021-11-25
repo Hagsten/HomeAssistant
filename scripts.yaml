@@ -215,3 +215,23 @@ turn_on_right_closet:
       command: toggle_right_closet
       hold_secs: 1
   mode: single
+tts:
+  sequence:
+  - service: tts.amazon_polly_say
+    data:
+      entity_id: media_player.hogtalare_tvrummet
+      message: '{{ message }}'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 8
+      milliseconds: 0
+  - service: media_player.select_source
+    target:
+      entity_id: media_player.audiocast
+    data:
+      source: Optical/HDMI ARC
+  mode: queued
+  alias: Tts
+  icon: mdi:account-voice
+  max: 10
