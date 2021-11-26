@@ -235,3 +235,22 @@ tts:
   alias: Tts
   icon: mdi:account-voice
   max: 10
+tts_long:
+  alias: TTS long
+  sequence:
+  - service: tts.amazon_polly_say
+    data:
+      entity_id: media_player.hogtalare_tvrummet
+      message: '{{ message }}'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 13
+      milliseconds: 0
+  - service: media_player.select_source
+    target:
+      entity_id: media_player.audiocast
+    data:
+      source: Optical/HDMI ARC
+  mode: single
+  icon: mdi:account-voice

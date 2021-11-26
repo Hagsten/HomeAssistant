@@ -430,19 +430,14 @@
     from: not_home
     platform: state
     to: home
-  - platform: state
-    entity_id: input_boolean.front_door_unlocked
-    from: 'off'
-    to: 'on'
-    for: 00:01:45
   condition: []
   action:
-  - data:
-      entity_id: input_boolean.alarm_state
+  - data: {}
     service: input_boolean.turn_off
-  - data:
-      entity_id: input_boolean.upperfloor_alarm_state
-    service: input_boolean.turn_off
+    target:
+      entity_id:
+      - input_boolean.alarm_state
+      - input_boolean.upperfloor_alarm_state
   mode: single
 - id: '1557508975938'
   alias: Doors - Basement opens
@@ -2178,4 +2173,53 @@
   - service: switch.turn_on
     target:
       entity_id: switch.moonlight
+  mode: single
+- id: '1637918108445'
+  alias: Alarm - Deactivated
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.alarm_state
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.upperfloor_alarm_state
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: script.tts
+    data:
+      message: Alarm deactivated
+  mode: single
+- id: '1637918760419'
+  alias: TTS Notification - Entrance open too long
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.doors_entrance_open_too_long
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: script.tts_long
+    data:
+      message: Please consider closing the front door, it is cold outside
+  mode: single
+- id: '1637918923485'
+  alias: TTS Notification - Doorbell
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.doorbell_ringing
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.silent_mode
+    state: 'on'
+  action:
+  - service: script.tts
+    data:
+      message: Pling plong, the doorbell is ringing
   mode: single
