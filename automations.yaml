@@ -2223,3 +2223,59 @@
     data:
       message: Pling plong, the doorbell is ringing
   mode: single
+- id: '1637918923486'
+  alias: TTS Notification - Please identify
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.identification_pending
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: script.tts_long
+    data:
+      message: Your ID has not yet been established, please identify yourself as soon as possible
+  mode: single
+- id: '1637918923487'
+  alias: TTS Notification - Basement leak
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.water_leak_sensor_158d0002334525
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: script.tts_long
+    data:
+      message: Attention! Possible water leak has been detected in the basement
+  mode: single
+- id: '1637918923488'
+  alias: TTS Notification - Bathroom leak
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.water_leak_sensor_158d00027955e3
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: script.tts_long
+    data:
+      message: Attention! Possible water leak has been detected in the bathroom
+  mode: single
+- id: '1637918923489'
+  alias: TTS Notification - Luandry room leak
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.water_leak_sensor_158d0002837195
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: script.tts_long
+    data:
+      message: Attention! Possible water leak has been detected in the luandry room
+  mode: single
