@@ -2235,7 +2235,8 @@
   action:
   - service: script.tts_long
     data:
-      message: Your ID has not yet been established, please identify yourself as soon as possible
+      message: Your ID has not yet been established, please identify yourself as soon
+        as possible
   mode: single
 - id: '1637918923487'
   alias: TTS Notification - Basement leak
@@ -2278,4 +2279,45 @@
   - service: script.tts_long
     data:
       message: Attention! Possible water leak has been detected in the luandry room
+  mode: single
+- id: '1638038537552'
+  alias: TTS Notification - Good morning
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sleeping
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: time
+    after: 06:00:00
+    before: 09:00:00
+  action:
+  - wait_for_trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d00023db75a
+      from: 'off'
+      to: 'on'
+  - service: script.tts_long
+    data:
+      message: Good morning, I hope you will have a great day!
+  mode: single
+- id: '1638051606718'
+  alias: 'TTS Notification - Welcome home Andreas '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: device_tracker.huawei_p30_pro_34dabc024f
+    from: not_home
+    to: home
+  condition: []
+  action:
+  - wait_for_trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d00023db75a
+      from: 'off'
+      to: 'on'
+  - service: script.tts
+    data:
+      message: Hello Andreas, welcome home
   mode: single
