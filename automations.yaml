@@ -2310,7 +2310,10 @@
     entity_id: device_tracker.huawei_p30_pro_34dabc024f
     from: not_home
     to: home
-  condition: []
+  condition:
+  - condition: template
+    value_template: '{{ (as_timestamp(now()) - (as_timestamp(states.binary_sensor.door_window_sensor_158d0002049a62.last_changed)))
+      < 300}}'
   action:
   - wait_for_trigger:
     - platform: state
@@ -2318,20 +2321,22 @@
       from: 'off'
       to: 'on'
     continue_on_timeout: false
-    timeout: 00:15:00
   - service: script.tts
     data:
       message: Hello Andreas, welcome home
   mode: single
 - id: '1638051606719'
-  alias: 'TTS Notification - Welcome home Johanna'
+  alias: TTS Notification - Welcome home Johanna
   description: ''
   trigger:
   - platform: state
     entity_id: device_tracker.johannas_galaxy_note20_5g
     from: not_home
     to: home
-  condition: []
+  condition:
+  - condition: template
+    value_template: '{{ (as_timestamp(now()) - (as_timestamp(states.binary_sensor.door_window_sensor_158d0002049a62.last_changed)))
+      < 300}}'
   action:
   - wait_for_trigger:
     - platform: state
@@ -2339,20 +2344,22 @@
       from: 'off'
       to: 'on'
     continue_on_timeout: false
-    timeout: 00:15:00
   - service: script.tts
     data:
       message: Hello Johanna, welcome home!
   mode: single
 - id: '1638051606720'
-  alias: 'TTS Notification - Welcome home Tina'
+  alias: TTS Notification - Welcome home Tina
   description: ''
   trigger:
   - platform: state
     entity_id: device_tracker.annchriesiphone
     from: not_home
     to: home
-  condition: []
+  condition:
+  - condition: template
+    value_template: '{{ (as_timestamp(now()) - (as_timestamp(states.binary_sensor.door_window_sensor_158d0002049a62.last_changed)))
+      < 300}}'
   action:
   - wait_for_trigger:
     - platform: state
@@ -2360,7 +2367,6 @@
       from: 'off'
       to: 'on'
     continue_on_timeout: false
-    timeout: 00:15:00
   - service: script.tts_long
     data:
       message: Hello Tina! Welcome back, enjoy your stay at Villa Sundbyvik.
