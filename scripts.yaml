@@ -230,7 +230,9 @@ tts:
       sequence:
       - service: media_player.volume_set
         target:
-          entity_id: media_player.audiocast
+          entity_id:
+          - media_player.audiocast
+          - media_player.mtk8530
         data:
           volume_level: 0.3
     default: []
@@ -245,7 +247,9 @@ tts:
       milliseconds: 0
   - service: media_player.select_source
     target:
-      entity_id: media_player.audiocast
+      entity_id:
+      - media_player.audiocast
+      - media_player.mtk8530
     data:
       source: Optical/HDMI ARC
   mode: queued
@@ -268,7 +272,9 @@ tts_long:
       sequence:
       - service: media_player.volume_set
         target:
-          entity_id: media_player.audiocast
+          entity_id:
+          - media_player.audiocast
+          - media_player.mtk8530
         data:
           volume_level: 0.3
     default: []
@@ -283,7 +289,9 @@ tts_long:
       milliseconds: 0
   - service: media_player.select_source
     target:
-      entity_id: media_player.audiocast
+      entity_id:
+      - media_player.audiocast
+      - media_player.mtk8530
     data:
       source: Optical/HDMI ARC
   mode: single

@@ -71,6 +71,7 @@
       - switch.outlet_lamp_living_room
       - switch.outlet_living_room_right
       - switch.tv_room_window_lamps_switch
+      - switch.guestroomwindow
   - service: script.turn_on_left_closet
   - service: script.turn_on_right_closet
   initial_state: 'on'
@@ -96,16 +97,14 @@
     target:
       entity_id:
       - light.yeelight_color_0x5ed2368
-  - data:
-      entity_id: switch.outlet_lamp_living_room
+  - data: {}
     service: switch.turn_off
-  - data:
-      entity_id: switch.outlet_living_room_right
-    service: switch.turn_off
-  - type: turn_off
-    device_id: 4a5d7ecc446411eb837211f387a5a096
-    entity_id: switch.tv_room_window_lamps_switch
-    domain: switch
+    target:
+      entity_id:
+      - switch.outlet_lamp_living_room
+      - switch.outlet_living_room_right
+      - switch.guestroomwindow
+      - switch.tv_room_window_lamps_switch
   initial_state: 'on'
   mode: single
 - id: '1533203159068'
@@ -290,6 +289,7 @@
       - light.yeelight_color_0x5ed30a8
       - light.yeelight_color_0x5ed2368
       - light.kitchen_spotlights
+      - light.tv_room_cieling_lights
   - data:
       entity_id: group.tv_room_rgb_lights
     service: light.turn_off
@@ -2317,7 +2317,62 @@
       entity_id: binary_sensor.motion_sensor_158d00023db75a
       from: 'off'
       to: 'on'
+    continue_on_timeout: false
+    timeout: 00:15:00
   - service: script.tts
     data:
       message: Hello Andreas, welcome home
+  mode: single
+- id: '1638183197476'
+  alias: Push Notification - Smoke detectors offline
+  description: ''
+  trigger:
+  - type: battery_level
+    platform: device
+    device_id: 8b10a0e21d3211eb98646d678178e3f4
+    entity_id: sensor.battery_158d000215ab06
+    domain: sensor
+    below: 10
+  - type: battery_level
+    platform: device
+    device_id: 7bb3900d4a21171441cda5cdb6e6aea5
+    entity_id: sensor.battery_158d00023117bb
+    domain: sensor
+    below: 10
+  - type: battery_level
+    platform: device
+    device_id: 8b1215c21d3211eb95eaf71624720922
+    entity_id: sensor.battery_158d0004119265
+    domain: sensor
+    below: 10
+  - platform: state
+    entity_id: binary_sensor.smoke_sensor_158d000215ab06
+    to: unavailable
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: binary_sensor.smoke_sensor_158d00023117bb
+    to: unavailable
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - platform: state
+    entity_id: binary_sensor.smoke_sensor_158d0004119265
+    to: unavailable
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - service: notify.pushbullet_notifier
+    data:
+      message: A smoke detector is either offline or running low on batteries
+      title: 'Warning: Smoke detector failure'
   mode: single
