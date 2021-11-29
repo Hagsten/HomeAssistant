@@ -365,7 +365,7 @@
   - data:
       entity_id: switch.outlet_kaffebryggaren
     service: switch.turn_off
-  initial_state: 'on'
+  initial_state: 'off'
 - id: '1547903815352'
   alias: On reboot
   initial_state: 'on'
