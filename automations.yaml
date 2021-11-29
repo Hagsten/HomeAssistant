@@ -2323,6 +2323,27 @@
     data:
       message: Hello Andreas, welcome home
   mode: single
+- id: '1638051606719'
+  alias: 'TTS Notification - Welcome home Johanna'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: device_tracker.johannas_galaxy_note20_5g
+    from: not_home
+    to: home
+  condition: []
+  action:
+  - wait_for_trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d00023db75a
+      from: 'off'
+      to: 'on'
+    continue_on_timeout: false
+    timeout: 00:15:00
+  - service: script.tts
+    data:
+      message: Hello Johanna, welcome home!
+  mode: single
 - id: '1638183197476'
   alias: Push Notification - Smoke detectors offline
   description: ''
