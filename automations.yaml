@@ -2188,7 +2188,7 @@
     to: 'off'
   condition: []
   action:
-  - service: script.tts
+  - service: script.tts_long
     data:
       message: Alarm deactivated
   mode: single
@@ -2237,6 +2237,20 @@
     data:
       message: Your ID has not yet been established, please identify yourself as soon
         as possible
+  mode: single
+- id: '1637918923496'
+  alias: TTS Notification - Identification complete
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.identification_pending
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: script.tts_long
+    data:
+      message: Your identification has been approved
   mode: single
 - id: '1637918923487'
   alias: TTS Notification - Basement leak
@@ -2321,7 +2335,7 @@
       from: 'off'
       to: 'on'
     continue_on_timeout: false
-  - service: script.tts
+  - service: script.tts_long
     data:
       message: Hello Andreas, welcome home
   mode: single
@@ -2344,7 +2358,7 @@
       from: 'off'
       to: 'on'
     continue_on_timeout: false
-  - service: script.tts
+  - service: script.tts_long
     data:
       message: Hello Johanna, welcome home!
   mode: single
