@@ -2344,6 +2344,27 @@
     data:
       message: Hello Johanna, welcome home!
   mode: single
+- id: '1638051606720'
+  alias: 'TTS Notification - Welcome home Tina'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: device_tracker.annchriesiphone
+    from: not_home
+    to: home
+  condition: []
+  action:
+  - wait_for_trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d00023db75a
+      from: 'off'
+      to: 'on'
+    continue_on_timeout: false
+    timeout: 00:15:00
+  - service: script.tts_long
+    data:
+      message: Hello Tina! Welcome back, enjoy your stay at Villa Sundbyvik.
+  mode: single
 - id: '1638183197476'
   alias: Push Notification - Smoke detectors offline
   description: ''
