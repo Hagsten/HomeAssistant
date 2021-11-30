@@ -739,9 +739,12 @@
     to: 'off'
   condition: []
   action:
-  - data:
-      entity_id: input_boolean.alarm_triggered
+  - data: {}
     service: input_boolean.turn_off
+    target:
+      entity_id:
+      - input_boolean.alarm_triggered
+      - input_boolean.identification_pending
   - after: 07:00
     condition: time
   - data:
@@ -2324,11 +2327,10 @@
     entity_id: device_tracker.huawei_p30_pro_34dabc024f
     from: not_home
     to: home
-  condition:
-  - condition: template
-    value_template: '{{ (as_timestamp(now()) - (as_timestamp(states.binary_sensor.door_window_sensor_158d0002049a62.last_changed)))
-      < 300}}'
+  condition: []
   action:
+  - wait_template: '{{ (as_timestamp(now()) - (as_timestamp(states.binary_sensor.door_window_sensor_158d0002049a62.last_changed)))
+      < 300}}'
   - wait_for_trigger:
     - platform: state
       entity_id: binary_sensor.motion_sensor_158d00023db75a
@@ -2347,11 +2349,10 @@
     entity_id: device_tracker.johannas_galaxy_note20_5g
     from: not_home
     to: home
-  condition:
-  - condition: template
-    value_template: '{{ (as_timestamp(now()) - (as_timestamp(states.binary_sensor.door_window_sensor_158d0002049a62.last_changed)))
-      < 300}}'
+  condition: []
   action:
+  - wait_template: '{{ (as_timestamp(now()) - (as_timestamp(states.binary_sensor.door_window_sensor_158d0002049a62.last_changed)))
+      < 300}}'
   - wait_for_trigger:
     - platform: state
       entity_id: binary_sensor.motion_sensor_158d00023db75a
@@ -2370,11 +2371,10 @@
     entity_id: device_tracker.annchriesiphone
     from: not_home
     to: home
-  condition:
-  - condition: template
-    value_template: '{{ (as_timestamp(now()) - (as_timestamp(states.binary_sensor.door_window_sensor_158d0002049a62.last_changed)))
-      < 300}}'
+  condition: []
   action:
+  - wait_template: '{{ (as_timestamp(now()) - (as_timestamp(states.binary_sensor.door_window_sensor_158d0002049a62.last_changed)))
+      < 300}}'
   - wait_for_trigger:
     - platform: state
       entity_id: binary_sensor.motion_sensor_158d00023db75a
