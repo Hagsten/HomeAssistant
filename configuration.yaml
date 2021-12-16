@@ -251,11 +251,11 @@ input_boolean:
     name: Front door unlocked
   tts_notification_identification_complete:
     name: Notification Identification Complete
-  tts_notification_welcome_home_Andreas:
+  tts_notification_welcome_home_andreas:
     name: Notification Welcome home Andreas
-  tts_notification_welcome_home_Johanna:
+  tts_notification_welcome_home_johanna:
     name: Notification Welcome home Johanna
-  tts_notification_welcome_home_Tina:
+  tts_notification_welcome_home_tina:
     name: Notification Welcome home Tina
   
 input_select:
