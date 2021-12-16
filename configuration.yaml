@@ -249,6 +249,15 @@ input_boolean:
     name: Office light manually set
   front_door_unlocked:
     name: Front door unlocked
+  tts_notification_identification_complete:
+    name: Notification Identification Complete
+  tts_notification_welcome_home_Andreas:
+    name: Notification Welcome home Andreas
+  tts_notification_welcome_home_Johanna:
+    name: Notification Welcome home Johanna
+  tts_notification_welcome_home_Tina:
+    name: Notification Welcome home Tina
+  
 input_select:
   light_presets:
     name: Ljusmiljö
