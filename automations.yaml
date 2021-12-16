@@ -72,6 +72,7 @@
       - switch.outlet_living_room_right
       - switch.tv_room_window_lamps_switch
       - switch.guestroomwindow
+      - switch.window_upper_floor
   - service: script.turn_on_left_closet
   - service: script.turn_on_right_closet
   initial_state: 'on'
@@ -105,6 +106,7 @@
       - switch.outlet_living_room_right
       - switch.guestroomwindow
       - switch.tv_room_window_lamps_switch
+      - switch.window_upper_floor
   initial_state: 'on'
   mode: single
 - id: '1533203159068'
@@ -723,7 +725,10 @@
       entity_id: input_boolean.alarm_triggered
     service: input_boolean.turn_on
   - data:
-      message: 'Sensor: TBD'
+      message: 'Sensors: {{ expand(states.group.closed_windows.attributes.entity_id
+        +  states.group.doors.attributes.entity_id  + states.group.motion_sensors.attributes.entity_id)     |
+        selectattr(''last_changed'', ''ge'', now() - timedelta(minutes=10))     |
+        map(attribute=''name'')    | list     | join('', '') }}'
       title: Larm utlöst
     service: notify.pushbullet_notifier
 - id: '1562225953598'
@@ -817,7 +822,10 @@
     entity_id: input_boolean.upperfloor_alarm_state
     state: 'on'
   - data:
-      message: Övervåningen
+      message: Övervåningen {{ expand(states.group.closed_windows.attributes.entity_id
+        +  states.group.doors.attributes.entity_id  + states.group.motion_sensors.attributes.entity_id)     |
+        selectattr('last_changed', 'ge', now() - timedelta(minutes=10))     | map(attribute='name')    |
+        list     | join(', ') }}
       target:
       - channel/sundbyvik-larm
       title: Larm utlöst
@@ -1519,7 +1527,7 @@
   action:
   - data:
       duration: 180000
-      light: light.yeelight_color_0x0000000005ed2368
+      light: light.yeelight_color_0x5ed2368
     service: script.temp_max_light_yeelight
 - id: '1572108824608'
   alias: Lights - Entrance hallway
@@ -2336,7 +2344,8 @@
       entity_id: binary_sensor.motion_sensor_158d00023db75a
       from: 'off'
       to: 'on'
-    continue_on_timeout: false
+    continue_on_timeout: true
+    timeout: 00:01:00
   - service: script.tts_long
     data:
       message: Hello Andreas, welcome home
@@ -2358,7 +2367,8 @@
       entity_id: binary_sensor.motion_sensor_158d00023db75a
       from: 'off'
       to: 'on'
-    continue_on_timeout: false
+    continue_on_timeout: true
+    timeout: 00:01:00
   - service: script.tts_long
     data:
       message: Hello Johanna, welcome home!
@@ -2380,10 +2390,11 @@
       entity_id: binary_sensor.motion_sensor_158d00023db75a
       from: 'off'
       to: 'on'
-    continue_on_timeout: false
+    continue_on_timeout: true
+    timeout: 00:01:00
   - service: script.tts_long
     data:
-      message: Hello Tina! Welcome back, enjoy your stay at Villa Sundbyvik.
+      message: Hello Tina! Welcome back, enjoy your stay at our house
   mode: single
 - id: '1638183197476'
   alias: Push Notification - Smoke detectors offline

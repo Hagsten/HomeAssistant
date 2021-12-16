@@ -259,6 +259,14 @@ tts:
 tts_long:
   alias: TTS long
   sequence:
+  - service: media_player.select_source
+    target:
+      entity_id:
+      - media_player.audiocast
+      - media_player.mtk8530
+      - media_player.mtk8530_2
+    data:
+      source: Wifi
   - choose:
     - conditions:
       - condition: or
@@ -294,5 +302,6 @@ tts_long:
       - media_player.mtk8530
     data:
       source: Optical/HDMI ARC
-  mode: single
+  mode: queued
   icon: mdi:account-voice
+  max: 10
