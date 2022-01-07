@@ -283,13 +283,6 @@ light:
       - light.hallway_2_1000lm
       - light.hallway_3_1000lm
   - platform: group
-    name: Playroom_lights
-    entities:
-      - light.playroom_1
-      - light.playroom_2
-      - light.playroom_3
-      - light.tradfri_light_7e226152044000ec_65565
-  - platform: group
     name: TV-room cieling lights
     entities:
       - light.yeelight_ceiling3_0x7e76b83
@@ -302,11 +295,6 @@ light:
       - light.yeelight_color_0x5e72c05
       - light.yeelight_color_0x5e72e34
   - platform: group
-    name: Office lights
-    entities:
-      - light.kontor_2
-      - light.kontor_1
-  - platform: group
     name: Kitchen spotlights
     entities:
       - light.kitchen_spot_1
@@ -316,9 +304,9 @@ light:
     name: All lights
     entities:
       - light.kitchen_spotlights
-      - light.office_lights
+      - light.office_ceiling
       - light.all_tv_room_lights
-      - light.playroom_lights
+      - light.playroom
       - light.hallway_lights
       - light.yeelight_color_0x5ed30a8
   - platform: group
