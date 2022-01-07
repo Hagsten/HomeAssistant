@@ -292,6 +292,7 @@
       - light.yeelight_color_0x5ed2368
       - light.kitchen_spotlights
       - light.tv_room_cieling_lights
+      - light.office_ceiling
   - data:
       entity_id: group.tv_room_rgb_lights
     service: light.turn_off
@@ -307,9 +308,6 @@
   - condition: state
     entity_id: input_boolean.guest_mode
     state: 'off'
-  - data:
-      entity_id: group.office_cieling_light
-    service: light.turn_off
   - service: switch.turn_off
     data: {}
     entity_id: switch.tv_room_window_lamps_switch
@@ -528,11 +526,27 @@
     from: 'off'
     platform: state
     to: 'on'
+    id: laundryroon
+  - platform: state
+    entity_id: binary_sensor.water_4
+    id: Fridge
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.water_5
+    id: Heatingpump
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.water_6
+    id: Dishwasher
+    from: 'off'
+    to: 'on'
   condition: []
   action:
   - data:
-      message: Bathroom or basement
       title: Water Leak alert
+      message: '{{ trigger.id }}'
     service: notify.pushbullet_notifier
 - id: '1561320522889'
   alias: Media - Play - cieling
@@ -635,6 +649,11 @@
       entity_id: binary_sensor.wall_switch_right_158d00031af8a2
     event_type: xiaomi_aqara.click
     platform: event
+  - platform: event
+    event_type: xiaomi_aqara.click
+    event_data:
+      click_type: double
+      entity_id: binary_sensor.wall_switch_left_158d00031af8a2
   condition: []
   action:
   - data:
@@ -1627,8 +1646,9 @@
   condition: []
   action:
   - service: light.toggle
-    entity_id: light.office_lights
     data: {}
+    target:
+      entity_id: light.office_ceiling
   - service: input_boolean.turn_on
     entity_id: input_boolean.officelight_manually_set
     data: {}
@@ -1645,11 +1665,34 @@
     entity_id: input_boolean.low_brightness_upstairs
     state: 'on'
   - condition: state
-    entity_id: group.office_cieling_light
     state: 'off'
+    entity_id: light.office_ceiling
   action:
-  - data: {}
-    service: script.turn_on_office_lights
+  - choose:
+    - conditions:
+      - condition: time
+        after: '22:00'
+      - condition: time
+        before: 08:00
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id: light.office_ceiling
+        data:
+          transition: 3
+          brightness_pct: 30
+    - conditions:
+      - condition: time
+        after: 08:00
+        before: '22:00'
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id: light.office_ceiling
+        data:
+          transition: 1
+          brightness_pct: 100
+    default: []
   mode: single
 - id: '1598959837638'
   alias: Lights - Office cieling off
@@ -1672,7 +1715,8 @@
   action:
   - service: light.turn_off
     data: {}
-    entity_id: light.office_lights
+    target:
+      entity_id: light.office_ceiling
   mode: single
 - id: '1598960955397'
   alias: Reset Office light manual mark
@@ -1759,8 +1803,9 @@
     - thu
     - fri
   action:
-  - service: script.turn_on_office_lights
-    data: {}
+  - service: light.turn_on
+    target:
+      entity_id: light.office_ceiling
   mode: single
 - id: '1605531798053'
   alias: Lights - Playroom - On
@@ -1774,7 +1819,8 @@
   action:
   - service: light.turn_on
     data: {}
-    entity_id: light.playroom_lights
+    target:
+      entity_id: light.playroom
   mode: single
 - id: '1605531961559'
   alias: Lights - Playroom - Off
@@ -1789,7 +1835,8 @@
   action:
   - service: light.turn_off
     data: {}
-    entity_id: light.playroom_lights
+    target:
+      entity_id: light.playroom
   mode: single
 - id: '1606080819269'
   alias: Media - Baseline sound
@@ -1988,12 +2035,22 @@
   description: ''
   trigger:
   - platform: time
-    at: 09:15:00
+    at: 09:15
   condition:
   - condition: state
     entity_id: input_boolean.sleeping
     state: 'off'
   action:
+  - device_id: 76d329213e6531314e86643974320d61
+    domain: cover
+    entity_id: cover.rd_intelligent_blindmotor_curtain
+    type: set_position
+    position: 100
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
   - device_id: 76d329213e6531314e86643974320d61
     domain: cover
     entity_id: cover.rd_intelligent_blindmotor_curtain
@@ -2005,9 +2062,19 @@
   description: ''
   trigger:
   - platform: time
-    at: '21:30:00'
+    at: '21:30'
   condition: []
   action:
+  - device_id: 76d329213e6531314e86643974320d61
+    domain: cover
+    entity_id: cover.rd_intelligent_blindmotor_curtain
+    type: set_position
+    position: 0
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
   - device_id: 76d329213e6531314e86643974320d61
     domain: cover
     entity_id: cover.rd_intelligent_blindmotor_curtain
@@ -2259,9 +2326,17 @@
     to: 'off'
   condition: []
   action:
-  - service: script.tts_long
-    data:
-      message: Your identification has been approved
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.tts_notification_identification_complete
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.tts_notification_identification_complete
   mode: single
 - id: '1637918923487'
   alias: TTS Notification - Basement leak
@@ -2346,9 +2421,17 @@
       to: 'on'
     continue_on_timeout: true
     timeout: 00:01:00
-  - service: script.tts_long
-    data:
-      message: Hello Andreas, welcome home
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.tts_notification_welcome_home_andreas
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.tts_notification_welcome_home_andreas
   mode: single
 - id: '1638051606719'
   alias: TTS Notification - Welcome home Johanna
@@ -2369,9 +2452,17 @@
       to: 'on'
     continue_on_timeout: true
     timeout: 00:01:00
-  - service: script.tts_long
-    data:
-      message: Hello Johanna, welcome home!
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.tts_notification_welcome_home_johanna
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.tts_notification_welcome_home_johanna
   mode: single
 - id: '1638051606720'
   alias: TTS Notification - Welcome home Tina
@@ -2392,9 +2483,17 @@
       to: 'on'
     continue_on_timeout: true
     timeout: 00:01:00
-  - service: script.tts_long
-    data:
-      message: Hello Tina! Welcome back, enjoy your stay at our house
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.tts_notification_welcome_home_tina
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.tts_notification_welcome_home_tina
   mode: single
 - id: '1638183197476'
   alias: Push Notification - Smoke detectors offline
@@ -2448,4 +2547,220 @@
     data:
       message: A smoke detector is either offline or running low on batteries
       title: 'Warning: Smoke detector failure'
+  mode: single
+- id: '1640968316431'
+  alias: Switch - Felicia room
+  description: ''
+  trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_remote_control_felicia
+      event: 1002
+  condition: []
+  action:
+  - service: light.toggle
+    target:
+      entity_id: light.color_temperature_light_3
+    data: {}
+  mode: single
+- id: '1640974621715'
+  alias: Switch - Felicia dim up
+  description: ''
+  trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_remote_control_felicia
+      event: 2001
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: light.color_temperature_light_3
+        below: '255'
+        attribute: brightness
+      - condition: template
+        value_template: '{{states.automation.switch_felicia_stop_dim.attributes.last_triggered
+          == None or as_timestamp(states.automation.switch_felicia_stop_dim.attributes.last_triggered)
+          - as_timestamp(states.automation.switch_felicia_dim_up.attributes.last_triggered)
+          < 0}}'
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id: light.color_temperature_light_3
+        data:
+          transition: 1
+          brightness_step_pct: 20
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+  mode: single
+- id: '1640975267831'
+  alias: Switch - Felicia dim up once
+  description: ''
+  trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_remote_control_felicia
+      event: 2002
+  condition: []
+  action:
+  - service: light.turn_on
+    target:
+      entity_id: light.color_temperature_light_3
+    data:
+      brightness_step_pct: 10
+  mode: single
+- id: '1640976356098'
+  alias: 'Switch - Felicia dim down once '
+  description: ''
+  trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_remote_control_felicia
+      event: 3002
+  condition:
+  - condition: state
+    entity_id: light.color_temperature_light_3
+    state: 'on'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_step_pct: -10
+    target:
+      entity_id: light.color_temperature_light_3
+  mode: single
+- id: '1640981425131'
+  alias: Switch - Felicia stop dim
+  description: ''
+  trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_remote_control_felicia
+      event: 2003
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_remote_control_felicia
+      event: 3003
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_remote_control_felicia
+      event: 4003
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_remote_control_felicia
+      event: 5003
+  condition: []
+  action: []
+  mode: single
+- id: '1640993051454'
+  alias: Switch - Felicia dim down
+  description: ''
+  trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_remote_control_felicia
+      event: 3001
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: numeric_state
+        entity_id: light.color_temperature_light_3
+        attribute: brightness
+        above: '0'
+      - condition: template
+        value_template: '{{states.automation.switch_felicia_stop_dim.attributes.last_triggered
+          == None or as_timestamp(states.automation.switch_felicia_stop_dim.attributes.last_triggered)
+          - as_timestamp(states.automation.switch_felicia_dim_down.attributes.last_triggered)
+          < 0}}'
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id: light.color_temperature_light_3
+        data:
+          transition: 1
+          brightness_step_pct: -20
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+  mode: single
+- id: '1641041408589'
+  alias: Switch - Felicia color temp up
+  description: ''
+  trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_remote_control_felicia
+      event: 5001
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: template
+        value_template: '{{state_attr("light.color_temperature_light_3" , ''max_mireds'')
+          > state_attr("light.color_temperature_light_3" , ''color_temp'')}} '
+      - condition: template
+        value_template: '{{states.automation.switch_felicia_stop_dim.attributes.last_triggered
+          == None or as_timestamp(states.automation.switch_felicia_stop_dim.attributes.last_triggered)
+          - as_timestamp(states.automation.switch_felicia_color_temp_up.attributes.last_triggered)
+          < 0}}'
+      sequence:
+      - service: light.turn_on
+        data_template:
+          entity_id: light.color_temperature_light_3
+          transition: 1
+          color_temp: '{{state_attr("light.color_temperature_light_3" , "color_temp")+50}}'
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+  mode: single
+- id: '1641049437825'
+  alias: Switch - Felicia color temp down
+  description: ''
+  trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_remote_control_felicia
+      event: 4001
+  condition: []
+  action:
+  - repeat:
+      while:
+      - condition: template
+        value_template: '{{state_attr("light.color_temperature_light_3" , ''min_mireds'')
+          < state_attr("light.color_temperature_light_3" , ''color_temp'')}} '
+      - condition: template
+        value_template: '{{states.automation.switch_felicia_stop_dim.attributes.last_triggered
+          == None or as_timestamp(states.automation.switch_felicia_stop_dim.attributes.last_triggered)
+          - as_timestamp(states.automation.switch_felicia_color_temp_down.attributes.last_triggered)
+          < 0}}'
+      sequence:
+      - service: light.turn_on
+        data_template:
+          entity_id: light.color_temperature_light_3
+          transition: 1
+          color_temp: '{{state_attr("light.color_temperature_light_3" , "color_temp")-50}}'
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
   mode: single

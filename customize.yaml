@@ -1,1 +1,13 @@
 sensor.rain_probability: {}
+light.color_temperature_light_3:
+  max_mireds: 450
+  min_mireds: 250
+light.office_ceiling:
+  min_mireds: 250
+  max_mireds: 454
+light.color_temperature_light_4:
+  min_mireds: 250
+  max_mireds: 454
+light.color_temperature_light_5:
+  min_mireds: 250
+  max_mireds: 454

@@ -197,6 +197,8 @@ media_player:
   - platform: lg_soundbar
     name: Soundbar
 
+input_text:
+
 input_boolean:
   alarm_state:
     name: Larm
