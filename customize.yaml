@@ -11,3 +11,5 @@ light.color_temperature_light_4:
 light.color_temperature_light_5:
   min_mireds: 250
   max_mireds: 454
+binary_sensor.water_4:
+  last_test: '2022-01-01'

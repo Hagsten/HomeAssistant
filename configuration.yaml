@@ -74,6 +74,8 @@ tts:
 # Cloud
 cloud:
 
+
+
 binary_sensor:
   - platform: ping
     host: 192.168.10.162
@@ -113,6 +115,7 @@ weather:
     api_key: !secret dark_sky_key
 
 sensor:
+  - platform: uptime
   - platform: time_date
     display_options:
       - 'time'
