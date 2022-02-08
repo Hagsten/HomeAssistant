@@ -260,13 +260,10 @@ tts_long:
   alias: TTS long
   sequence:
   - service: media_player.select_source
-    target:
-      entity_id:
-      - media_player.audiocast
-      - media_player.mtk8530
-      - media_player.mtk8530_2
     data:
       source: Wifi
+    target:
+      device_id: d3ee12c83b84173e66dc788ba2bcb0dc
   - choose:
     - conditions:
       - condition: or
@@ -279,12 +276,10 @@ tts_long:
           state: idle
       sequence:
       - service: media_player.volume_set
-        target:
-          entity_id:
-          - media_player.audiocast
-          - media_player.mtk8530
         data:
-          volume_level: 0.3
+          volume_level: 0.12
+        target:
+          device_id: d3ee12c83b84173e66dc788ba2bcb0dc
     default: []
   - service: tts.amazon_polly_say
     data:
@@ -296,12 +291,10 @@ tts_long:
       seconds: 13
       milliseconds: 0
   - service: media_player.select_source
-    target:
-      entity_id:
-      - media_player.audiocast
-      - media_player.mtk8530
     data:
       source: Optical/HDMI ARC
+    target:
+      device_id: d3ee12c83b84173e66dc788ba2bcb0dc
   mode: queued
   icon: mdi:account-voice
   max: 10
