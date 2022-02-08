@@ -29,6 +29,9 @@ config:
   themes: !include themes.yaml
 
 http:
+  cors_allowed_origins: 
+    - http://hadashboard.z16.web.core.windows.net
+    - http://localhost:3000
   # Secrets are defined in the file secrets.yaml
   # api_password: !secret http_password
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
