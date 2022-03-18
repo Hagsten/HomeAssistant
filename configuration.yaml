@@ -205,6 +205,8 @@ media_player:
 
 input_text:
 
+counter:
+
 input_boolean:
   alarm_state:
     name: Larm

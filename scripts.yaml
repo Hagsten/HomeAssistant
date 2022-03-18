@@ -298,3 +298,30 @@ tts_long:
   mode: queued
   icon: mdi:account-voice
   max: 10
+tv_room_passive_light:
+  sequence:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.moonlight
+  - scene: scene.tv_rum_passive
+  mode: single
+  alias: TV room passive light
+  icon: mdi:lightbulb
+tv_room_evening_light:
+  alias: TV room evening light
+  sequence:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.moonlight
+  - scene: scene.tv_room_evening
+  mode: single
+  icon: mdi:lightbulb
+tv_room_day_light:
+  alias: TV room day light
+  sequence:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.moonlight
+  - scene: scene.tv_room_day
+  mode: single
+  icon: mdi:lightbulb

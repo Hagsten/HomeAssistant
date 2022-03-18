@@ -1,21 +1,3 @@
-- id: '1531068777832'
-  alias: Nightly rain
-  initial_state: 'off'
-  trigger:
-  - at: '21:00'
-    platform: time
-  condition:
-  - condition: template
-    value_template: '{% set p = states.sensor.rain_probability.attributes.hourly.data[1:12]
-      | map(attribute="precipProbability") | list %} {% set pNoRain = (1 - p[0]) *
-      (1 - p[1]) * (1 - p[2]) * (1 - p[3]) * (1 - p[4]) * (1 - p[5]) * (1 - p[6])
-      * (1 - p[7]) * (1 - p[8]) * (1 - p[9]) * (1 - p[10]) %} {{ (1 - pNoRain) >=
-      0.2 }}'
-  action:
-  - data:
-      message: Stäng fönster och ta in dynor.
-      title: Rain during night
-    service: notify.pushbullet_notifier
 - id: '1531143646436'
   alias: Upcoming rain alert
   initial_state: 'off'
@@ -75,6 +57,12 @@
       - switch.window_upper_floor
   - service: script.turn_on_left_closet
   - service: script.turn_on_right_closet
+  - service: light.turn_on
+    target:
+      entity_id: light.tvroom_lights
+    data:
+      transition: 2
+      brightness_pct: 100
   initial_state: 'on'
   mode: single
 - id: '1532183940727'
@@ -163,50 +151,6 @@
     service: xiaomi_aqara.stop_ringtone
   initial_state: 'on'
   mode: single
-- id: '1535117514847'
-  alias: Media - Play
-  trigger:
-  - entity_id: media_player.vardagsrum
-    platform: state
-    to: playing
-  condition:
-  - condition: state
-    entity_id: group.tv_room_rgb_lights
-    state: 'on'
-  - after: '18:00'
-    before: 06:00
-    condition: time
-  action:
-  - data:
-      brightness_pct: 10
-      entity_id: group.tv_room_rgb_lights
-      color_temp: 431
-    service: light.turn_on
-  initial_state: 'on'
-- id: '1535128483194'
-  alias: Media - Stop
-  trigger:
-  - entity_id: media_player.vardagsrum
-    for: 0:00:15
-    from: playing
-    platform: state
-    to: idle
-  - entity_id: media_player.vardagsrum
-    for: 0:00:15
-    platform: state
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: group.tv_room_rgb_lights
-    state: 'on'
-  - after: '18:00'
-    before: 06:00
-    condition: time
-  action:
-  - data:
-      entity_id: script.1536574687151
-    service: script.turn_on
-  initial_state: 'on'
 - id: '1536864983273'
   alias: Fire alarm
   initial_state: 'on'
@@ -293,9 +237,7 @@
       - light.kitchen_spotlights
       - light.tv_room_cieling_lights
       - light.office_ceiling
-  - data:
-      entity_id: group.tv_room_rgb_lights
-    service: light.turn_off
+      - light.tvroom_lights
   - data: {}
     service: switch.turn_off
     target:
@@ -498,18 +440,64 @@
 - id: '1558638170121'
   alias: Doorbell ringing
   trigger:
-  - event_data:
-      click_type: single
-      entity_id: binary_sensor.switch_158d0002ad8fad_doorbell
-    event_type: xiaomi_aqara.click
-    platform: event
+  - platform: state
+    entity_id: binary_sensor.doorbell_ringing_sensor
+    from: 'False'
+    to: 'True'
   condition: []
   action:
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.doorbell_ringing
-  - delay: 00:00:15
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.doorbell_ringing
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.silent_mode
+        state: 'on'
+      sequence:
+      - service: script.flash_notification_yeelight
+        data:
+          light: light.yeelight_ceiling3_0x7e76b83
+      - service: script.flash_notification_yeelight
+        data:
+          light: light.yeelight_ceiling3_0x7e792ca
+      - service: script.flash_notification_yeelight
+        data:
+          light: light.yeelight_color_0x5ed30a8
+    default: []
+  - service: light.turn_on
+    target:
+      entity_id: light.hallway_lights
+  - service: notify.pushbullet_notifier
+    data:
+      title: Somebody at the door
+      message: There were somebody at the door
+  - service: scene.create
+    data:
+      snapshot_entities: light.yeelight_color_0x5ed2368
+      scene_id: porch
+  - service: light.turn_on
+    target:
+      entity_id: light.yeelight_color_0x5ed2368
+    data:
+      brightness: 255
+      color_name: green
+      transition: 1
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: scene.turn_on
+    target:
+      entity_id: scene.porch
+    data:
+      transition: 1
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 50
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id: light.hallway_lights
   mode: single
 - id: '1561103142057'
   alias: Water leak
@@ -549,14 +537,14 @@
       message: '{{ trigger.id }}'
     service: notify.pushbullet_notifier
 - id: '1561320522889'
-  alias: Media - Play - cieling
+  alias: Media - Play - lights
   trigger:
   - entity_id: media_player.vardagsrum
     platform: state
     to: playing
   condition:
   - after: '18:00'
-    before: 06:00
+    before: 06:00:00
     condition: time
   - condition: state
     entity_id: light.tv_room_cieling_lights
@@ -565,23 +553,23 @@
     entity_id: input_boolean.tv_room_light_switched_recently_pressed
     state: 'off'
   action:
-  - data:
-      entity_id: switch.moonlight
-    service: switch.turn_on
-  - data:
-      brightness_pct: 5
-      entity_id: light.tv_room_cieling_lights
-    service: light.turn_on
+  - service: script.tv_room_passive_light
 - id: '1561567490842'
-  alias: Media - Stop - cieling
+  alias: Media - Stop - lights
   trigger:
   - entity_id: media_player.vardagsrum
-    for: 0:00:15
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
     from: playing
     platform: state
     to: idle
   - entity_id: media_player.vardagsrum
-    for: 0:00:15
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
     platform: state
     to: 'off'
   condition:
@@ -589,19 +577,13 @@
     entity_id: light.tv_room_cieling_lights
     state: 'on'
   - after: '18:00'
-    before: 06:00
+    before: 06:00:00
     condition: time
   - condition: state
     entity_id: input_boolean.tv_room_light_switched_recently_pressed
     state: 'off'
   action:
-  - data:
-      entity_id: switch.moonlight
-    service: switch.turn_on
-  - data:
-      brightness_pct: '60'
-      entity_id: light.tv_room_cieling_lights
-    service: light.turn_on
+  - service: script.tv_room_evening_light
   mode: single
 - id: '1561735682681'
   alias: Guest arrived
@@ -667,6 +649,14 @@
     from: 'off'
     platform: state
     to: 'on'
+  - platform: state
+    entity_id: group.trusted_people
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
   condition: []
   action:
   - data:
@@ -1071,16 +1061,7 @@
     entity_id: input_boolean.ceiling_light_increasing
     state: 'off'
   action:
-  - data:
-      brightness_pct: 70
-      kelvin: 2700
-    service: light.turn_on
-    target:
-      entity_id:
-      - light.tv_room_cieling_lights
-  - data:
-      entity_id: switch.moonlight
-    service: switch.turn_off
+  - service: script.tv_room_day_light
 - id: '1563477770934'
   alias: Switch - Single click left on - evening time
   trigger:
@@ -1111,10 +1092,7 @@
     before: '23:00:00'
     after: 07:00:00
   action:
-  - scene: scene.tv_room_evening
-  - data:
-      entity_id: switch.moonlight
-    service: switch.turn_on
+  - service: script.tv_room_evening_light
 - id: '1563536402916'
   alias: Switch - Dim ceiling
   trigger:
@@ -1216,36 +1194,6 @@
   - data:
       entity_id: input_boolean.doors_recently_closed
     service: input_boolean.turn_off
-- id: '1563902354753'
-  alias: Media - Stop - ceiling - 2
-  trigger:
-  - entity_id: media_player.vardagsrum
-    for: 00:01:00
-    from: playing
-    platform: state
-    to: idle
-  - entity_id: media_player.vardagsrum
-    for: 00:01:00
-    platform: state
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: light.tv_room_cieling_lights
-    state: 'on'
-  - after: '18:00'
-    before: 06:00
-    condition: time
-  - condition: state
-    entity_id: input_boolean.tv_room_light_switched_recently_pressed
-    state: 'off'
-  action:
-  - service: switch.turn_on
-    entity_id: switch.moonlight
-  - data:
-      brightness_pct: '100'
-      entity_id: light.tv_room_cieling_lights
-    service: light.turn_on
-  mode: single
 - id: '1563472937313'
   alias: Switch - Single right off
   trigger:
@@ -1845,6 +1793,8 @@
   - platform: state
     entity_id: media_player.vardagsrum
     from: 'off'
+  - platform: time
+    at: 03:00
   condition: []
   action:
   - service: media_player.volume_set
@@ -1852,25 +1802,11 @@
       volume_level: 0.09
     target:
       device_id: d3ee12c83b84173e66dc788ba2bcb0dc
-  mode: single
-- id: '1608673020793'
-  alias: Motion - Night - TV room
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: 8b0af8761d3211eba4c1ed791bcf32e3
-    entity_id: binary_sensor.motion_sensor_158d00023db75a
-    domain: binary_sensor
-  condition:
-  - condition: time
-    after: '23:00'
-    before: 07:00
-  action:
-  - type: turn_on
-    device_id: 4a5d7ecc446411eb837211f387a5a096
-    entity_id: switch.tv_room_window_lamps_switch
-    domain: switch
+  - service: media_player.volume_set
+    target:
+      entity_id: media_player.dining_room
+    data:
+      volume_level: 0.15
   mode: single
 - id: '1608722078148'
   alias: Car - Charging - Started
@@ -2235,7 +2171,7 @@
     - condition: time
       after: '23:00'
     - condition: time
-      before: 07:00
+      before: 07:00:00
   - condition: state
     entity_id: light.tv_room_cieling_lights
     state: 'off'
@@ -2246,28 +2182,7 @@
     entity_id: input_boolean.ceiling_light_increasing
     state: 'off'
   action:
-  - scene: scene.tv_rum_passive
-  - service: switch.turn_on
-    target:
-      entity_id: switch.moonlight
-  mode: single
-- id: '1637918108445'
-  alias: Alarm - Deactivated
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.alarm_state
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id: input_boolean.upperfloor_alarm_state
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - service: script.tts_long
-    data:
-      message: Alarm deactivated
+  - service: script.tv_room_passive_light
   mode: single
 - id: '1637918760419'
   alias: TTS Notification - Entrance open too long
@@ -2288,9 +2203,9 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: input_boolean.doorbell_ringing
-    from: 'off'
-    to: 'on'
+    entity_id: binary_sensor.doorbell_ringing_sensor
+    from: 'False'
+    to: 'True'
   condition:
   - condition: state
     entity_id: input_boolean.silent_mode
@@ -2578,7 +2493,7 @@
   - repeat:
       while:
       - condition: numeric_state
-        entity_id: light.color_temperature_light_3
+        entity_id: light.barnrum
         below: '255'
         attribute: brightness
       - condition: template
@@ -2588,11 +2503,11 @@
           < 0}}'
       sequence:
       - service: light.turn_on
-        target:
-          entity_id: light.color_temperature_light_3
         data:
           transition: 1
           brightness_step_pct: 20
+        target:
+          entity_id: light.barnrum
       - delay:
           hours: 0
           minutes: 0
@@ -2611,10 +2526,10 @@
   condition: []
   action:
   - service: light.turn_on
-    target:
-      entity_id: light.color_temperature_light_3
     data:
       brightness_step_pct: 10
+    target:
+      entity_id: light.barnrum
   mode: single
 - id: '1640976356098'
   alias: 'Switch - Felicia dim down once '
@@ -2627,14 +2542,14 @@
       event: 3002
   condition:
   - condition: state
-    entity_id: light.color_temperature_light_3
+    entity_id: light.barnrum
     state: 'on'
   action:
   - service: light.turn_on
     data:
       brightness_step_pct: -10
     target:
-      entity_id: light.color_temperature_light_3
+      entity_id: light.barnrum
   mode: single
 - id: '1640981425131'
   alias: Switch - Felicia stop dim
@@ -2677,7 +2592,7 @@
   - repeat:
       while:
       - condition: numeric_state
-        entity_id: light.color_temperature_light_3
+        entity_id: light.barnrum
         attribute: brightness
         above: '0'
       - condition: template
@@ -2687,11 +2602,11 @@
           < 0}}'
       sequence:
       - service: light.turn_on
-        target:
-          entity_id: light.color_temperature_light_3
         data:
           transition: 1
           brightness_step_pct: -20
+        target:
+          entity_id: light.barnrum
       - delay:
           hours: 0
           minutes: 0
@@ -2712,8 +2627,8 @@
   - repeat:
       while:
       - condition: template
-        value_template: '{{state_attr("light.color_temperature_light_3" , ''max_mireds'')
-          > state_attr("light.color_temperature_light_3" , ''color_temp'')}} '
+        value_template: '{{state_attr("light.barnrum" , ''max_mireds'') > state_attr("light.barnrum"
+          , ''color_temp'')}} '
       - condition: template
         value_template: '{{states.automation.switch_felicia_stop_dim.attributes.last_triggered
           == None or as_timestamp(states.automation.switch_felicia_stop_dim.attributes.last_triggered)
@@ -2722,9 +2637,9 @@
       sequence:
       - service: light.turn_on
         data_template:
-          entity_id: light.color_temperature_light_3
+          entity_id: light.barnrum
           transition: 1
-          color_temp: '{{state_attr("light.color_temperature_light_3" , "color_temp")+50}}'
+          color_temp: '{{state_attr("light.barnrum" , "color_temp")+50}}'
       - delay:
           hours: 0
           minutes: 0
@@ -2745,8 +2660,8 @@
   - repeat:
       while:
       - condition: template
-        value_template: '{{state_attr("light.color_temperature_light_3" , ''min_mireds'')
-          < state_attr("light.color_temperature_light_3" , ''color_temp'')}} '
+        value_template: '{{state_attr("light.barnrum" , ''min_mireds'') < state_attr("light.barnrum"
+          , ''color_temp'')}} '
       - condition: template
         value_template: '{{states.automation.switch_felicia_stop_dim.attributes.last_triggered
           == None or as_timestamp(states.automation.switch_felicia_stop_dim.attributes.last_triggered)
@@ -2755,9 +2670,9 @@
       sequence:
       - service: light.turn_on
         data_template:
-          entity_id: light.color_temperature_light_3
+          entity_id: light.barnrum
           transition: 1
-          color_temp: '{{state_attr("light.color_temperature_light_3" , "color_temp")-50}}'
+          color_temp: '{{state_attr("light.barnrum" , "color_temp")-50}}'
       - delay:
           hours: 0
           minutes: 0
@@ -2773,3 +2688,314 @@
   condition: []
   action: []
   mode: single
+- id: '1643300466011'
+  alias: Silent mode - on
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.silent_mode
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - device_id: 72b24b0fd6f990e86fe53d7e8c557c07
+    domain: select
+    entity_id: select.doorbell_chime_volume
+    type: select_option
+    option: '1'
+  mode: single
+- id: '1643300555159'
+  alias: Silent mode - off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.silent_mode
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - device_id: 72b24b0fd6f990e86fe53d7e8c557c07
+    domain: select
+    entity_id: select.doorbell_chime_volume
+    type: select_option
+    option: '26'
+  mode: single
+- id: '1644430134011'
+  alias: Test knob
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: brightness_step_up
+    discovery_id: 0x540f57fffe2fd306 action_brightness_step_up
+    id: brightnessup
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: brightness_step_down
+    discovery_id: 0x540f57fffe2fd306 action_brightness_step_down
+    id: brightnessdown
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: brightnessup
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_step_pct: 15
+          transition: 0
+        target:
+          entity_id: light.yeelight_color_0x5ed30a8
+    - conditions:
+      - condition: trigger
+        id: brightnessdown
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_step_pct: -15
+          transition: 0
+        target:
+          entity_id: light.yeelight_color_0x5ed30a8
+    default: []
+  - service: counter.increment
+    target:
+      entity_id: counter.testcounter
+  mode: queued
+  max: 10
+- id: '1644430731147'
+  alias: Motion - Tv room - Off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d00023db75a
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+    id: day
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d00023db75a
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    id: night
+  condition:
+  - condition: state
+    entity_id: media_player.vardagsrum
+    state: 'off'
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: day
+      - condition: time
+        after: 06:00:00
+        before: '23:59:00'
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id:
+          - light.tv_room_cieling_lights
+        data:
+          transition: 2
+    - conditions:
+      - condition: trigger
+        id: night
+      - condition: time
+        after: 00:00:00
+        before: 05:59:00
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id:
+          - light.tv_room_cieling_lights
+        data:
+          transition: 2
+    default: []
+  mode: single
+- id: '1644431585021'
+  alias: Motion - Tv room ceiling - On
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d00023db75a
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: media_player.vardagsrum
+      state: playing
+  - condition: state
+    entity_id: input_boolean.tv_room_light_switched_recently_pressed
+    state: 'off'
+  - condition: state
+    entity_id: light.tv_room_cieling_lights
+    state: 'off'
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        after: '23:00:00'
+        before: 06:00:00
+      sequence:
+      - service: script.tv_room_passive_light
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.dark_sky_cloud_coverage
+          above: '75'
+        - condition: numeric_state
+          entity_id: sun.sun
+          attribute: elevation
+          below: '7'
+      sequence:
+      - service: script.tv_room_evening_light
+    default: []
+  mode: single
+- id: '1644432741123'
+  alias: Test knob triggers
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: single
+    discovery_id: 0x540f57fffe2fd306 action_single
+    id: nope
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: double
+    discovery_id: 0x540f57fffe2fd306 action_double
+    id: nope2
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: toggle
+    discovery_id: 0x540f57fffe2fd306 action_toggle
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: color_temperature_step_up
+    discovery_id: 0x540f57fffe2fd306 action_color_temperature_step_up
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: color_temperature_step_down
+    discovery_id: 0x540f57fffe2fd306 action_color_temperature_step_down
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: hue_move
+    discovery_id: 0x540f57fffe2fd306 action_hue_move
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: hue_stop
+    discovery_id: 0x540f57fffe2fd306 action_hue_stop
+  - platform: mqtt
+    payload: hold
+    topic: zigbee2mqtt/Andreas Office knob/action
+  condition: []
+  action: []
+  mode: single
+- id: '1647462915275'
+  alias: Power - Phase overload
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.current_l1_sundbyviksvagen_9
+    above: '24'
+    id: phase_1
+  - platform: numeric_state
+    entity_id: sensor.current_l2_sundbyviksvagen_9
+    above: '24'
+    id: phase_2
+  - platform: numeric_state
+    entity_id: sensor.current_l3_sundbyviksvagen_9
+    above: '24'
+    id: phase_3
+  - platform: numeric_state
+    entity_id: sensor.current_l1_sundbyviksvagen_9
+    below: '20'
+    id: phase_1_off
+    above: '0'
+  - platform: numeric_state
+    entity_id: sensor.current_l2_sundbyviksvagen_9
+    below: '20'
+    id: phase_2_off
+    above: '0'
+  - platform: numeric_state
+    entity_id: sensor.current_l3_sundbyviksvagen_9
+    below: '20'
+    id: phase_3_off
+    above: '0'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: phase_1
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.phase_1_overloaded
+    - conditions:
+      - condition: trigger
+        id: phase_2
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id:
+          - input_boolean.phase_2_overloaded
+    - conditions:
+      - condition: trigger
+        id: phase_3
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.phase_3_overloaded
+    - conditions:
+      - condition: trigger
+        id: phase_1_off
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.phase_1_overloaded
+    - conditions:
+      - condition: trigger
+        id: phase_2_off
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.phase_2_overloaded
+    - conditions:
+      - condition: trigger
+        id: phase_3_off
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.phase_3_overloaded
+    default: []
+  mode: queued
+  max: 10

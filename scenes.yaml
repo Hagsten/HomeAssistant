@@ -115,8 +115,8 @@
       entity_id:
       - light.yeelight_ceiling3_0x7e76b83
       - light.yeelight_ceiling3_0x7e792ca
-      friendly_name: TV-room cieling lights
       icon: mdi:lightbulb-group
+      friendly_name: TV-room cieling lights
       supported_features: 44
       state: 'on'
     light.tvroom_lights:
@@ -169,8 +169,8 @@
       entity_id:
       - light.yeelight_color_0x5e72c05
       - light.yeelight_color_0x5e72e34
-      friendly_name: Tvroom_lights
       icon: mdi:lightbulb-group
+      friendly_name: Tvroom_lights
       supported_features: 44
       state: 'on'
   icon: mdi:ceiling-light
@@ -201,8 +201,8 @@
       entity_id:
       - light.yeelight_ceiling3_0x7e76b83
       - light.yeelight_ceiling3_0x7e792ca
-      friendly_name: TV-room cieling lights
       icon: mdi:lightbulb-group
+      friendly_name: TV-room cieling lights
       supported_features: 44
       state: 'on'
     light.tvroom_lights:
@@ -255,8 +255,8 @@
       entity_id:
       - light.yeelight_color_0x5e72c05
       - light.yeelight_color_0x5e72e34
-      friendly_name: Tvroom_lights
       icon: mdi:lightbulb-group
+      friendly_name: Tvroom_lights
       supported_features: 44
       state: 'on'
   icon: mdi:lightbulb-group-outline
@@ -287,8 +287,8 @@
       entity_id:
       - light.yeelight_ceiling3_0x7e76b83
       - light.yeelight_ceiling3_0x7e792ca
-      friendly_name: TV-room cieling lights
       icon: mdi:lightbulb-group
+      friendly_name: TV-room cieling lights
       supported_features: 44
       state: 'on'
     light.tvroom_lights:
@@ -341,8 +341,8 @@
       entity_id:
       - light.yeelight_color_0x5e72c05
       - light.yeelight_color_0x5e72e34
-      friendly_name: Tvroom_lights
       icon: mdi:lightbulb-group
+      friendly_name: Tvroom_lights
       supported_features: 44
       state: 'on'
   icon: mdi:lightbulb-group
