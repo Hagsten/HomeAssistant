@@ -25,6 +25,7 @@
       - device_tracker.8c_b8_4a_7d_1e_6b
       - device_tracker.johannas_galaxy_note20_5g
       - device_tracker.johannas_galaxy_note20_5g_2
+      - device_tracker.pixel_6
   motion_sensors:
     name: Motion sensors
     entities:
