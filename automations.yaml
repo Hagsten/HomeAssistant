@@ -55,14 +55,16 @@
       - switch.tv_room_window_lamps_switch
       - switch.guestroomwindow
       - switch.window_upper_floor
-  - service: script.turn_on_left_closet
-  - service: script.turn_on_right_closet
   - service: light.turn_on
     target:
       entity_id: light.tvroom_lights
     data:
       transition: 2
       brightness_pct: 100
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.wled_left_speaker
   initial_state: 'on'
   mode: single
 - id: '1532183940727'
@@ -73,19 +75,14 @@
     platform: sun
   condition: []
   action:
-  - data:
-      entity_id: light.gateway_light_7811dcdf0cfa
+  - data: {}
     service: light.turn_off
-  - service: light.turn_off
-    data: {}
     target:
       entity_id:
+      - light.gateway_light_7811dcdf0cfa
       - light.yeelight_color_0x5ed30a8
-  - service: light.turn_off
-    data: {}
-    target:
-      entity_id:
       - light.yeelight_color_0x5ed2368
+      - light.wled_left_speaker
   - data: {}
     service: switch.turn_off
     target:
@@ -238,6 +235,7 @@
       - light.tv_room_cieling_lights
       - light.office_ceiling
       - light.tvroom_lights
+      - light.wled_left_speaker
   - data: {}
     service: switch.turn_off
     target:
@@ -687,9 +685,16 @@
     to: 'off'
   condition:
   - after: 06:00
-    before: 08:00
+    before: 08:00:00
     condition: time
   action:
+  - wait_for_trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_kitchen
+      from: 'off'
+      to: 'on'
+    timeout: 00:10:00
+    continue_on_timeout: false
   - data:
       entity_id: input_boolean.notification_goodmorning
     service: input_boolean.turn_on
@@ -2925,29 +2930,41 @@
   trigger:
   - platform: numeric_state
     entity_id: sensor.current_l1_sundbyviksvagen_9
-    above: '24'
+    above: '20'
     id: phase_1
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
   - platform: numeric_state
     entity_id: sensor.current_l2_sundbyviksvagen_9
-    above: '24'
+    above: '20'
     id: phase_2
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
   - platform: numeric_state
     entity_id: sensor.current_l3_sundbyviksvagen_9
-    above: '24'
+    above: '20'
     id: phase_3
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
   - platform: numeric_state
     entity_id: sensor.current_l1_sundbyviksvagen_9
-    below: '20'
+    below: '19'
     id: phase_1_off
     above: '0'
   - platform: numeric_state
     entity_id: sensor.current_l2_sundbyviksvagen_9
-    below: '20'
+    below: '19'
     id: phase_2_off
     above: '0'
   - platform: numeric_state
     entity_id: sensor.current_l3_sundbyviksvagen_9
-    below: '20'
+    below: '19'
     id: phase_3_off
     above: '0'
   condition: []
@@ -2960,6 +2977,7 @@
       - service: input_boolean.turn_on
         target:
           entity_id: input_boolean.phase_1_overloaded
+        data: {}
     - conditions:
       - condition: trigger
         id: phase_2
@@ -2968,6 +2986,7 @@
         target:
           entity_id:
           - input_boolean.phase_2_overloaded
+        data: {}
     - conditions:
       - condition: trigger
         id: phase_3
@@ -2975,6 +2994,7 @@
       - service: input_boolean.turn_on
         target:
           entity_id: input_boolean.phase_3_overloaded
+        data: {}
     - conditions:
       - condition: trigger
         id: phase_1_off
@@ -2982,6 +3002,7 @@
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.phase_1_overloaded
+        data: {}
     - conditions:
       - condition: trigger
         id: phase_2_off
@@ -2989,6 +3010,7 @@
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.phase_2_overloaded
+        data: {}
     - conditions:
       - condition: trigger
         id: phase_3_off
@@ -2996,6 +3018,7 @@
       - service: input_boolean.turn_off
         target:
           entity_id: input_boolean.phase_3_overloaded
+        data: {}
     default: []
   mode: queued
   max: 10
