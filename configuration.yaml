@@ -290,6 +290,7 @@ light:
       - light.hallway_1_1000lm
       - light.hallway_2_1000lm
       - light.hallway_3_1000lm
+      - light.hallen_ceiling
   - platform: group
     name: TV-room cieling lights
     entities:
