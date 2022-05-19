@@ -62,7 +62,8 @@
       transition: 2
       brightness_pct: 100
   - service: light.turn_on
-    data: {}
+    data:
+      effect: Candle Multi
     target:
       entity_id: light.wled_left_speaker
   initial_state: 'on'
@@ -167,7 +168,7 @@
 - id: '1536961274860'
   alias: Coming home
   trigger:
-  - entity_id: device_tracker.huawei_p30_pro_34dabc024f
+  - entity_id: device_tracker.andreas_pixel_6
     platform: state
     to: home
   - entity_id: group.trusted_people
@@ -2326,7 +2327,7 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: device_tracker.huawei_p30_pro_34dabc024f
+    entity_id: device_tracker.andreas_pixel_6
     from: not_home
     to: home
   condition: []
@@ -2343,6 +2344,7 @@
   - service: input_boolean.turn_on
     target:
       entity_id: input_boolean.tts_notification_welcome_home_andreas
+    data: {}
   - delay:
       hours: 0
       minutes: 0
@@ -2351,6 +2353,7 @@
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.tts_notification_welcome_home_andreas
+    data: {}
   mode: single
 - id: '1638051606719'
   alias: TTS Notification - Welcome home Johanna
@@ -3022,3 +3025,57 @@
     default: []
   mode: queued
   max: 10
+- id: '1650303443998'
+  alias: Alarm - when changed
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.alarm_state
+    from: 'off'
+    to: 'on'
+    id: 'On'
+  - platform: state
+    entity_id: input_boolean.alarm_state
+    from: 'on'
+    to: 'off'
+    id: 'off'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'On'
+      sequence:
+      - service: alarm_control_panel.alarm_arm_away
+        data: {}
+        target:
+          device_id: cbe6bfd7ef4afc33aa66337fa983a775
+    - conditions:
+      - condition: trigger
+        id: 'off'
+      sequence:
+      - service: alarm_control_panel.alarm_arm_home
+        data: {}
+        target:
+          device_id: cbe6bfd7ef4afc33aa66337fa983a775
+    default: []
+  mode: single
+- id: '1652855929440'
+  alias: Notification - Herbert communication error
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: vacuum.herbert
+    attribute: battery_level
+    to: '0'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.pushbullet_notifier
+    data:
+      title: Herbert communication error
+      message: 'Battery has been 0 for a while which indicates communication error '
+  mode: single

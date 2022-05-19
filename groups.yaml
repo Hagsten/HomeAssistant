@@ -21,10 +21,10 @@
     entities:
       - device_tracker.annchriesiphone
       - device_tracker.honor_8
-      - device_tracker.huawei_p30_pro_34dabc024f
       - device_tracker.8c_b8_4a_7d_1e_6b
       - device_tracker.johannas_galaxy_note20_5g
       - device_tracker.johannas_galaxy_note20_5g_2
+      - device_tracker.andreas_pixel_6
       - device_tracker.pixel_6
   motion_sensors:
     name: Motion sensors
