@@ -45,7 +45,7 @@ http:
 # the developers to assist with development of Home Assistant.
 # For more information, please see:
 # https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
-updater:
+# updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   # include_used_components: true
 
@@ -290,7 +290,7 @@ light:
       - light.hallway_1_1000lm
       - light.hallway_2_1000lm
       - light.hallway_3_1000lm
-      - light.hallen_ceiling
+      - light.hallen_ceiling_3
   - platform: group
     name: TV-room cieling lights
     entities:

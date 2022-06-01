@@ -1,21 +1,3 @@
-- id: '1531143646436'
-  alias: Upcoming rain alert
-  initial_state: 'off'
-  trigger:
-  - platform: template
-    value_template: '{% set p = states.sensor.rain_probability.attributes.hourly.data[1:4]
-      | map(attribute="precipProbability") | list %} {% set pNoRain = (1 - p[0]) *
-      (1 - p[1]) * (1 - p[2]) %} {{ (1 - pNoRain) >= 0.15 }}'
-  condition:
-  - condition: template
-    value_template: "{{ \n(states.automation.upcoming_rain_alert.attributes.last_triggered\
-      \ == None) or\n\n(as_timestamp(now()) - as_timestamp(states.automation.upcoming_rain_alert.attributes.last_triggered))\
-      \ / 60  > 180 }}"
-  action:
-  - data:
-      message: It will probably rain soon
-      title: Rain alert
-    service: notify.pushbullet_notifier
 - id: '1532183349901'
   alias: Sunset
   trigger:
@@ -64,6 +46,11 @@
   - service: light.turn_on
     data:
       effect: Candle Multi
+      rgbw_color:
+      - 255
+      - 197
+      - 115
+      - 71
     target:
       entity_id: light.wled_left_speaker
   initial_state: 'on'
@@ -181,9 +168,6 @@
     for: 00:01:45
   condition: []
   action:
-  - service: light.turn_on
-    entity_id: light.hallway_lights
-    data: {}
   - service: input_boolean.turn_off
     entity_id: input_boolean.identification_pending
     data: {}
@@ -191,6 +175,12 @@
       duration: 180000
       light: light.yeelight_color_0x0000000005ed2368
     service: script.temp_max_light_yeelight
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  - service: light.turn_on
+    entity_id: light.hallway_lights
+    data: {}
   initial_state: 'on'
   mode: single
 - id: '1538080363136'
@@ -321,45 +311,6 @@
   - data:
       entity_id: input_boolean.alarm_state
     service: input_boolean.turn_on
-- id: '1550599967723'
-  alias: Turn on stereo
-  trigger:
-  - entity_id: media_player.stereo_nere
-    platform: state
-    to: 'on'
-  - entity_id: media_player.stereo_nere
-    platform: state
-    to: playing
-  - entity_id: media_player.stereo_nere
-    from: 'off'
-    platform: state
-    to: idle
-  condition: []
-  action:
-  - data:
-      entity_id: switch.outlet_stereo
-    service: switch.turn_on
-  mode: single
-- id: '1550600530907'
-  alias: Turn off stereo
-  trigger:
-  - entity_id: media_player.stereo_nere
-    platform: state
-    to: 'off'
-  - entity_id: media_player.stereo_nere
-    for: 00:15:00
-    platform: state
-    to: idle
-  - entity_id: media_player.stereo_nere
-    for: 00:15:00
-    platform: state
-    to: paused
-  condition: []
-  action:
-  - data:
-      entity_id: switch.outlet_stereo
-    service: switch.turn_off
-  mode: single
 - id: '1555055523241'
   alias: Alarm - off
   trigger:
@@ -460,10 +411,25 @@
       - service: script.flash_notification_yeelight
         data:
           light: light.yeelight_color_0x5ed30a8
+      - service: light.turn_on
+        data:
+          effect: Loading
+        target:
+          entity_id: light.wled_left_speaker
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 5
+          milliseconds: 0
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.wled_left_speaker
     default: []
   - service: light.turn_on
     target:
       entity_id: light.hallway_lights
+    data: {}
   - service: notify.pushbullet_notifier
     data:
       title: Somebody at the door
@@ -497,6 +463,7 @@
   - service: light.turn_off
     target:
       entity_id: light.hallway_lights
+    data: {}
   mode: single
 - id: '1561103142057'
   alias: Water leak
@@ -1528,6 +1495,14 @@
     entity_id: binary_sensor.door_window_sensor_158d0002049a62
     to: 'off'
     for: 00:07:00
+  - platform: state
+    entity_id:
+    - light.hallway_lights
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
   condition:
   - condition: state
     entity_id: binary_sensor.motion_sensor_158d00036d598f
@@ -1607,71 +1582,6 @@
     entity_id: input_boolean.officelight_manually_set
     data: {}
   mode: single
-- id: '1598023740402'
-  alias: Lights - Office cieling - On by motion
-  trigger:
-  - entity_id: binary_sensor.motion_sensor_upper_floor
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.low_brightness_upstairs
-    state: 'on'
-  - condition: state
-    state: 'off'
-    entity_id: light.office_ceiling
-  action:
-  - choose:
-    - conditions:
-      - condition: time
-        after: '22:00'
-      - condition: time
-        before: 08:00
-      sequence:
-      - service: light.turn_on
-        target:
-          entity_id: light.office_ceiling
-        data:
-          transition: 3
-          brightness_pct: 30
-    - conditions:
-      - condition: time
-        after: 08:00
-        before: '22:00'
-      sequence:
-      - service: light.turn_on
-        target:
-          entity_id: light.office_ceiling
-        data:
-          transition: 1
-          brightness_pct: 100
-    default: []
-  mode: single
-- id: '1598959837638'
-  alias: Lights - Office cieling off
-  trigger:
-  - entity_id: group.upper_floor_motion_sensors
-    for: 00:15:00
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: binary_sensor.binary_sensor_ping_andreas_work_laptop
-    state: 'off'
-  - condition: state
-    entity_id: binary_sensor.binary_sensor_ping_johanna_work_laptop
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.officelight_manually_set
-    state: 'off'
-  action:
-  - service: light.turn_off
-    data: {}
-    target:
-      entity_id: light.office_ceiling
-  mode: single
 - id: '1598960955397'
   alias: Reset Office light manual mark
   trigger:
@@ -1722,44 +1632,6 @@
       brightness_pct: 70
       entity_id: group.office_cieling_light
     service: light.turn_on
-  mode: single
-- id: '1601723199769'
-  alias: Car - Engine heater - auto off
-  trigger:
-  - entity_id: switch.engineheater
-    for: '2700'
-    platform: state
-    to: 'on'
-  condition: []
-  action:
-  - service: switch.turn_off
-    entity_id: switch.engineheater
-    data: {}
-  mode: single
-- id: '1604495295561'
-  alias: Lights - Office cieling - On by laptops
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.binary_sensor_ping_andreas_work_laptop
-    to: 'on'
-  - platform: state
-    entity_id: binary_sensor.binary_sensor_ping_johanna_work_laptop
-    to: 'on'
-  condition:
-  - condition: time
-    after: 07:30
-    before: '18:00'
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-  action:
-  - service: light.turn_on
-    target:
-      entity_id: light.office_ceiling
   mode: single
 - id: '1605531798053'
   alias: Lights - Playroom - On
@@ -1887,23 +1759,6 @@
     data:
       message: Car finished charging
       title: Car finished charging
-  mode: single
-- id: '1613069833201'
-  alias: Doors - Front door unlocked
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: lock.dorr
-    to: unlocked
-  condition: []
-  action:
-  - service: input_boolean.turn_on
-    data: {}
-    entity_id: input_boolean.front_door_unlocked
-  - delay: 00:01:50
-  - service: input_boolean.turn_off
-    data: {}
-    entity_id: input_boolean.front_door_unlocked
   mode: single
 - id: '1618035182394'
   alias: AC Off
@@ -3078,4 +2933,143 @@
     data:
       title: Herbert communication error
       message: 'Battery has been 0 for a while which indicates communication error '
+  mode: single
+- id: '1653574644028'
+  alias: Media - Dining room - Led effects
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 4bd34f25397f817d7c9ae5a388593428
+    domain: media_player
+    entity_id: media_player.dining_room
+    type: playing
+    id: Play
+  - platform: device
+    device_id: 4bd34f25397f817d7c9ae5a388593428
+    domain: media_player
+    entity_id: media_player.dining_room
+    type: turned_on
+    id: 'On'
+  - platform: device
+    device_id: 4bd34f25397f817d7c9ae5a388593428
+    domain: media_player
+    entity_id: media_player.dining_room
+    type: turned_off
+    id: 'Off'
+  - platform: device
+    device_id: 4bd34f25397f817d7c9ae5a388593428
+    domain: media_player
+    entity_id: media_player.dining_room
+    type: paused
+    id: Pause
+  - platform: device
+    device_id: 4bd34f25397f817d7c9ae5a388593428
+    domain: media_player
+    entity_id: media_player.dining_room
+    type: idle
+    id: Idle
+  condition: []
+  action:
+  - service: scene.create
+    data:
+      snapshot_entities:
+      - light.wled_left_speaker
+      - number.wled_left_speaker_speed
+      scene_id: wled_state
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: Play
+      sequence:
+      - service: light.turn_on
+        data:
+          effect: Solid
+          rgb_color:
+          - 87
+          - 207
+          - 129
+        target:
+          entity_id: light.wled_left_speaker
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: 'Off'
+        - condition: trigger
+          id: Idle
+      sequence:
+      - service: light.turn_on
+        data:
+          effect: Solid
+        target:
+          entity_id: light.wled_left_speaker
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - service: light.turn_on
+        data:
+          effect: Dissolve
+        target:
+          entity_id: light.wled_left_speaker
+    - conditions:
+      - condition: trigger
+        id: Pause
+      sequence:
+      - service: light.turn_on
+        data:
+          effect: Solid
+          rgb_color:
+          - 112
+          - 163
+          - 230
+        target:
+          entity_id: light.wled_left_speaker
+    default: []
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 500
+  - service: scene.turn_on
+    target:
+      entity_id: scene.wled_state
+    data: {}
+  mode: single
+- id: '1653853137118'
+  alias: Rental - Sundbyvik - Event started
+  description: ''
+  trigger:
+  - platform: calendar
+    event: start
+    entity_id: calendar.rental_control_airbnb_sundbyvik
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.guest_mode
+  - service: notify.pushbullet_notifier
+    data:
+      message: Vistelsen har påbörjats! Gästläge är nu aktivt.
+      title: AirBnb Sundbyvik
+  mode: single
+- id: '1653853190830'
+  alias: Rental - Sundbyvik - Event ended
+  description: ''
+  trigger:
+  - platform: calendar
+    event: end
+    entity_id: calendar.rental_control_airbnb_sundbyvik
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.guest_mode
+  - service: notify.pushbullet_notifier
+    data:
+      title: AirBnb Sundbyvik
+      message: Vistelsen för gäst har avslutats. Gästläge avstängt.
   mode: single
