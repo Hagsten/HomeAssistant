@@ -62,7 +62,7 @@
   rental_alarm_sensors:
     name: Rental alarm trigger sensors
     entities:
-      - upper_floor_motion_sensors
+      - group.upper_floor_motion_sensors
       - binary_sensor.motion_sensor_158d00023db75a
       - binary_sensor.motion_sensor_158d00023db6f4
       - binary_sensor.motion_sensor_upper_floor
