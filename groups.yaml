@@ -76,7 +76,6 @@
       - binary_sensor.door_window_sensor_158d0002386a40
       - binary_sensor.door_window_sensor_158d00031b5702
       - binary_sensor.door_window_sensor_158d00031e2c27
-      
   temperatures:
     name: Temperaturer
     entities:

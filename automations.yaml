@@ -330,6 +330,7 @@
       entity_id:
       - input_boolean.alarm_state
       - input_boolean.upperfloor_alarm_state
+      - input_boolean.alarm_while_rental_guests_home
   mode: single
 - id: '1557508975938'
   alias: Doors - Basement opens
@@ -724,6 +725,11 @@
     from: 'on'
     platform: state
     to: 'off'
+  - platform: state
+    entity_id:
+    - input_boolean.alarm_while_rental_guests_home
+    from: 'on'
+    to: 'off'
   condition: []
   action:
   - data: {}
@@ -734,6 +740,7 @@
       - input_boolean.identification_pending
   - after: 07:00
     condition: time
+    before: 00:00:00
   - data:
       message: ''
       target:
@@ -753,14 +760,38 @@
     entity_id: input_boolean.guest_mode
     state: 'off'
   action:
-  - data:
-      message: 'Larmet är aktivt i hela huset. Orsak: ingen hemma'
-      target:
-      - channel/sundbyvik-larm
-      title: Pålarmat
-    service: notify.pushbullet_notifier
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.alarm_state
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: calendar.rental_control_airbnb_sundbyvik
+        state: 'off'
+      sequence:
+      - data:
+          message: 'Larmet är aktivt i hela huset. Orsak: ingen hemma'
+          target:
+          - channel/sundbyvik-larm
+          title: Pålarmat
+        service: notify.pushbullet_notifier
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.alarm_state
+    - conditions:
+      - condition: state
+        entity_id: calendar.rental_control_airbnb_sundbyvik
+        state: 'on'
+      sequence:
+      - data:
+          message: 'Larmet är aktivt i hela huset men inte gästytan. Orsak: ingen
+            hemma'
+          target:
+          - channel/sundbyvik-larm
+          title: Pålarmat
+        service: notify.pushbullet_notifier
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id:
+          - input_boolean.alarm_while_rental_guests_home
+    default: []
   mode: single
 - id: '1562227944523'
   alias: Alarm - Arm upper floor by leaving home
@@ -908,15 +939,37 @@
     entity_id: input_boolean.guest_mode
     state: 'off'
   action:
-  - data:
-      message: 'Larmet är aktivt i hela huset. Orsak: sover'
-      target:
-      - channel/sundbyvik-larm
-      title: Pålarmat
-    service: notify.pushbullet_notifier
-  - data:
-      entity_id: input_boolean.alarm_state
-    service: input_boolean.turn_on
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: calendar.rental_control_airbnb_sundbyvik
+        state: 'off'
+      sequence:
+      - data:
+          message: 'Larmet är aktivt i hela huset. Orsak: sover'
+          target:
+          - channel/sundbyvik-larm
+          title: Pålarmat
+        service: notify.pushbullet_notifier
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.alarm_state
+    - conditions:
+      - condition: state
+        entity_id: calendar.rental_control_airbnb_sundbyvik
+        state: 'on'
+      sequence:
+      - data:
+          message: 'Larmet är aktivt i hela huset men inte gästytan. Orsak: sover'
+          target:
+          - channel/sundbyvik-larm
+          title: Pålarmat
+        service: notify.pushbullet_notifier
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id:
+          - input_boolean.alarm_while_rental_guests_home
+    default: []
 - id: '1562681351309'
   alias: Alarm - Arm upper floor by sleeping
   trigger:
@@ -3072,4 +3125,41 @@
     data:
       title: AirBnb Sundbyvik
       message: Vistelsen för gäst har avslutats. Gästläge avstängt.
+  mode: single
+- id: '1654883158756'
+  alias: Alarm - Trigger with guests
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - group.rental_alarm_sensors
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.alarm_while_rental_guests_home
+    state: 'on'
+  - condition: template
+    value_template: '{{ states.automation.alarm_trigger.attributes.last_triggered
+      == None or as_timestamp(now()) - as_timestamp(states.automation.alarm_trigger.attributes.last_triggered)
+      > 900  }}'
+  action:
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - condition: state
+    entity_id: input_boolean.alarm_while_rental_guests_home
+    state: 'on'
+  - data:
+      entity_id: input_boolean.alarm_triggered
+    service: input_boolean.turn_on
+  - data:
+      message: 'Sensors: {{ expand(states.group.closed_windows.attributes.entity_id
+        +  states.group.doors.attributes.entity_id  + states.group.motion_sensors.attributes.entity_id)     |
+        selectattr(''last_changed'', ''ge'', now() - timedelta(minutes=10))     |
+        map(attribute=''name'')    | list     | join('', '') }}'
+      title: Larm utlöst
+    service: notify.pushbullet_notifier
   mode: single
