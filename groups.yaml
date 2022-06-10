@@ -59,6 +59,12 @@
     entities:
       - group.closed_windows
       - group.doors
+  rental_alarm_sensors:
+    name: Rental alarm trigger sensors
+    entities:
+      - binary_sensor.door_window_sensor_158d0002049a62
+      - binary_sensor.door_window_sensor_158d000204bac9
+      - binary_sensor.motion_sensor_158d00036d598f
   temperatures:
     name: Temperaturer
     entities:
