@@ -322,7 +322,6 @@
     target:
       entity_id:
       - input_boolean.alarm_state
-      - input_boolean.upperfloor_alarm_state
       - input_boolean.alarm_while_rental_guests_home
   mode: single
 - id: '1557508975938'
@@ -719,10 +718,6 @@
     from: 'on'
     platform: state
     to: 'off'
-  - entity_id: input_boolean.upperfloor_alarm_state
-    from: 'on'
-    platform: state
-    to: 'off'
   - platform: state
     entity_id:
     - input_boolean.alarm_while_rental_guests_home
@@ -792,59 +787,6 @@
           - input_boolean.alarm_while_rental_guests_home
     default: []
   mode: single
-- id: '1562227944523'
-  alias: Alarm - Arm upper floor by leaving home
-  trigger:
-  - entity_id: group.trusted_people
-    for: 00:10:00
-    from: home
-    platform: state
-    to: not_home
-  condition:
-  - condition: state
-    entity_id: input_boolean.guest_mode
-    state: 'on'
-  - condition: state
-    entity_id: group.upper_floor_motion_sensors
-    state: 'off'
-  action:
-  - data:
-      entity_id: input_boolean.upperfloor_alarm_state
-    service: input_boolean.turn_on
-  - data:
-      message: 'Larmet är aktivt på övervåningen. Orsak: Ingen hemma'
-      target:
-      - channel/sundbyvik-larm
-      title: Delvis pålarmat
-    service: notify.pushbullet_notifier
-- id: '1562228115473'
-  alias: Alarm - Trigger upstairs
-  trigger:
-  - entity_id: group.upper_floor_motion_sensors
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.upperfloor_alarm_state
-    state: 'on'
-  action:
-  - delay: 00:00:30
-  - condition: state
-    entity_id: input_boolean.upperfloor_alarm_state
-    state: 'on'
-  - data:
-      message: Övervåningen {{ expand(states.group.closed_windows.attributes.entity_id
-        +  states.group.doors.attributes.entity_id  + states.group.motion_sensors.attributes.entity_id)     |
-        selectattr('last_changed', 'ge', now() - timedelta(minutes=10))     | map(attribute='name')    |
-        list     | join(', ') }}
-      target:
-      - channel/sundbyvik-larm
-      title: Larm utlöst
-    service: notify.pushbullet_notifier
-  - data:
-      entity_id: input_boolean.alarm_triggered
-    service: input_boolean.turn_on
 - id: '1562445668628'
   alias: Alarm - Manual semi arm
   trigger:
@@ -859,7 +801,7 @@
       entity_id: input_boolean.alarm_semi_arming_pending
     service: input_boolean.turn_off
   - data:
-      entity_id: input_boolean.upperfloor_alarm_state
+      entity_id: input_boolean.alarm_while_rental_guests_home
     service: input_boolean.turn_on
 - id: '1562446340139'
   alias: Sleep - Trigger wake up
@@ -970,27 +912,6 @@
           entity_id:
           - input_boolean.alarm_while_rental_guests_home
     default: []
-- id: '1562681351309'
-  alias: Alarm - Arm upper floor by sleeping
-  trigger:
-  - entity_id: input_boolean.sleeping
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.guest_mode
-    state: 'on'
-  action:
-  - data:
-      entity_id: input_boolean.upperfloor_alarm_state
-    service: input_boolean.turn_on
-  - data:
-      message: 'Larmet är aktivt på övervåningen. Orsak: sover'
-      target:
-      - channel/sundbyvik-larm
-      title: Delvis pålarmat
-    service: notify.pushbullet_notifier
 - id: '1563472937399'
   alias: Switch - Single left off
   trigger:
