@@ -178,6 +178,9 @@
   - condition: state
     entity_id: input_boolean.guest_mode
     state: 'off'
+  - condition: state
+    state: 'off'
+    entity_id: calendar.rental_control_airbnb_sundbyvik
   - service: light.turn_on
     entity_id: light.hallway_lights
     data: {}
@@ -193,6 +196,9 @@
   condition:
   - condition: state
     entity_id: input_boolean.guest_mode
+    state: 'off'
+  - condition: state
+    entity_id: calendar.rental_control_airbnb_sundbyvik
     state: 'off'
   action:
   - data: {}
@@ -284,19 +290,6 @@
   - scene: scene.kitchen_passive
   initial_state: 'on'
   mode: single
-- id: '1541183654317'
-  alias: Coffee maker
-  trigger:
-  - entity_id: switch.outlet_kaffebryggaren
-    for: '1800'
-    platform: state
-    to: 'on'
-  condition: []
-  action:
-  - data:
-      entity_id: switch.outlet_kaffebryggaren
-    service: switch.turn_off
-  initial_state: 'off'
 - id: '1547903815352'
   alias: On reboot
   initial_state: 'on'
@@ -563,9 +556,14 @@
   - condition: state
     entity_id: group.trusted_people
     state: not_home
-  - condition: state
-    entity_id: input_boolean.guest_mode
-    state: 'on'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_boolean.guest_mode
+      state: 'on'
+    - condition: state
+      entity_id: calendar.rental_control_airbnb_sundbyvik
+      state: 'on'
   action:
   - delay: 00:05:00
   - condition: state
@@ -759,6 +757,7 @@
   - condition: state
     entity_id: input_boolean.guest_mode
     state: 'off'
+    enabled: false
   action:
   - choose:
     - conditions:
@@ -938,6 +937,7 @@
   - condition: state
     entity_id: input_boolean.guest_mode
     state: 'off'
+    enabled: false
   action:
   - choose:
     - conditions:
@@ -3156,10 +3156,93 @@
       entity_id: input_boolean.alarm_triggered
     service: input_boolean.turn_on
   - data:
-      message: 'Sensors: {{ expand(states.group.closed_windows.attributes.entity_id
-        +  states.group.doors.attributes.entity_id  + states.group.motion_sensors.attributes.entity_id)     |
+      message: 'Sensors: {{ expand(states.group.rental_alarm_sensors.attributes.entity_id)     |
         selectattr(''last_changed'', ''ge'', now() - timedelta(minutes=10))     |
         map(attribute=''name'')    | list     | join('', '') }}'
       title: Larm utlöst
     service: notify.pushbullet_notifier
+  mode: single
+- id: '1654934303287'
+  alias: Doors - Sound notification
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.door_window_sensor_158d0002049a62
+    - binary_sensor.door_window_sensor_158d000204bac9
+    from: 'off'
+    to: 'on'
+    id: Guestdoors
+  - platform: state
+    entity_id:
+    - binary_sensor.door_window_sensor_158d0002048620
+    - binary_sensor.door_window_sensor_158d0002049a62
+    - binary_sensor.door_window_sensor_158d00022eff91
+    - binary_sensor.door_window_sensor_158d000428df78
+    from: 'off'
+    to: 'on'
+    id: Otherdoors
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: Otherdoors
+      sequence:
+      - if:
+        - condition: state
+          entity_id: input_boolean.silent_mode
+          state: 'on'
+        then:
+        - data:
+            gw_mac: 04:CF:8C:91:62:CB
+            ringtone_id: 29
+            ringtone_vol: 8
+          service: xiaomi_aqara.play_ringtone
+        else:
+        - data:
+            gw_mac: 04:CF:8C:91:62:CB
+            ringtone_id: 29
+            ringtone_vol: 17
+          service: xiaomi_aqara.play_ringtone
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - data:
+          gw_mac: 04:CF:8C:91:62:CB
+        service: xiaomi_aqara.stop_ringtone
+    - conditions:
+      - condition: trigger
+        id: Guestdoors
+      - condition: state
+        state: 'off'
+        entity_id: calendar.rental_control_airbnb_sundbyvik
+      sequence:
+      - if:
+        - condition: state
+          entity_id: input_boolean.silent_mode
+          state: 'on'
+        then:
+        - data:
+            gw_mac: 04:CF:8C:91:62:CB
+            ringtone_id: 29
+            ringtone_vol: 8
+          service: xiaomi_aqara.play_ringtone
+        else:
+        - data:
+            gw_mac: 04:CF:8C:91:62:CB
+            ringtone_id: 29
+            ringtone_vol: 17
+          service: xiaomi_aqara.play_ringtone
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - data:
+          gw_mac: 04:CF:8C:91:62:CB
+        service: xiaomi_aqara.stop_ringtone
+    default: []
   mode: single
