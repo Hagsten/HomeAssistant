@@ -639,9 +639,25 @@
   - data:
       entity_id: input_boolean.alarm_arming_pending
     service: input_boolean.turn_off
-  - data:
-      entity_id: input_boolean.alarm_state
-    service: input_boolean.turn_on
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: calendar.rental_control_airbnb_sundbyvik
+        state: 'off'
+      sequence:
+      - data:
+          entity_id: input_boolean.alarm_state
+        service: input_boolean.turn_on
+    - conditions:
+      - condition: state
+        entity_id: calendar.rental_control_airbnb_sundbyvik
+        state: 'on'
+      sequence:
+      - data: {}
+        service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.alarm_while_rental_guests_home
+    default: []
 - id: '1562190311457'
   alias: Notification - Good morning
   trigger:
