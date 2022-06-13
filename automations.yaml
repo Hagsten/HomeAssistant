@@ -3061,10 +3061,23 @@
     entity_id: input_boolean.alarm_while_rental_guests_home
     state: 'on'
   - condition: template
-    value_template: '{{ states.automation.alarm_trigger.attributes.last_triggered
-      == None or as_timestamp(now()) - as_timestamp(states.automation.alarm_trigger.attributes.last_triggered)
-      > 900  }}'
+    value_template: "{{ \n  states.automation.alarm_trigger_with_guests.attributes.last_triggered\
+      \ == None \n  or as_timestamp(now()) - as_timestamp(states.automation.alarm_trigger_with_guests.attributes.last_triggered)\
+      \ > 900  \n}}"
   action:
+  - service: xiaomi_aqara.play_ringtone
+    data:
+      gw_mac: 04:CF:8C:91:62:CB
+      ringtone_id: '2'
+      ringtone_vol: 10
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: xiaomi_aqara.stop_ringtone
+    data:
+      gw_mac: 04:CF:8C:91:62:CB
   - delay:
       hours: 0
       minutes: 2
@@ -3076,6 +3089,11 @@
   - data:
       entity_id: input_boolean.alarm_triggered
     service: input_boolean.turn_on
+  - service: xiaomi_aqara.play_ringtone
+    data:
+      gw_mac: 04:CF:8C:91:62:CB
+      ringtone_id: '2'
+      ringtone_vol: 20
   - data:
       message: 'Sensors: {{ expand(states.group.rental_alarm_sensors.attributes.entity_id)     |
         selectattr(''last_changed'', ''ge'', now() - timedelta(minutes=10))     |
