@@ -82,60 +82,6 @@
       - switch.window_upper_floor
   initial_state: 'on'
   mode: single
-- id: '1533203159068'
-  alias: Doors - Entrance opens
-  trigger:
-  - entity_id: binary_sensor.door_window_sensor_158d0002049a62
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.silent_mode
-    state: 'off'
-  action:
-  - data:
-      gw_mac: 04:CF:8C:91:62:CB
-      ringtone_id: 29
-      ringtone_vol: 8
-    service: xiaomi_aqara.play_ringtone
-  - delay: 00:00:01
-  - data:
-      gw_mac: 04:CF:8C:91:62:CB
-    service: xiaomi_aqara.stop_ringtone
-  initial_state: 'on'
-- id: '1533223349979'
-  alias: Doors - Terrass opens
-  trigger:
-  - entity_id: binary_sensor.door_window_sensor_158d000204bac9
-    from: 'off'
-    platform: state
-    to: 'on'
-  - entity_id: binary_sensor.door_window_sensor_158d0002048620
-    from: 'off'
-    platform: state
-    to: 'on'
-  - entity_id: binary_sensor.door_window_sensor_158d00022eff91
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.silent_mode
-    state: 'off'
-  action:
-  - data:
-      gw_mac: 04:CF:8C:91:62:CB
-      ringtone_id: 20
-      ringtone_vol: 8
-    service: xiaomi_aqara.play_ringtone
-  - delay:
-      milliseconds: 850
-  - data:
-      gw_mac: 04:CF:8C:91:62:CB
-    service: xiaomi_aqara.stop_ringtone
-  initial_state: 'on'
-  mode: single
 - id: '1536864983273'
   alias: Fire alarm
   initial_state: 'on'
@@ -614,13 +560,14 @@
     platform: state
     to: 'on'
   - platform: state
-    entity_id: group.trusted_people
-    from: 'on'
-    to: 'off'
+    entity_id:
+    - group.trusted_people
     for:
       hours: 0
       minutes: 10
       seconds: 0
+    to: away
+    from: home
   condition: []
   action:
   - data:
@@ -775,6 +722,9 @@
       - condition: state
         entity_id: calendar.rental_control_airbnb_sundbyvik
         state: 'off'
+      - condition: state
+        entity_id: calendar.rental_control_booking_sjosidan
+        state: 'off'
       sequence:
       - data:
           message: 'Larmet är aktivt i hela huset. Orsak: ingen hemma'
@@ -785,9 +735,17 @@
       - service: input_boolean.turn_on
         entity_id: input_boolean.alarm_state
     - conditions:
-      - condition: state
-        entity_id: calendar.rental_control_airbnb_sundbyvik
-        state: 'on'
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: calendar.rental_control_airbnb_sundbyvik
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.guest_mode
+          state: 'on'
+        - condition: state
+          entity_id: calendar.rental_control_booking_sjosidan
+          state: 'on'
       sequence:
       - data:
           message: 'Larmet är aktivt i hela huset men inte gästytan. Orsak: ingen
@@ -886,6 +844,9 @@
       - condition: state
         entity_id: calendar.rental_control_airbnb_sundbyvik
         state: 'off'
+      - condition: state
+        entity_id: calendar.rental_control_booking_sjosidan
+        state: 'off'
       sequence:
       - data:
           message: 'Larmet är aktivt i hela huset. Orsak: sover'
@@ -896,9 +857,17 @@
       - service: input_boolean.turn_on
         entity_id: input_boolean.alarm_state
     - conditions:
-      - condition: state
-        entity_id: calendar.rental_control_airbnb_sundbyvik
-        state: 'on'
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: calendar.rental_control_airbnb_sundbyvik
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.guest_mode
+          state: 'on'
+        - condition: state
+          entity_id: calendar.rental_control_booking_sjosidan
+          state: 'on'
       sequence:
       - data:
           message: 'Larmet är aktivt i hela huset men inte gästytan. Orsak: sover'
@@ -1481,6 +1450,9 @@
   - condition: state
     entity_id: binary_sensor.motion_sensor_158d00036d598f
     state: 'off'
+  - condition: state
+    entity_id: binary_sensor.door_window_sensor_158d0002049a62
+    state: 'off'
   action:
   - data: {}
     service: light.turn_off
@@ -1895,7 +1867,7 @@
     state: above_horizon
   - condition: numeric_state
     entity_id: sensor.illumination_158d000276e193
-    below: '300'
+    below: '170'
   action:
   - service: scene.turn_on
     target:
@@ -2557,53 +2529,6 @@
     type: select_option
     option: '26'
   mode: single
-- id: '1644430134011'
-  alias: Test knob
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: c96b14a870e5f9278dd2d021fc8195ef
-    type: action
-    subtype: brightness_step_up
-    discovery_id: 0x540f57fffe2fd306 action_brightness_step_up
-    id: brightnessup
-  - platform: device
-    domain: mqtt
-    device_id: c96b14a870e5f9278dd2d021fc8195ef
-    type: action
-    subtype: brightness_step_down
-    discovery_id: 0x540f57fffe2fd306 action_brightness_step_down
-    id: brightnessdown
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: brightnessup
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_step_pct: 15
-          transition: 0
-        target:
-          entity_id: light.yeelight_color_0x5ed30a8
-    - conditions:
-      - condition: trigger
-        id: brightnessdown
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_step_pct: -15
-          transition: 0
-        target:
-          entity_id: light.yeelight_color_0x5ed30a8
-    default: []
-  - service: counter.increment
-    target:
-      entity_id: counter.testcounter
-  mode: queued
-  max: 10
 - id: '1644430731147'
   alias: Motion - Tv room - Off
   description: ''
@@ -2688,73 +2613,32 @@
         before: 06:00:00
       sequence:
       - service: script.tv_room_passive_light
+        data: {}
     - conditions:
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: elevation
+        below: '7'
+      sequence:
+      - service: script.tv_room_evening_light
+        data: {}
+    - conditions:
+      - condition: numeric_state
+        entity_id: sun.sun
+        attribute: elevation
+        above: '7'
       - condition: or
         conditions:
         - condition: numeric_state
+          entity_id: sensor.illumination_158d00023db75a
+          below: '12'
+        - condition: numeric_state
           entity_id: sensor.dark_sky_cloud_coverage
           above: '75'
-        - condition: numeric_state
-          entity_id: sun.sun
-          attribute: elevation
-          below: '7'
       sequence:
-      - service: script.tv_room_evening_light
+      - service: script.tv_room_day_light
+        data: {}
     default: []
-  mode: single
-- id: '1644432741123'
-  alias: Test knob triggers
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: c96b14a870e5f9278dd2d021fc8195ef
-    type: action
-    subtype: single
-    discovery_id: 0x540f57fffe2fd306 action_single
-    id: nope
-  - platform: device
-    domain: mqtt
-    device_id: c96b14a870e5f9278dd2d021fc8195ef
-    type: action
-    subtype: double
-    discovery_id: 0x540f57fffe2fd306 action_double
-    id: nope2
-  - platform: device
-    domain: mqtt
-    device_id: c96b14a870e5f9278dd2d021fc8195ef
-    type: action
-    subtype: toggle
-    discovery_id: 0x540f57fffe2fd306 action_toggle
-  - platform: device
-    domain: mqtt
-    device_id: c96b14a870e5f9278dd2d021fc8195ef
-    type: action
-    subtype: color_temperature_step_up
-    discovery_id: 0x540f57fffe2fd306 action_color_temperature_step_up
-  - platform: device
-    domain: mqtt
-    device_id: c96b14a870e5f9278dd2d021fc8195ef
-    type: action
-    subtype: color_temperature_step_down
-    discovery_id: 0x540f57fffe2fd306 action_color_temperature_step_down
-  - platform: device
-    domain: mqtt
-    device_id: c96b14a870e5f9278dd2d021fc8195ef
-    type: action
-    subtype: hue_move
-    discovery_id: 0x540f57fffe2fd306 action_hue_move
-  - platform: device
-    domain: mqtt
-    device_id: c96b14a870e5f9278dd2d021fc8195ef
-    type: action
-    subtype: hue_stop
-    discovery_id: 0x540f57fffe2fd306 action_hue_stop
-  - platform: mqtt
-    payload: hold
-    topic: zigbee2mqtt/Andreas Office knob/action
-  condition: []
-  action: []
   mode: single
 - id: '1647462915275'
   alias: Power - Phase overload
@@ -2868,6 +2752,18 @@
     from: 'on'
     to: 'off'
     id: 'off'
+  - platform: state
+    entity_id:
+    - input_boolean.alarm_while_rental_guests_home
+    from: 'on'
+    to: 'off'
+    id: off_airbnb
+  - platform: state
+    entity_id:
+    - input_boolean.alarm_while_rental_guests_home
+    from: 'off'
+    to: 'on'
+    id: on_airbnb
   condition: []
   action:
   - choose:
@@ -3018,6 +2914,21 @@
   - platform: calendar
     event: start
     entity_id: calendar.rental_control_airbnb_sundbyvik
+    offset: '-1:0:0'
+  - platform: calendar
+    event: start
+    offset: '-1:0:0'
+    entity_id: calendar.rental_control_booking_sjosidan
+  - platform: state
+    entity_id:
+    - calendar.rental_control_airbnb_sundbyvik
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id:
+    - calendar.rental_control_booking_sjosidan
+    from: 'off'
+    to: 'on'
   condition: []
   action:
   - service: input_boolean.turn_on
@@ -3028,6 +2939,27 @@
     data:
       message: Vistelsen har påbörjats! Gästläge är nu aktivt.
       title: AirBnb Sundbyvik
+  - condition: state
+    entity_id: input_boolean.alarm_state
+    state: 'on'
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.alarm_state
+      - input_boolean.alarm_triggered
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id:
+      - input_boolean.alarm_while_rental_guests_home
+  - data:
+      message: 'Larmet är aktivt i uthyrningsläge. Orsak: Ordinarie larm på när vitelse
+        börjar'
+      target:
+      - channel/sundbyvik-larm
+      title: Pålarmat i uthyrningsläge
+    service: notify.pushbullet_notifier
   mode: single
 - id: '1653853190830'
   alias: Rental - Sundbyvik - Event ended
@@ -3036,6 +2968,21 @@
   - platform: calendar
     event: end
     entity_id: calendar.rental_control_airbnb_sundbyvik
+    offset: 0:30:0
+  - platform: calendar
+    event: end
+    offset: 0:30:0
+    entity_id: calendar.rental_control_booking_sjosidan
+  - platform: state
+    entity_id:
+    - calendar.rental_control_airbnb_sundbyvik
+    - calendar.rental_control_booking_sjosidan
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
   condition: []
   action:
   - service: input_boolean.turn_off
@@ -3046,6 +2993,20 @@
     data:
       title: AirBnb Sundbyvik
       message: Vistelsen för gäst har avslutats. Gästläge avstängt.
+  - condition: state
+    entity_id: input_boolean.alarm_while_rental_guests_home
+    state: 'on'
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.alarm_state
+  - data:
+      message: 'Larmet är aktivt i hela huset. Orsak: uthyrning avslutad med när larm
+        är på'
+      target:
+      - channel/sundbyvik-larm
+      title: Pålarmat vid avslutad uthyrning
+    service: notify.pushbullet_notifier
   mode: single
 - id: '1654883158756'
   alias: Alarm - Trigger with guests
@@ -3053,7 +3014,19 @@
   trigger:
   - platform: state
     entity_id:
-    - group.rental_alarm_sensors
+    - binary_sensor.motion_sensor_kitchen
+    - binary_sensor.motion_sensor_upper_floor
+    - binary_sensor.motion_sensor_158d0003494ced
+    - binary_sensor.motion_sensor_158d00023db75a
+    - binary_sensor.motion_sensor_158d00023db6f4
+    - binary_sensor.motion_sensor_158d00053fcc36
+    - binary_sensor.door_window_sensor_158d00031b5702
+    - binary_sensor.door_window_sensor_158d00031e2c27
+    - binary_sensor.door_window_sensor_158d00022efeb6
+    - binary_sensor.door_window_sensor_158d000428df78
+    - binary_sensor.door_window_sensor_158d000313441b
+    - binary_sensor.door_window_sensor_158d0002048620
+    - binary_sensor.door_window_sensor_158d00022eff91
     from: 'off'
     to: 'on'
   condition:
@@ -3065,6 +3038,14 @@
       \ == None \n  or as_timestamp(now()) - as_timestamp(states.automation.alarm_trigger_with_guests.attributes.last_triggered)\
       \ > 900  \n}}"
   action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - condition: state
+    entity_id: input_boolean.alarm_while_rental_guests_home
+    state: 'on'
   - service: xiaomi_aqara.play_ringtone
     data:
       gw_mac: 04:CF:8C:91:62:CB
@@ -3084,8 +3065,8 @@
       seconds: 0
       milliseconds: 0
   - condition: state
-    entity_id: input_boolean.alarm_while_rental_guests_home
     state: 'on'
+    entity_id: input_boolean.alarm_while_rental_guests_home
   - data:
       entity_id: input_boolean.alarm_triggered
     service: input_boolean.turn_on
@@ -3101,6 +3082,7 @@
       title: Larm utlöst
     service: notify.pushbullet_notifier
   mode: single
+  max_exceeded: silent
 - id: '1654934303287'
   alias: Doors - Sound notification
   description: ''
@@ -3115,7 +3097,6 @@
   - platform: state
     entity_id:
     - binary_sensor.door_window_sensor_158d0002048620
-    - binary_sensor.door_window_sensor_158d0002049a62
     - binary_sensor.door_window_sensor_158d00022eff91
     - binary_sensor.door_window_sensor_158d000428df78
     from: 'off'
@@ -3136,7 +3117,7 @@
         - data:
             gw_mac: 04:CF:8C:91:62:CB
             ringtone_id: 29
-            ringtone_vol: 8
+            ringtone_vol: 6
           service: xiaomi_aqara.play_ringtone
         else:
         - data:
@@ -3158,6 +3139,9 @@
       - condition: state
         state: 'off'
         entity_id: calendar.rental_control_airbnb_sundbyvik
+      - condition: state
+        entity_id: calendar.rental_control_booking_sjosidan
+        state: 'off'
       sequence:
       - if:
         - condition: state
@@ -3167,7 +3151,7 @@
         - data:
             gw_mac: 04:CF:8C:91:62:CB
             ringtone_id: 29
-            ringtone_vol: 8
+            ringtone_vol: 6
           service: xiaomi_aqara.play_ringtone
         else:
         - data:
@@ -3183,5 +3167,142 @@
       - data:
           gw_mac: 04:CF:8C:91:62:CB
         service: xiaomi_aqara.stop_ringtone
+    default: []
+  mode: single
+- id: '1655320136401'
+  alias: Car - Reset Schedule each morning
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:00:00
+  condition: []
+  action:
+  - service: easee.set_basic_charge_plan
+    data:
+      charger_id: EHXTDBBX
+      start_datetime: 2022-06-12 23:00
+      stop_datetime: 2022-06-13 07:00
+      repeat: true
+  mode: single
+- id: '1656180813956'
+  alias: Car - Force refresh
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_kitchen
+    - binary_sensor.motion_sensor_158d00023db75a
+    - binary_sensor.motion_sensor_upper_floor
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{ states.automation.car_force_refresh.attributes.last_triggered
+      == None or as_timestamp(now()) - as_timestamp(states.automation.car_force_refresh.attributes.last_triggered)
+      > 300  }}'
+  action:
+  - service: kia_uvo.force_update
+    data: {}
+  mode: single
+- id: '1656316045688'
+  alias: Test knob 2
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: color_temperature_step_up
+    discovery_id: 0x540f57fffe2fd306 action_color_temperature_step_up
+    id: Hold and turn cw
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: color_temperature_step_down
+    discovery_id: 0x540f57fffe2fd306 action_color_temperature_step_down
+    id: Hold and turn ccw
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: brightness_step_down
+    discovery_id: 0x540f57fffe2fd306 action_brightness_step_down
+    id: Turn ccw
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: brightness_step_up
+    discovery_id: 0x540f57fffe2fd306 action_brightness_step_up
+    id: Turn cw
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: toggle
+    discovery_id: 0x540f57fffe2fd306 action_toggle
+    id: Single click
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: hue_stop
+    discovery_id: 0x540f57fffe2fd306 action_hue_stop
+    id: Stop hold
+  - platform: device
+    domain: mqtt
+    device_id: c96b14a870e5f9278dd2d021fc8195ef
+    type: action
+    subtype: hue_move
+    discovery_id: 0x540f57fffe2fd306 action_hue_move
+    id: Hold
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: Single click
+      sequence:
+      - service: media_player.media_play_pause
+        data: {}
+        target:
+          entity_id: media_player.vardagsrum
+    - conditions:
+      - condition: trigger
+        id: Hold and turn cw
+      sequence:
+      - service: media_player.volume_set
+        data:
+          volume_level: '{{ [state_attr(''media_player.mtk8530'', ''volume_level'')
+            + 0.06 , 1.0] | min}}'
+        target:
+          entity_id: media_player.mtk8530
+    - conditions:
+      - condition: trigger
+        id: Hold and turn ccw
+      sequence:
+      - service: media_player.volume_set
+        data:
+          volume_level: '{{ [state_attr(''media_player.mtk8530'', ''volume_level'')
+            - 0.045 , 0.0] | max}}'
+        target:
+          entity_id: media_player.mtk8530
+    - conditions:
+      - condition: trigger
+        id: Turn cw
+      sequence:
+      - service: media_player.volume_up
+        data: {}
+        target:
+          entity_id: media_player.vardagsrum
+    - conditions:
+      - condition: trigger
+        id: Turn ccw
+      sequence:
+      - service: media_player.volume_down
+        data: {}
+        target:
+          entity_id: media_player.vardagsrum
     default: []
   mode: single
