@@ -53,6 +53,10 @@
       - 71
     target:
       entity_id: light.wled_left_speaker
+  - service: script.turn_on_left_closet
+    data: {}
+  - service: script.turn_on_right_closet
+    data: {}
   initial_state: 'on'
   mode: single
 - id: '1532183940727'
@@ -185,6 +189,7 @@
       entity_id:
       - switch.outlet_lamp_living_room
       - switch.outlet_living_room_right
+    enabled: false
   - data:
       entity_id: input_boolean.tv_room_light_switched_recently_pressed
     service: input_boolean.turn_off
@@ -223,8 +228,6 @@
     service: switch.turn_on
     target:
       entity_id:
-      - switch.outlet_lamp_living_room
-      - switch.outlet_living_room_right
       - switch.tv_room_window_lamps_switch
   - data:
       entity_id: input_boolean.alarm_state
@@ -786,11 +789,45 @@
     entity_id: group.trusted_people
     state: home
   - after: '20:00'
-    before: 07:00
+    before: 07:00:00
     condition: time
   - condition: state
     entity_id: sensor.template_last_motion
     state: binary_sensor.motion_sensor_158d0003494ced
+  - condition: or
+    conditions:
+    - condition: device
+      device_id: c324d135187811eba6fdb7414674f631
+      domain: media_player
+      entity_id: media_player.vardagsrum
+      type: is_off
+    - condition: device
+      device_id: c324d135187811eba6fdb7414674f631
+      domain: media_player
+      entity_id: media_player.vardagsrum
+      type: is_paused
+    - condition: device
+      device_id: c324d135187811eba6fdb7414674f631
+      domain: media_player
+      entity_id: media_player.vardagsrum
+      type: is_idle
+  - condition: or
+    conditions:
+    - condition: device
+      device_id: c326751c187811ebaf98691d8354fa5d
+      domain: media_player
+      entity_id: media_player.overvaning
+      type: is_off
+    - condition: device
+      device_id: c326751c187811ebaf98691d8354fa5d
+      domain: media_player
+      entity_id: media_player.overvaning
+      type: is_paused
+    - condition: device
+      device_id: c326751c187811ebaf98691d8354fa5d
+      domain: media_player
+      entity_id: media_player.overvaning
+      type: is_idle
   action:
   - data: {}
     service: input_boolean.turn_on
@@ -1737,14 +1774,23 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: sensor.should_close_blinds
-    to: 'False'
-    from: 'True'
-    for: 00:10:00
+    entity_id:
+    - sensor.should_close_blinds
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    from: 'False'
+    to: 'True'
+  - platform: time
+    at: 09:45:00
   condition:
   - condition: time
-    after: 09:30
+    after: 09:30:00
     before: '18:00:00'
+  - condition: state
+    entity_id: sensor.should_close_blinds
+    state: 'True'
   action:
   - device_id: 76d329213e6531314e86643974320d61
     domain: cover
@@ -1777,7 +1823,7 @@
   description: ''
   trigger:
   - platform: time
-    at: 09:15
+    at: 09:25:00
   condition:
   - condition: state
     entity_id: input_boolean.sleeping
@@ -2965,14 +3011,6 @@
   alias: Rental - Sundbyvik - Event ended
   description: ''
   trigger:
-  - platform: calendar
-    event: end
-    entity_id: calendar.rental_control_airbnb_sundbyvik
-    offset: 0:30:0
-  - platform: calendar
-    event: end
-    offset: 0:30:0
-    entity_id: calendar.rental_control_booking_sjosidan
   - platform: state
     entity_id:
     - calendar.rental_control_airbnb_sundbyvik
@@ -2989,6 +3027,11 @@
     data: {}
     target:
       entity_id: input_boolean.guest_mode
+  - service: input_text.set_value
+    data:
+      value: ''
+    target:
+      entity_id: input_text.fallback_guest_name
   - service: notify.pushbullet_notifier
     data:
       title: AirBnb Sundbyvik
@@ -3034,9 +3077,9 @@
     entity_id: input_boolean.alarm_while_rental_guests_home
     state: 'on'
   - condition: template
-    value_template: "{{ \n  states.automation.alarm_trigger_with_guests.attributes.last_triggered\
-      \ == None \n  or as_timestamp(now()) - as_timestamp(states.automation.alarm_trigger_with_guests.attributes.last_triggered)\
-      \ > 900  \n}}"
+    value_template: "{{ \n  states.automation.alarm_trigger_with_guests.attributes.last_triggered
+      == None \n  or as_timestamp(now()) - as_timestamp(states.automation.alarm_trigger_with_guests.attributes.last_triggered)
+      > 900  \n}}"
   action:
   - delay:
       hours: 0
@@ -3274,20 +3317,20 @@
       sequence:
       - service: media_player.volume_set
         data:
-          volume_level: '{{ [state_attr(''media_player.mtk8530'', ''volume_level'')
+          volume_level: '{{ [state_attr(''media_player.lg_sk9y_fe_2d'', ''volume_level'')
             + 0.06 , 1.0] | min}}'
         target:
-          entity_id: media_player.mtk8530
+          entity_id: media_player.lg_sk9y_fe_2d
     - conditions:
       - condition: trigger
         id: Hold and turn ccw
       sequence:
       - service: media_player.volume_set
         data:
-          volume_level: '{{ [state_attr(''media_player.mtk8530'', ''volume_level'')
+          volume_level: '{{ [state_attr(''media_player.lg_sk9y_fe_2d'', ''volume_level'')
             - 0.045 , 0.0] | max}}'
         target:
-          entity_id: media_player.mtk8530
+          entity_id: media_player.lg_sk9y_fe_2d
     - conditions:
       - condition: trigger
         id: Turn cw
