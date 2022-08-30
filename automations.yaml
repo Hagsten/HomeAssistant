@@ -447,7 +447,7 @@
 - id: '1561320522889'
   alias: Media - Play - lights
   trigger:
-  - entity_id: media_player.vardagsrum
+  - entity_id: media_player.chromecast
     platform: state
     to: playing
   condition:
@@ -465,7 +465,7 @@
 - id: '1561567490842'
   alias: Media - Stop - lights
   trigger:
-  - entity_id: media_player.vardagsrum
+  - entity_id: media_player.chromecast
     for:
       hours: 0
       minutes: 0
@@ -473,7 +473,7 @@
     from: playing
     platform: state
     to: idle
-  - entity_id: media_player.vardagsrum
+  - entity_id: media_player.chromecast
     for:
       hours: 0
       minutes: 0
@@ -767,7 +767,7 @@
 - id: '1562446340139'
   alias: Sleep - Trigger wake up
   trigger:
-  - entity_id: binary_sensor.motion_sensor_158d0003494ced
+  - entity_id: binary_sensor.motion_sensor_corridor_upstairs
     from: 'off'
     platform: state
     to: 'on'
@@ -793,23 +793,23 @@
     condition: time
   - condition: state
     entity_id: sensor.template_last_motion
-    state: binary_sensor.motion_sensor_158d0003494ced
+    state: binary_sensor.motion_sensor_corridor_upstairs
   - condition: or
     conditions:
     - condition: device
       device_id: c324d135187811eba6fdb7414674f631
       domain: media_player
-      entity_id: media_player.vardagsrum
+      entity_id: media_player.chromecast
       type: is_off
     - condition: device
       device_id: c324d135187811eba6fdb7414674f631
       domain: media_player
-      entity_id: media_player.vardagsrum
+      entity_id: media_player.chromecast
       type: is_paused
     - condition: device
       device_id: c324d135187811eba6fdb7414674f631
       domain: media_player
-      entity_id: media_player.vardagsrum
+      entity_id: media_player.chromecast
       type: is_idle
   - condition: or
     conditions:
@@ -1401,7 +1401,7 @@
     entity_id: sensor.illumination_158d00023db6dc
     platform: numeric_state
   - above: '15'
-    entity_id: sensor.illumination_158d0003494ced
+    entity_id: sensor.lightlevel_8
     platform: numeric_state
   condition:
   - above: '15'
@@ -1409,7 +1409,7 @@
     entity_id: sensor.illumination_158d00023db6dc
   - above: '15'
     condition: numeric_state
-    entity_id: sensor.illumination_158d0003494ced
+    entity_id: sensor.lightlevel_8
   action:
   - data:
       entity_id: input_boolean.low_brightness_upstairs
@@ -1652,7 +1652,7 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: media_player.vardagsrum
+    entity_id: media_player.chromecast
     from: 'off'
   - platform: time
     at: 03:00
@@ -1669,86 +1669,12 @@
     data:
       volume_level: 0.15
   mode: single
-- id: '1608722078148'
-  alias: Car - Charging - Started
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.car_charging
-    from: 'False'
-    to: 'True'
-  condition: []
-  action:
-  - service: light.turn_on
-    data:
-      rgb_color:
-      - 0
-      - 255
-      - 0
-      brightness_pct: '100'
-    entity_id: light.gateway_light_50ec50c6bb8e
-  - service: notify.pushbullet_notifier
-    data:
-      message: Car charging begun
-      title: Car is charging
-  - service: xiaomi_aqara.play_ringtone
-    data:
-      gw_mac: 50:EC:50:C6:BB:8E
-      ringtone_id: 29
-      ringtone_vol: 8
-  - delay: 00:00:01
-  - service: xiaomi_aqara.stop_ringtone
-    data:
-      gw_mac: 50:EC:50:C6:BB:8E
-  - delay: 00:00:14
-  - type: turn_off
-    device_id: bfbc214b156d11ebbaef732b4b992e5d
-    entity_id: light.gateway_light_50ec50c6bb8e
-    domain: light
-  mode: single
-- id: '1608726715915'
-  alias: Car - Charging - Ended
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.car_charging
-    from: 'True'
-    to: 'False'
-  condition: []
-  action:
-  - service: light.turn_on
-    data:
-      rgb_color:
-      - 255
-      - 0
-      - 0
-      brightness_pct: '100'
-    entity_id: light.gateway_light_50ec50c6bb8e
-  - service: xiaomi_aqara.play_ringtone
-    data:
-      gw_mac: 50:EC:50:C6:BB:8E
-      ringtone_id: 29
-      ringtone_vol: 8
-  - delay: 00:00:01
-  - service: xiaomi_aqara.stop_ringtone
-    data:
-      gw_mac: 50:EC:50:C6:BB:8E
-  - delay: 00:00:14
-  - type: turn_off
-    device_id: bfbc214b156d11ebbaef732b4b992e5d
-    entity_id: light.gateway_light_50ec50c6bb8e
-    domain: light
-  - service: notify.pushbullet_notifier
-    data:
-      message: Car finished charging
-      title: Car finished charging
-  mode: single
 - id: '1618035182394'
   alias: AC Off
   description: ''
   trigger:
   - platform: state
-    entity_id: media_player.vardagsrum
+    entity_id: media_player.chromecast
     to: playing
   condition:
   - condition: time
@@ -1850,24 +1776,51 @@
   description: ''
   trigger:
   - platform: time
-    at: '21:30'
+    at: '21:30:00'
   condition: []
   action:
-  - device_id: 76d329213e6531314e86643974320d61
-    domain: cover
-    entity_id: cover.rd_intelligent_blindmotor_curtain
-    type: set_position
-    position: 0
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 5
-      milliseconds: 0
-  - device_id: 76d329213e6531314e86643974320d61
-    domain: cover
-    entity_id: cover.rd_intelligent_blindmotor_curtain
-    type: set_position
-    position: 0
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.door_window_sensor_158d00022f151e
+        state: 'off'
+      sequence:
+      - device_id: 76d329213e6531314e86643974320d61
+        domain: cover
+        entity_id: cover.rd_intelligent_blindmotor_curtain
+        type: set_position
+        position: 0
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 5
+          milliseconds: 0
+      - device_id: 76d329213e6531314e86643974320d61
+        domain: cover
+        entity_id: cover.rd_intelligent_blindmotor_curtain
+        type: set_position
+        position: 0
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.door_window_sensor_158d00022f151e
+        state: 'on'
+      sequence:
+      - device_id: 76d329213e6531314e86643974320d61
+        domain: cover
+        entity_id: cover.rd_intelligent_blindmotor_curtain
+        type: set_position
+        position: 10
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 5
+          milliseconds: 0
+      - device_id: 76d329213e6531314e86643974320d61
+        domain: cover
+        entity_id: cover.rd_intelligent_blindmotor_curtain
+        type: set_position
+        position: 10
+    default: []
   mode: single
 - id: '1636956079153'
   alias: 'Lights - Kitchen - Adjust to daytime '
@@ -2282,8 +2235,8 @@
     below: 10
   - type: battery_level
     platform: device
-    device_id: 8b1215c21d3211eb95eaf71624720922
-    entity_id: sensor.battery_158d0004119265
+    device_id: 54070ea8f5ebe73a932431f2ad1a1503
+    entity_id: sensor.smoke_detector_upstairs_battery
     domain: sensor
     below: 10
   - platform: state
@@ -2293,7 +2246,6 @@
       hours: 0
       minutes: 15
       seconds: 0
-      milliseconds: 0
   - platform: state
     entity_id: binary_sensor.smoke_sensor_158d00023117bb
     to: unavailable
@@ -2301,15 +2253,14 @@
       hours: 0
       minutes: 15
       seconds: 0
-      milliseconds: 0
   - platform: state
-    entity_id: binary_sensor.smoke_sensor_158d0004119265
+    entity_id:
+    - binary_sensor.smoke_detector_upstairs_smoke
     to: unavailable
     for:
       hours: 0
       minutes: 15
       seconds: 0
-      milliseconds: 0
   condition: []
   action:
   - service: notify.pushbullet_notifier
@@ -2599,7 +2550,7 @@
     id: night
   condition:
   - condition: state
-    entity_id: media_player.vardagsrum
+    entity_id: media_player.chromecast
     state: 'off'
   action:
   - choose:
@@ -2643,7 +2594,7 @@
   - condition: not
     conditions:
     - condition: state
-      entity_id: media_player.vardagsrum
+      entity_id: media_player.chromecast
       state: playing
   - condition: state
     entity_id: input_boolean.tv_room_light_switched_recently_pressed
@@ -3059,7 +3010,6 @@
     entity_id:
     - binary_sensor.motion_sensor_kitchen
     - binary_sensor.motion_sensor_upper_floor
-    - binary_sensor.motion_sensor_158d0003494ced
     - binary_sensor.motion_sensor_158d00023db75a
     - binary_sensor.motion_sensor_158d00023db6f4
     - binary_sensor.motion_sensor_158d00053fcc36
@@ -3094,6 +3044,7 @@
       gw_mac: 04:CF:8C:91:62:CB
       ringtone_id: '2'
       ringtone_vol: 10
+    enabled: false
   - delay:
       hours: 0
       minutes: 0
@@ -3102,11 +3053,13 @@
   - service: xiaomi_aqara.stop_ringtone
     data:
       gw_mac: 04:CF:8C:91:62:CB
+    enabled: false
   - delay:
       hours: 0
       minutes: 2
       seconds: 0
       milliseconds: 0
+    enabled: false
   - condition: state
     state: 'on'
     entity_id: input_boolean.alarm_while_rental_guests_home
@@ -3118,6 +3071,7 @@
       gw_mac: 04:CF:8C:91:62:CB
       ringtone_id: '2'
       ringtone_vol: 20
+    enabled: false
   - data:
       message: 'Sensors: {{ expand(states.group.rental_alarm_sensors.attributes.entity_id)     |
         selectattr(''last_changed'', ''ge'', now() - timedelta(minutes=10))     |
@@ -3162,6 +3116,7 @@
             ringtone_id: 29
             ringtone_vol: 6
           service: xiaomi_aqara.play_ringtone
+          enabled: false
         else:
         - data:
             gw_mac: 04:CF:8C:91:62:CB
@@ -3310,7 +3265,7 @@
       - service: media_player.media_play_pause
         data: {}
         target:
-          entity_id: media_player.vardagsrum
+          entity_id: media_player.chromecast
     - conditions:
       - condition: trigger
         id: Hold and turn cw
@@ -3338,7 +3293,7 @@
       - service: media_player.volume_up
         data: {}
         target:
-          entity_id: media_player.vardagsrum
+          entity_id: media_player.chromecast
     - conditions:
       - condition: trigger
         id: Turn ccw
@@ -3346,6 +3301,44 @@
       - service: media_player.volume_down
         data: {}
         target:
-          entity_id: media_player.vardagsrum
+          entity_id: media_player.chromecast
     default: []
+  mode: single
+- id: '1661546925974'
+  alias: Push Notification - Smoke detectors online
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.smoke_sensor_158d000215ab06
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    from: unavailable
+    to: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.smoke_sensor_158d00023117bb
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    from: unavailable
+    to: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.smoke_detector_upstairs_smoke
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    from: unavailable
+    to: 'off'
+  condition: []
+  action:
+  - service: notify.pushbullet_notifier
+    data:
+      message: 'A smoke detector is back online '
+      title: 'Smoke detector online '
   mode: single

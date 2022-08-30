@@ -1,117 +1,115 @@
-  doors:
-    name: Doors
-    entities:
-      - binary_sensor.door_window_sensor_158d0002048620
-      - binary_sensor.door_window_sensor_158d00022eff91
-      - binary_sensor.door_window_sensor_158d000428df78
-      - binary_sensor.door_window_sensor_158d0002049a62
-      - binary_sensor.door_window_sensor_158d000204bac9
-  tv_room_rgb_lights:
-    name: Tv room RGB
-    entities:
-      - light.yeelight_color_0x5e72c05
-      - light.yeelight_color_0x5e72e34
-  tv_room_cieling_lights:
-    name: TV-rum taklampor
-    entities:
-      - light.yeelight_ceiling3_0x7e76b83
-      - light.yeelight_ceiling3_0x7e792ca    
-  trusted_people:
-    name: Family
-    entities:
-      - device_tracker.annchriesiphone
-      - device_tracker.honor_8
-      - device_tracker.8c_b8_4a_7d_1e_6b
-      - device_tracker.johannas_galaxy_note20_5g
-      - device_tracker.johannas_galaxy_note20_5g_2
-      - device_tracker.andreas_pixel_6
-      - device_tracker.pixel_6
-  motion_sensors:
-    name: Motion sensors
-    entities:
-      - binary_sensor.motion_sensor_158d00023db75a
-      - binary_sensor.motion_sensor_158d00023db6f4
-      - binary_sensor.motion_sensor_upper_floor
-      - binary_sensor.motion_sensor_kitchen
-      - binary_sensor.motion_sensor_158d0003494ced
-      - binary_sensor.motion_sensor_158d00053fcc36
-      - binary_sensor.motion_sensor_158d00036d598f
-  upper_floor_motion_sensors:
-    name: Upper floor Motion sensors
-    entities:
-      - binary_sensor.motion_sensor_upper_floor
-      - binary_sensor.motion_sensor_158d0003494ced
-  stair_adjacent_motion_sensors:
-    name: Stair adjacent motion sensors
-    entities:
-      - binary_sensor.motion_sensor_kitchen
-      - binary_sensor.motion_sensor_158d00023db75a
-  closed_windows:
-    name: Windows
-    entities:
-      - binary_sensor.door_window_sensor_158d00022d2f29
-      - binary_sensor.door_window_sensor_158d00022efeb6
-      - binary_sensor.door_window_sensor_158d0002386a40
-      - binary_sensor.door_window_sensor_158d00031b5702
-      - binary_sensor.door_window_sensor_158d00031e2c27
-  house_shell:
-    name: Skalskydd
-    entities:
-      - group.closed_windows
-      - group.doors
-  rental_alarm_sensors:
-    name: Rental alarm trigger sensors
-    entities:
-      - group.upper_floor_motion_sensors
-      - binary_sensor.motion_sensor_158d00023db75a
-      - binary_sensor.motion_sensor_158d00023db6f4
-      - binary_sensor.motion_sensor_upper_floor
-      - binary_sensor.motion_sensor_kitchen
-      - binary_sensor.motion_sensor_158d0003494ced
-      - binary_sensor.motion_sensor_158d00053fcc36
-      - binary_sensor.door_window_sensor_158d0002048620
-      - binary_sensor.door_window_sensor_158d00022eff91
-      - binary_sensor.door_window_sensor_158d000428df78
-      - binary_sensor.door_window_sensor_158d00022efeb6
-      - binary_sensor.door_window_sensor_158d0002386a40
-      - binary_sensor.door_window_sensor_158d00031b5702
-      - binary_sensor.door_window_sensor_158d00031e2c27
-  temperatures:
-    name: Temperaturer
-    entities:
-      - sensor.temperature_158d00023279ba
-      - sensor.temperature_158d0002320527
-      - sensor.temperature_158d000272c66a
-      - sensor.temperature_158d000272c69f
-      - sensor.temperature_158d0003498df2
-      - sensor.temperature_158d0003499f6f
-      - sensor.temperature_158d00044f801d
-      - sensor.temperature_158d00036b8ea9
-  humidity:
-    name: Luftfuktigheter
-    entities:
-      - sensor.humidity_158d0002320527
-      - sensor.humidity_158d00023279ba
-      - sensor.humidity_158d000272c69f
-      - sensor.humidity_158d000272c66a
-      - sensor.humidity_158d0003499f6f
-      - sensor.humidity_158d0003498df2
-      - sensor.humidity_158d00036b8ea9
-  smoke_detectors:
-    name: Brandvarnare
-    entities:
-      - binary_sensor.smoke_sensor_158d00023117bb
-      - binary_sensor.smoke_sensor_158d000215ab06
-      - binary_sensor.smoke_sensor_158d0004119265
-  livingroom_lights:
-    name: Lampor sällskapsrum
-    entities:
-      - switch.outlet_lamp_living_room
-      - switch.outlet_living_room_right
-  all_lighting:
-    name: Alla lampor
-    entities:
-      - group.livingroom_lights
-      - light.all_lights
-      - switch.tv_room_window_lamps_switch
-
+doors:
+  name: Doors
+  entities:
+    - binary_sensor.door_window_sensor_158d0002048620
+    - binary_sensor.door_window_sensor_158d00022eff91
+    - binary_sensor.door_window_sensor_158d000428df78
+    - binary_sensor.door_window_sensor_158d0002049a62
+    - binary_sensor.door_window_sensor_158d000204bac9
+tv_room_rgb_lights:
+  name: Tv room RGB
+  entities:
+    - light.yeelight_color_0x5e72c05
+    - light.yeelight_color_0x5e72e34
+tv_room_cieling_lights:
+  name: TV-rum taklampor
+  entities:
+    - light.yeelight_ceiling3_0x7e76b83
+    - light.yeelight_ceiling3_0x7e792ca
+trusted_people:
+  name: Family
+  entities:
+    - device_tracker.annchriesiphone
+    - device_tracker.honor_8
+    - device_tracker.8c_b8_4a_7d_1e_6b
+    - device_tracker.johannas_galaxy_note20_5g
+    - device_tracker.johannas_galaxy_note20_5g_2
+    - device_tracker.andreas_pixel_6
+    - device_tracker.pixel_6
+motion_sensors:
+  name: Motion sensors
+  entities:
+    - binary_sensor.motion_sensor_158d00023db75a
+    - binary_sensor.motion_sensor_158d00023db6f4
+    - binary_sensor.motion_sensor_upper_floor
+    - binary_sensor.motion_sensor_kitchen
+    - binary_sensor.motion_sensor_corridor_upstairs
+    - binary_sensor.motion_sensor_158d00053fcc36
+    - binary_sensor.motion_sensor_158d00036d598f
+upper_floor_motion_sensors:
+  name: Upper floor Motion sensors
+  entities:
+    - binary_sensor.motion_sensor_upper_floor
+    - binary_sensor.motion_sensor_corridor_upstairs
+stair_adjacent_motion_sensors:
+  name: Stair adjacent motion sensors
+  entities:
+    - binary_sensor.motion_sensor_kitchen
+    - binary_sensor.motion_sensor_158d00023db75a
+closed_windows:
+  name: Windows
+  entities:
+    - binary_sensor.door_window_sensor_158d00022d2f29
+    - binary_sensor.door_window_sensor_158d00022efeb6
+    - binary_sensor.door_window_sensor_158d0002386a40
+    - binary_sensor.door_window_sensor_158d00031b5702
+    - binary_sensor.door_window_sensor_158d00031e2c27
+house_shell:
+  name: Skalskydd
+  entities:
+    - group.closed_windows
+    - group.doors
+rental_alarm_sensors:
+  name: Rental alarm trigger sensors
+  entities:
+    - group.upper_floor_motion_sensors
+    - binary_sensor.motion_sensor_158d00023db75a
+    - binary_sensor.motion_sensor_158d00023db6f4
+    - binary_sensor.motion_sensor_upper_floor
+    - binary_sensor.motion_sensor_kitchen
+    - binary_sensor.motion_sensor_158d00053fcc36
+    - binary_sensor.door_window_sensor_158d0002048620
+    - binary_sensor.door_window_sensor_158d00022eff91
+    - binary_sensor.door_window_sensor_158d000428df78
+    - binary_sensor.door_window_sensor_158d00022efeb6
+    - binary_sensor.door_window_sensor_158d0002386a40
+    - binary_sensor.door_window_sensor_158d00031b5702
+    - binary_sensor.door_window_sensor_158d00031e2c27
+temperatures:
+  name: Temperaturer
+  entities:
+    - sensor.temperature_158d00023279ba
+    - sensor.temperature_158d0002320527
+    - sensor.temperature_158d000272c66a
+    - sensor.temperature_158d000272c69f
+    - sensor.temperature_158d0003498df2
+    - sensor.temperature_158d0003499f6f
+    - sensor.temperature_158d00044f801d
+    - sensor.temperature_158d00036b8ea9
+humidity:
+  name: Luftfuktigheter
+  entities:
+    - sensor.humidity_158d0002320527
+    - sensor.humidity_158d00023279ba
+    - sensor.humidity_158d000272c69f
+    - sensor.humidity_158d000272c66a
+    - sensor.humidity_158d0003499f6f
+    - sensor.humidity_158d0003498df2
+    - sensor.humidity_158d00036b8ea9
+smoke_detectors:
+  name: Brandvarnare
+  entities:
+    - binary_sensor.smoke_sensor_158d00023117bb
+    - binary_sensor.smoke_sensor_158d000215ab06
+    - binary_sensor.smoke_detector_upstairs_smoke
+livingroom_lights:
+  name: Lampor sällskapsrum
+  entities:
+    - switch.outlet_lamp_living_room
+    - switch.outlet_living_room_right
+all_lighting:
+  name: Alla lampor
+  entities:
+    - group.livingroom_lights
+    - light.all_lights
+    - switch.tv_room_window_lamps_switch

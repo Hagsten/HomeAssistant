@@ -1,4 +1,3 @@
-
 homeassistant:
   # Name of the location where Home Assistant is running
   name: Home
@@ -14,9 +13,9 @@ homeassistant:
   # Customization file
   customize: !include customize.yaml
   auth_providers:
-   - type: homeassistant
-   - type: legacy_api_password
-     api_password: !secret http_password
+    - type: homeassistant
+    - type: legacy_api_password
+      api_password: !secret http_password
 
 system_health:
 
@@ -29,7 +28,7 @@ config:
   themes: !include themes.yaml
 
 http:
-  cors_allowed_origins: 
+  cors_allowed_origins:
     - http://hadashboard.z16.web.core.windows.net
     - http://localhost:3000
   # Secrets are defined in the file secrets.yaml
@@ -46,8 +45,8 @@ http:
 # For more information, please see:
 # https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
 # updater:
-  # Optional, allows Home Assistant developers to focus on popular components.
-  # include_used_components: true
+# Optional, allows Home Assistant developers to focus on popular components.
+# include_used_components: true
 
 # Discover some devices automatically
 discovery:
@@ -76,8 +75,6 @@ tts:
 
 # Cloud
 cloud:
-
-
 
 binary_sensor:
   - platform: ping
@@ -121,16 +118,16 @@ sensor:
   - platform: uptime
   - platform: time_date
     display_options:
-      - 'time'
-      - 'date'
-      - 'date_time'
-      - 'time_date'
+      - "time"
+      - "date"
+      - "date_time"
+      - "time_date"
   - platform: systemmonitor
     resources:
       - type: disk_use_percent
         arg: /home
       - type: memory_free
-      - type: processor_use  
+      - type: processor_use
   - platform: darksky
     forecast:
       - 1
@@ -142,7 +139,7 @@ sensor:
       - precip_type
       - precip_probability
       - precip_intensity
-      - precip_accumulation 
+      - precip_accumulation
       - temperature
       - wind_speed
       - wind_bearing
@@ -153,39 +150,39 @@ sensor:
   - platform: template
     sensors:
       template_last_motion:
-        friendly_name: 'Last Motion'
-        icon_template: 'mdi:walk'        
+        friendly_name: "Last Motion"
+        icon_template: "mdi:walk"
         value_template: >
-          {%- set pirs = [states.binary_sensor.motion_sensor_upper_floor,  states.binary_sensor.motion_sensor_kitchen, states.binary_sensor.motion_sensor_158d00023db75a, states.binary_sensor.motion_sensor_158d00023db6f4, states.binary_sensor.motion_sensor_158d0003494ced] %}
+          {%- set pirs = [states.binary_sensor.motion_sensor_upper_floor,  states.binary_sensor.motion_sensor_kitchen, states.binary_sensor.motion_sensor_158d00023db75a, states.binary_sensor.motion_sensor_158d00023db6f4, states.binary_sensor.motion_sensor_corridor_upstairs] %}
           {% for pir in pirs %}
             {% if as_timestamp(pir.last_changed) == as_timestamp(pirs | map(attribute='last_changed') | max) %}
               {{ pir.entity_id }}
             {% endif %}
           {% endfor %}
       silent_at_night:
-        friendly_name: 'Silent at night'
-        value_template: > 
+        friendly_name: "Silent at night"
+        value_template: >
           {% if now().hour >= 1 and now().hour < 6 and is_state('group.motion_sensors', 'off') and (as_timestamp(now()) - as_timestamp(states.group.motion_sensors.last_changed)) >= (60*15) %}
             on
           {% else %}
             off
           {% endif %}
       car_charging:
-        friendly_name: 'Car charging'
+        friendly_name: "Car charging"
         unique_id: car_charging
         device_class: power
         value_template: "{{ states.sensor.car_charger_current_power.state | float(0) > 100 }}"
       car_charging_current_hour_cost:
-        unit_of_measurement: 'SEK/h'
+        unit_of_measurement: "SEK/h"
         unique_id: car_charging_current_hour_cost
-        friendly_name: 'Charging cost per hour'
+        friendly_name: "Charging cost per hour"
         value_template: "{{ (states.sensor.car_charger_current_power.state | float(0) / 1000 | float * states.sensor.electricity_price_sundbyviksvagen_9.state | float(0)) | round(2) }}"
       should_close_blinds:
-        friendly_name: 'Close blinds to keep cool'
+        friendly_name: "Close blinds to keep cool"
         value_template: "{{ (states.sensor.temperature_158d0003498df2.state | float(0) >= 23.0) and (states.sensor.dark_sky_cloud_coverage.state | int <= 30) and states.sun.sun.state == 'above_horizon' }}"
       should_open_blinds:
-        friendly_name: 'Can open blinds'
-        value_template: "{{ (states.sensor.dark_sky_cloud_coverage.state | int >= 50) and states.sun.sun.state == 'above_horizon' }}"  
+        friendly_name: "Can open blinds"
+        value_template: "{{ (states.sensor.dark_sky_cloud_coverage.state | int >= 50) and states.sun.sun.state == 'above_horizon' }}"
 
 xiaomi_aqara:
   discovery_retry: 5
@@ -198,10 +195,6 @@ xiaomi_aqara:
       key: !secret xiaomi_gateway_garage_key
 ifttt:
   key: 9Rfbtkpj63qmsIkv2itVz2tEpnr2Unj0tSgNclbkNx
-
-media_player: 
-  - platform: lg_soundbar
-    name: Soundbar
 
 input_text:
 
@@ -216,7 +209,7 @@ input_boolean:
   alarm_arming_pending:
     name: Larm kommer aktiveras
   alarm_semi_arming_pending:
-    name: Larm övervåning kommer aktiveras  
+    name: Larm övervåning kommer aktiveras
   sleeping:
     name: Sover
   silent_mode:
@@ -230,7 +223,7 @@ input_boolean:
   identification_pending:
     name: Waiting for identification
   doorbell_ringing:
-    name: Doorbell is ringing  
+    name: Doorbell is ringing
   tv_room_light_switched_recently_pressed:
     name: Tv-room light switch recently pressed
   notification_goodmorning:
@@ -264,14 +257,14 @@ input_boolean:
     name: Notification Welcome home Johanna
   tts_notification_welcome_home_tina:
     name: Notification Welcome home Tina
-  
+
 input_select:
   light_presets:
     name: Ljusmiljö
     options:
-     - Normal
-     - Halloween
-     - Rotate
+      - Normal
+      - Halloween
+      - Rotate
     initial: Rotate
     icon: mdi:panda
 
@@ -287,7 +280,7 @@ light:
       - light.hallway_1_1000lm
       - light.hallway_2_1000lm
       - light.hallway_3_1000lm
-      - light.hallen_ceiling_3
+      - light.hallen_ceiling
   - platform: group
     name: TV-room cieling lights
     entities:
@@ -330,22 +323,22 @@ switch:
         turn_on:
           - service: yeelight.set_mode
             entity_id: light.yeelight_ceiling3_0x7e76b83
-            data:              
+            data:
               mode: moonlight
           - service: yeelight.set_mode
             entity_id: light.yeelight_ceiling3_0x7e792ca
-            data:              
+            data:
               mode: moonlight
           - service: input_boolean.turn_off
             entity_id: input_boolean.ceiling_yeelight_norml_mode
         turn_off:
           - service: yeelight.set_mode
             entity_id: light.yeelight_ceiling3_0x7e76b83
-            data:              
+            data:
               mode: normal
           - service: yeelight.set_mode
             entity_id: light.yeelight_ceiling3_0x7e792ca
-            data:              
+            data:
               mode: normal
           - service: input_boolean.turn_on
             entity_id: input_boolean.ceiling_yeelight_norml_mode
@@ -357,8 +350,7 @@ influxdb:
   username: homeassistant
   password: !secret influxdb
   max_retries: 3
-  default_measurement: state  
-
+  default_measurement: state
 
 group: !include groups.yaml
 automation: !include automations.yaml
