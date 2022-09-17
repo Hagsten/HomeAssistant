@@ -48,9 +48,9 @@ turn_on_office_lights:
   sequence:
   - data_template:
       entity_id: group.office_cieling_light
-      brightness_pct: "{% if now().hour >= 01 and now().hour <= 06 -%}\n  {{ 10 }}\n\
-        {% elif now().hour >= 19 and now().hour <= 23 -%}\n  {{ 10 }}\n{% else %}\n\
-        \  {{ 100 }}\n{%- endif %}\n"
+      brightness_pct: "{% if now().hour >= 01 and now().hour <= 06 -%}\n  {{ 10 }}\n{%
+        elif now().hour >= 19 and now().hour <= 23 -%}\n  {{ 10 }}\n{% else %}\n  {{
+        100 }}\n{%- endif %}\n"
     service: light.turn_on
 '1536574687151':
   alias: Turn on lights
@@ -58,10 +58,10 @@ turn_on_office_lights:
   - service: light.turn_on
     data_template:
       entity_id: group.tv_room_rgb_lights
-      brightness_pct: "{% if now().hour >= 01 and now().hour <= 06 -%}\n  {{ 10 }}\n\
-        {% elif states.sensor.illumination_158d00023db75a.state | float > 20 -%}\n\
-        \  {{ 100 }}\n{% elif states.sensor.illumination_158d00023db75a.state | float\
-        \ > 10 %}\n  {{ 70 }}\n{% else %}\n  {{ 50 }}\n{%- endif %}\n"
+      brightness_pct: "{% if now().hour >= 01 and now().hour <= 06 -%}\n  {{ 10 }}\n{%
+        elif states.sensor.illumination_158d00023db75a.state | float > 20 -%}\n  {{
+        100 }}\n{% elif states.sensor.illumination_158d00023db75a.state | float >
+        10 %}\n  {{ 70 }}\n{% else %}\n  {{ 50 }}\n{%- endif %}\n"
 '1537340978223':
   alias: 'Play sound '
   sequence:
@@ -325,3 +325,27 @@ tv_room_day_light:
   - scene: scene.tv_room_day
   mode: single
   icon: mdi:lightbulb
+remote_learn_dining_room_heating_pump_on_heating:
+  alias: Remote - Learn Dining room heating pump - ON heating
+  sequence:
+  - service: remote.learn_command
+    data:
+      device: heatpumpdiningroom
+      command: dining_room_on_heat
+      command_type: ir
+    target:
+      entity_id: remote.dining_room_remote_remote
+  mode: single
+  icon: mdi:heat-pump
+remote_learn_dining_room_heating_pump_on_heating_2:
+  alias: Remote - Learn Dining room heating pump - OFF
+  sequence:
+  - service: remote.learn_command
+    data:
+      device: heatpumpdiningroom
+      command_type: ir
+      command: dining_room_off
+    target:
+      entity_id: remote.dining_room_remote_remote
+  mode: single
+  icon: mdi:heat-pump

@@ -12,12 +12,15 @@ homeassistant:
   time_zone: Europe/Stockholm
   # Customization file
   customize: !include customize.yaml
+  external_url: "https://villasundbyvik.duckdns.org"
   auth_providers:
     - type: homeassistant
     - type: legacy_api_password
       api_password: !secret http_password
 
 system_health:
+
+my:
 
 # Enables the frontend
 frontend:
@@ -35,9 +38,9 @@ http:
   # api_password: !secret http_password
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
   # base_url: example.duckdns.org:8123
-  #ssl_certificate: /home/homeassistant/dehydrated/certs/villasundbyvik.duckdns.org/fullchain.pem
-  #ssl_key: /home/homeassistant/dehydrated/certs/villasundbyvik.duckdns.org/privkey.pem
-  #base_url: villasundbyvik.duckdns.org:8123
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+  base_url: villasundbyvik.duckdns.org:8123
 
 # Checks for available updates
 # Note: This component will send some information about your system to
@@ -47,6 +50,8 @@ http:
 # updater:
 # Optional, allows Home Assistant developers to focus on popular components.
 # include_used_components: true
+
+mobile_app:
 
 # Discover some devices automatically
 discovery:
@@ -277,9 +282,6 @@ light:
   - platform: group
     name: Hallway_lights
     entities:
-      - light.hallway_1_1000lm
-      - light.hallway_2_1000lm
-      - light.hallway_3_1000lm
       - light.hallen_ceiling
   - platform: group
     name: TV-room cieling lights
@@ -293,12 +295,6 @@ light:
       - light.yeelight_ceiling3_0x7e792ca
       - light.yeelight_color_0x5e72c05
       - light.yeelight_color_0x5e72e34
-  - platform: group
-    name: Kitchen spotlights
-    entities:
-      - light.kitchen_spot_1
-      - light.kitchen_spot_2
-      - light.kitchen_spot_3
   - platform: group
     name: All lights
     entities:

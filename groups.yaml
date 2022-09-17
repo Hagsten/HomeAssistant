@@ -101,12 +101,12 @@ smoke_detectors:
   entities:
     - binary_sensor.smoke_sensor_158d00023117bb
     - binary_sensor.smoke_sensor_158d000215ab06
-    - binary_sensor.smoke_detector_upstairs_smoke
+    - binary_sensor.upstairs_smoke_sensor
 livingroom_lights:
   name: Lampor sällskapsrum
   entities:
-    - switch.outlet_lamp_living_room
-    - switch.outlet_living_room_right
+    - switch.switch_diningroom_left
+    - switch.switch_diningroom_right
 all_lighting:
   name: Alla lampor
   entities:

@@ -32,27 +32,21 @@
     service: switch.turn_on
     target:
       entity_id:
-      - switch.outlet_lamp_living_room
-      - switch.outlet_living_room_right
       - switch.tv_room_window_lamps_switch
       - switch.guestroomwindow
       - switch.window_upper_floor
+      - switch.switch_diningroom_left
+      - switch.switch_diningroom_right
   - service: light.turn_on
     target:
       entity_id: light.tvroom_lights
     data:
       transition: 2
       brightness_pct: 100
-  - service: light.turn_on
-    data:
-      effect: Candle Multi
-      rgbw_color:
-      - 255
-      - 197
-      - 115
-      - 71
+  - service: scene.turn_on
+    data: {}
     target:
-      entity_id: light.wled_left_speaker
+      entity_id: scene.speakers_white_purple
   - service: script.turn_on_left_closet
     data: {}
   - service: script.turn_on_right_closet
@@ -75,15 +69,16 @@
       - light.yeelight_color_0x5ed30a8
       - light.yeelight_color_0x5ed2368
       - light.wled_left_speaker
+      - light.wled_speaker_2
   - data: {}
     service: switch.turn_off
     target:
       entity_id:
-      - switch.outlet_lamp_living_room
-      - switch.outlet_living_room_right
       - switch.guestroomwindow
       - switch.tv_room_window_lamps_switch
       - switch.window_upper_floor
+      - switch.switch_diningroom_left
+      - switch.switch_diningroom_right
   initial_state: 'on'
   mode: single
 - id: '1536864983273'
@@ -187,8 +182,8 @@
     service: switch.turn_off
     target:
       entity_id:
-      - switch.outlet_lamp_living_room
-      - switch.outlet_living_room_right
+      - switch.switch_diningroom_left
+      - switch.switch_diningroom_right
     enabled: false
   - data:
       entity_id: input_boolean.tv_room_light_switched_recently_pressed
@@ -353,20 +348,27 @@
       - service: script.flash_notification_yeelight
         data:
           light: light.yeelight_color_0x5ed30a8
-      - service: light.turn_on
+      - service: scene.create
         data:
-          effect: Loading
+          snapshot_entities:
+          - light.wled_left_speaker
+          - light.wled_speaker_2
+          - number.wled_left_speaker_speed
+          - number.wled_speaker_2_speed
+          scene_id: wled_state
+      - service: scene.turn_on
+        data: {}
         target:
-          entity_id: light.wled_left_speaker
+          entity_id: scene.speaker_white_icu
       - delay:
           hours: 0
           minutes: 0
           seconds: 5
           milliseconds: 0
-      - service: light.turn_off
+      - service: scene.turn_on
         data: {}
         target:
-          entity_id: light.wled_left_speaker
+          entity_id: scene.wled_state
     default: []
   - service: light.turn_on
     target:
@@ -779,35 +781,35 @@
 - id: '1562447214160'
   alias: Sleep - Trigger fall asleep
   trigger:
-  - entity_id: binary_sensor.motion_sensor_upper_floor
-    for: 00:15:00
-    from: 'on'
+  - entity_id:
+    - input_text.last_motion_entity
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
     platform: state
-    to: 'off'
+    to: binary_sensor.motion_sensor_corridor_upstairs
   condition:
   - condition: state
     entity_id: group.trusted_people
     state: home
-  - after: '20:00'
+  - after: '20:00:00'
     before: 07:00:00
     condition: time
-  - condition: state
-    entity_id: sensor.template_last_motion
-    state: binary_sensor.motion_sensor_corridor_upstairs
   - condition: or
     conditions:
     - condition: device
-      device_id: c324d135187811eba6fdb7414674f631
+      device_id: d993c97a0804a94edb4f45bcd5c6deb3
       domain: media_player
       entity_id: media_player.chromecast
       type: is_off
     - condition: device
-      device_id: c324d135187811eba6fdb7414674f631
+      device_id: d993c97a0804a94edb4f45bcd5c6deb3
       domain: media_player
       entity_id: media_player.chromecast
       type: is_paused
     - condition: device
-      device_id: c324d135187811eba6fdb7414674f631
+      device_id: d993c97a0804a94edb4f45bcd5c6deb3
       domain: media_player
       entity_id: media_player.chromecast
       type: is_idle
@@ -847,6 +849,10 @@
   - condition: state
     entity_id: input_boolean.sleeping
     state: 'off'
+    for:
+      hours: 9
+      minutes: 0
+      seconds: 0
   action:
   - data:
       entity_id: input_boolean.sleeping
@@ -1400,16 +1406,19 @@
   - above: '15'
     entity_id: sensor.illumination_158d00023db6dc
     platform: numeric_state
-  - above: '15'
-    entity_id: sensor.lightlevel_8
-    platform: numeric_state
+  - type: illuminance
+    platform: device
+    device_id: 517f836fa8cedef89b771d02318ae57f
+    entity_id: sensor.motion_sensor_corridor_upstairs
+    domain: sensor
+    above: 15
   condition:
   - above: '15'
     condition: numeric_state
     entity_id: sensor.illumination_158d00023db6dc
   - above: '15'
     condition: numeric_state
-    entity_id: sensor.lightlevel_8
+    entity_id: binary_sensor.motion_sensor_corridor_upstairs
   action:
   - data:
       entity_id: input_boolean.low_brightness_upstairs
@@ -2235,8 +2244,8 @@
     below: 10
   - type: battery_level
     platform: device
-    device_id: 54070ea8f5ebe73a932431f2ad1a1503
-    entity_id: sensor.smoke_detector_upstairs_battery
+    device_id: 771740cafe8274d8c9804d13689f46c9
+    entity_id: sensor.upstairs_smoke_sensor_battery
     domain: sensor
     below: 10
   - platform: state
@@ -2255,7 +2264,7 @@
       seconds: 0
   - platform: state
     entity_id:
-    - binary_sensor.smoke_detector_upstairs_smoke
+    - binary_sensor.upstairs_smoke_sensor
     to: unavailable
     for:
       hours: 0
@@ -2841,7 +2850,9 @@
     data:
       snapshot_entities:
       - light.wled_left_speaker
+      - light.wled_speaker_2
       - number.wled_left_speaker_speed
+      - number.wled_speaker_2_speed
       scene_id: wled_state
   - choose:
     - conditions:
@@ -2856,7 +2867,9 @@
           - 207
           - 129
         target:
-          entity_id: light.wled_left_speaker
+          entity_id:
+          - light.wled_left_speaker
+          - light.wled_speaker_2
     - conditions:
       - condition: or
         conditions:
@@ -2869,7 +2882,9 @@
         data:
           effect: Solid
         target:
-          entity_id: light.wled_left_speaker
+          entity_id:
+          - light.wled_left_speaker
+          - light.wled_speaker_2
       - delay:
           hours: 0
           minutes: 0
@@ -2879,7 +2894,9 @@
         data:
           effect: Dissolve
         target:
-          entity_id: light.wled_left_speaker
+          entity_id:
+          - light.wled_left_speaker
+          - light.wled_speaker_2
     - conditions:
       - condition: trigger
         id: Pause
@@ -2892,7 +2909,9 @@
           - 163
           - 230
         target:
-          entity_id: light.wled_left_speaker
+          entity_id:
+          - light.wled_left_speaker
+          - light.wled_speaker_2
     default: []
   - delay:
       hours: 0
@@ -3328,7 +3347,7 @@
     to: 'off'
   - platform: state
     entity_id:
-    - binary_sensor.smoke_detector_upstairs_smoke
+    - binary_sensor.upstairs_smoke_sensor
     for:
       hours: 0
       minutes: 0
@@ -3342,3 +3361,96 @@
       message: 'A smoke detector is back online '
       title: 'Smoke detector online '
   mode: single
+- id: '1662146477636'
+  alias: 'Motion - Last motion '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_158d00036d598f
+    - binary_sensor.motion_sensor_158d00023db75a
+    - binary_sensor.motion_sensor_upper_floor
+    - binary_sensor.motion_sensor_kitchen
+    - binary_sensor.motion_sensor_158d00053fcc36
+    - binary_sensor.motion_sensor_158d00023db6f4
+    - binary_sensor.motion_sensor_corridor_upstairs
+    to: 'on'
+  condition: []
+  action:
+  - service: input_text.set_value
+    data:
+      value: '{{trigger.entity_id}}'
+    target:
+      entity_id: input_text.last_motion_entity
+  mode: single
+- id: '1662383561696'
+  alias: 'Kids sleep time '
+  description: ''
+  trigger:
+  - platform: time
+    at: '18:30:00'
+  condition:
+  - condition: state
+    entity_id: input_boolean.silent_mode
+    state: 'off'
+  action:
+  - device_id: 72b24b0fd6f990e86fe53d7e8c557c07
+    domain: select
+    entity_id: select.doorbell_chime_volume
+    type: select_option
+    option: '7'
+  mode: single
+- id: '1662383676475'
+  alias: Kids wake up
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00:00
+  condition:
+  - condition: state
+    entity_id: input_boolean.silent_mode
+    state: 'off'
+  action:
+  - device_id: 72b24b0fd6f990e86fe53d7e8c557c07
+    domain: select
+    entity_id: select.doorbell_chime_volume
+    type: select_option
+    option: '26'
+  mode: single
+- id: '1662543380300'
+  alias: Dimmer - Dining room - speakers
+  description: ''
+  trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_wireless_dimmer
+      event: 3002
+    id: ccw
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tradfri_wireless_dimmer
+      event: 2002
+    id: cw
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: ccw
+      sequence:
+      - service: media_player.volume_down
+        data: {}
+        target:
+          entity_id: media_player.dining_room
+    - conditions:
+      - condition: trigger
+        id: cw
+      sequence:
+      - service: media_player.volume_up
+        data: {}
+        target:
+          entity_id: media_player.dining_room
+    default: []
+  mode: queued
