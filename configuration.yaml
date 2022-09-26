@@ -110,6 +110,25 @@ device_tracker:
     username: !secret unifi_ap_username
     password: !secret unifi_ap_password
 
+mqtt:
+  scene:
+    - unique_id: kitchen_daytime_scene
+      name: "Kitchen daytime Scene"
+      command_topic: "zigbee2mqtt/Kitchen spotlights/set"
+      payload_on: '{"scene_recall": 3}'
+    - unique_id: kitchen_evening_scene
+      name: "Kitchen evening Scene"
+      command_topic: "zigbee2mqtt/Kitchen spotlights/set"
+      payload_on: '{"scene_recall": 2}'
+    - unique_id: kitchen_passive_scene
+      name: "Kitchen passive"
+      command_topic: "zigbee2mqtt/Kitchen spotlights/set"
+      payload_on: '{"scene_recall": 1}'
+    - unique_id: kitchen_evening_5min_scene
+      name: "Kitchen evening 5 min"
+      command_topic: "zigbee2mqtt/Kitchen spotlights/set"
+      payload_on: '{"scene_recall": 4}'
+
 notify:
   - name: Pushbullet_notifier
     platform: pushbullet
@@ -158,7 +177,7 @@ sensor:
         friendly_name: "Last Motion"
         icon_template: "mdi:walk"
         value_template: >
-          {%- set pirs = [states.binary_sensor.motion_sensor_upper_floor,  states.binary_sensor.motion_sensor_kitchen, states.binary_sensor.motion_sensor_158d00023db75a, states.binary_sensor.motion_sensor_158d00023db6f4, states.binary_sensor.motion_sensor_corridor_upstairs] %}
+          {%- set pirs = [states.binary_sensor.motion_sensor_upper_floor,  states.binary_sensor.motion_sensor_kitchen_occupancy, states.binary_sensor.motion_sensor_158d00023db75a, states.binary_sensor.motion_sensor_158d00023db6f4, states.binary_sensor.motion_sensor_corridor_upstairs] %}
           {% for pir in pirs %}
             {% if as_timestamp(pir.last_changed) == as_timestamp(pirs | map(attribute='last_changed') | max) %}
               {{ pir.entity_id }}
@@ -188,6 +207,20 @@ sensor:
       should_open_blinds:
         friendly_name: "Can open blinds"
         value_template: "{{ (states.sensor.dark_sky_cloud_coverage.state | int >= 50) and states.sun.sun.state == 'above_horizon' }}"
+      min_temperature:
+        friendly_name: "Minimum temperature"
+        unit_of_measurement: "°C"
+        device_class: "temperature"
+        value_template: >
+          {% if states.sensor.electricity_price_sundbyviksvagen_9.state | float < 0.5 -%}
+            22
+          {%- elif states.sensor.electricity_price_sundbyviksvagen_9.state | float < 1 -%}
+            20
+          {%- elif states.sensor.electricity_price_sundbyviksvagen_9.state | float < 2.5 -%}
+            18
+          {%- else -%}
+            16
+          {%- endif %}
 
 xiaomi_aqara:
   discovery_retry: 5
@@ -202,6 +235,8 @@ ifttt:
   key: 9Rfbtkpj63qmsIkv2itVz2tEpnr2Unj0tSgNclbkNx
 
 input_text:
+
+input_number:
 
 counter:
 
@@ -264,14 +299,6 @@ input_boolean:
     name: Notification Welcome home Tina
 
 input_select:
-  light_presets:
-    name: Ljusmiljö
-    options:
-      - Normal
-      - Halloween
-      - Rotate
-    initial: Rotate
-    icon: mdi:panda
 
 light:
   - platform: group
@@ -298,7 +325,7 @@ light:
   - platform: group
     name: All lights
     entities:
-      - light.kitchen_spotlights
+      - light.kitchen_spotlights_2
       - light.office_ceiling
       - light.all_tv_room_lights
       - light.playroom
@@ -309,6 +336,11 @@ light:
     entities:
       - light.basement_1
       - light.basement_2
+  - platform: group
+    name: Altan lakeside
+    entities:
+      - light.altan_1
+      - light.yeelight_ct_bulb_0x12aa9891
 
 switch:
   - platform: template

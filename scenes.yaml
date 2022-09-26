@@ -1,7 +1,7 @@
 - id: '1636891233886'
   name: Kitchen daytime
   entities:
-    light.kitchen_spotlights:
+    light.kitchen_spotlights_2:
       min_mireds: 250
       max_mireds: 454
       supported_color_modes:
@@ -20,9 +20,9 @@
       - 0.526
       - 0.387
       entity_id:
-      - light.light.color_temperature_light_8
-      - light.light.color_temperature_light_9
-      - light.light.color_temperature_light_10
+      - light.kitchen_spotlight_1_2
+      - light.kitchen_spotlight_2
+      - light.kitchen_spotlight_3
       friendly_name: Kitchen spotlights
       icon: mdi:lightbulb-group
       supported_features: 32
@@ -31,7 +31,7 @@
 - id: '1636892209707'
   name: Kitchen evening
   entities:
-    light.kitchen_spotlights:
+    light.kitchen_spotlights_2:
       min_mireds: 250
       max_mireds: 454
       supported_color_modes:
@@ -50,9 +50,9 @@
       - 0.564
       - 0.389
       entity_id:
-      - light.light.color_temperature_light_8
-      - light.light.color_temperature_light_9
-      - light.light.color_temperature_light_10
+      - light.kitchen_spotlight_1_2
+      - light.kitchen_spotlight_2
+      - light.kitchen_spotlight_3
       friendly_name: Kitchen spotlights
       icon: mdi:lightbulb-group
       supported_features: 32
@@ -61,7 +61,7 @@
 - id: '1636927067185'
   name: Kitchen passive
   entities:
-    light.kitchen_spotlights:
+    light.kitchen_spotlights_2:
       min_mireds: 250
       max_mireds: 454
       supported_color_modes:
@@ -80,9 +80,9 @@
       - 0.564
       - 0.389
       entity_id:
-      - light.light.color_temperature_light_8
-      - light.light.color_temperature_light_9
-      - light.light.color_temperature_light_10
+      - light.kitchen_spotlight_1_2
+      - light.kitchen_spotlight_2
+      - light.kitchen_spotlight_3
       friendly_name: Kitchen spotlights
       icon: mdi:lightbulb-group
       supported_features: 32

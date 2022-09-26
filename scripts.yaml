@@ -349,3 +349,39 @@ remote_learn_dining_room_heating_pump_on_heating_2:
       entity_id: remote.dining_room_remote_remote
   mode: single
   icon: mdi:heat-pump
+remote_learn_dining_room_heating_pump_on_heating_3:
+  alias: Remote - Learn Dining room heating pump - Heating 18 deg
+  sequence:
+  - service: remote.learn_command
+    data:
+      device: heatpumpdiningroom
+      command: dining_room_heat_18
+      command_type: ir
+    target:
+      entity_id: remote.dining_room_remote_remote
+  mode: single
+  icon: mdi:heat-pump
+remote_learn_dining_room_heating_pump_heating_16_deg:
+  alias: Remote - Learn Dining room heating pump - Heating 16 deg
+  sequence:
+  - service: remote.learn_command
+    data:
+      device: heatpumpdiningroom
+      command: dining_room_heat_16
+      command_type: ir
+    target:
+      entity_id: remote.dining_room_remote_remote
+  mode: single
+  icon: mdi:heat-pump
+remote_learn_dining_room_heating_pump_heating_16_deg_2:
+  alias: Remote - Learn Dining room heating pump - Heating 22 deg
+  sequence:
+  - service: remote.learn_command
+    data:
+      device: heatpumpdiningroom
+      command: dining_room_heat_22
+      command_type: ir
+    target:
+      entity_id: remote.dining_room_remote_remote
+  mode: single
+  icon: mdi:heat-pump

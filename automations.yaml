@@ -8,12 +8,16 @@
   action:
   - data:
       brightness_pct: 10
-      entity_id: light.gateway_light_7811dcdf0cfa
       rgb_color:
       - 255
       - 255
       - 35
     service: light.turn_on
+    target:
+      entity_id:
+      - light.gateway_light_7811dcdf0cfa
+      - light.yeelight_ct_bulb_0x12aa9891
+      - light.altan_1
   - data:
       brightness_pct: 100
       kelvin: 2700
@@ -35,8 +39,8 @@
       - switch.tv_room_window_lamps_switch
       - switch.guestroomwindow
       - switch.window_upper_floor
-      - switch.switch_diningroom_left
-      - switch.switch_diningroom_right
+      - switch.dining_room_window_switch_1
+      - switch.dining_room_window_switch_2
   - service: light.turn_on
     target:
       entity_id: light.tvroom_lights
@@ -70,6 +74,8 @@
       - light.yeelight_color_0x5ed2368
       - light.wled_left_speaker
       - light.wled_speaker_2
+      - light.altan_1
+      - light.yeelight_ct_bulb_0x12aa9891
   - data: {}
     service: switch.turn_off
     target:
@@ -77,13 +83,12 @@
       - switch.guestroomwindow
       - switch.tv_room_window_lamps_switch
       - switch.window_upper_floor
-      - switch.switch_diningroom_left
-      - switch.switch_diningroom_right
+      - switch.dining_room_window_switch_1
+      - switch.dining_room_window_switch_2
   initial_state: 'on'
   mode: single
 - id: '1536864983273'
   alias: Fire alarm
-  initial_state: 'on'
   trigger:
   - entity_id: binary_sensor.smoke_sensor_158d00023117bb
     platform: state
@@ -91,12 +96,17 @@
   - entity_id: binary_sensor.smoke_sensor_158d000215ab06
     platform: state
     to: 'on'
+  - platform: state
+    entity_id:
+    - binary_sensor.upstairs_smoke_sensor
+    to: 'on'
   condition: []
   action:
   - data:
       message: Possible fire in kitchen/tvroom
       title: Possible fire
     service: notify.pushbullet_notifier
+  initial_state: 'on'
 - id: '1536961274860'
   alias: Coming home
   trigger:
@@ -173,17 +183,18 @@
       - light.gateway_light_7811dcdf0cfa
       - light.yeelight_color_0x5ed30a8
       - light.yeelight_color_0x5ed2368
-      - light.kitchen_spotlights
+      - light.kitchen_spotlights_2
       - light.tv_room_cieling_lights
       - light.office_ceiling
       - light.tvroom_lights
       - light.wled_left_speaker
+      - light.wled_speaker_2
   - data: {}
     service: switch.turn_off
     target:
       entity_id:
-      - switch.switch_diningroom_left
-      - switch.switch_diningroom_right
+      - switch.dining_room_window_switch_1
+      - switch.dining_room_window_switch_2
     enabled: false
   - data:
       entity_id: input_boolean.tv_room_light_switched_recently_pressed
@@ -624,10 +635,14 @@
   action:
   - wait_for_trigger:
     - platform: state
-      entity_id: binary_sensor.motion_sensor_kitchen
+      entity_id: binary_sensor.motion_sensor_kitchen_occupancy
       from: 'off'
       to: 'on'
-    timeout: 00:10:00
+    timeout:
+      hours: 0
+      minutes: 20
+      seconds: 0
+      milliseconds: 0
     continue_on_timeout: false
   - data:
       entity_id: input_boolean.notification_goodmorning
@@ -635,7 +650,7 @@
 - id: '1562220236800'
   alias: Notification - Clear good morning
   trigger:
-  - entity_id: binary_sensor.motion_sensor_kitchen
+  - entity_id: binary_sensor.motion_sensor_kitchen_occupancy
     from: 'off'
     platform: state
     to: 'on'
@@ -937,6 +952,11 @@
       entity_id: binary_sensor.switch_158d0002ad6c3a
     event_type: xiaomi_aqara.click
     platform: event
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tv_room_behind_sofa
+      event: 1002
   condition:
   - condition: state
     entity_id: light.tv_room_cieling_lights
@@ -964,6 +984,11 @@
       entity_id: binary_sensor.switch_158d0002ad6c3a
     event_type: xiaomi_aqara.click
     platform: event
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tv_room_behind_sofa
+      event: 1004
   condition:
   - condition: state
     entity_id: input_boolean.ceiling_yeelight_norml_mode
@@ -985,6 +1010,11 @@
       entity_id: binary_sensor.switch_158d0002ad6c3a
     event_type: xiaomi_aqara.click
     platform: event
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tv_room_behind_sofa
+      event: 1004
   condition:
   - condition: state
     entity_id: input_boolean.ceiling_yeelight_norml_mode
@@ -1006,6 +1036,11 @@
       entity_id: binary_sensor.switch_158d0002ad6c3a
     event_type: xiaomi_aqara.click
     platform: event
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tv_room_behind_sofa
+      event: 1002
   condition:
   - condition: state
     entity_id: light.tv_room_cieling_lights
@@ -1021,6 +1056,7 @@
     state: 'off'
   action:
   - service: script.tv_room_day_light
+    data: {}
 - id: '1563477770934'
   alias: Switch - Single click left on - evening time
   trigger:
@@ -1034,6 +1070,11 @@
       entity_id: binary_sensor.switch_158d0002ad6c3a
     event_type: xiaomi_aqara.click
     platform: event
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tv_room_behind_sofa
+      event: 1002
   condition:
   - condition: state
     entity_id: sun.sun
@@ -1052,6 +1093,7 @@
     after: 07:00:00
   action:
   - service: script.tv_room_evening_light
+    data: {}
 - id: '1563536402916'
   alias: Switch - Dim ceiling
   trigger:
@@ -1461,7 +1503,7 @@
 - id: '1572108824608'
   alias: Lights - Entrance hallway
   trigger:
-  - entity_id: binary_sensor.motion_sensor_158d00036d598f
+  - entity_id: binary_sensor.entrance_motion_sensor_occupancy
     platform: state
     to: 'on'
   - platform: state
@@ -1476,7 +1518,7 @@
 - id: '1572110432932'
   alias: Lights - Entrance Hallway off
   trigger:
-  - entity_id: binary_sensor.motion_sensor_158d00036d598f
+  - entity_id: binary_sensor.entrance_motion_sensor_occupancy
     for: 00:03:00
     platform: state
     to: 'off'
@@ -1494,7 +1536,7 @@
       seconds: 0
   condition:
   - condition: state
-    entity_id: binary_sensor.motion_sensor_158d00036d598f
+    entity_id: binary_sensor.entrance_motion_sensor_occupancy
     state: 'off'
   - condition: state
     entity_id: binary_sensor.door_window_sensor_158d0002049a62
@@ -1840,7 +1882,7 @@
     offset: '0'
   condition:
   - condition: state
-    entity_id: light.kitchen_spotlights
+    entity_id: light.kitchen_spotlights_2
     state: 'on'
   action:
   - scene: scene.kitchen_daytime
@@ -1853,7 +1895,7 @@
     event: sunset
   condition:
   - condition: state
-    entity_id: light.kitchen_spotlights
+    entity_id: light.kitchen_spotlights_2
     state: 'on'
   action:
   - scene: scene.kitchen_nigthtime
@@ -1863,12 +1905,12 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.motion_sensor_kitchen
+    entity_id: binary_sensor.motion_sensor_kitchen_occupancy
     from: 'off'
     to: 'on'
   condition:
   - condition: state
-    entity_id: light.kitchen_spotlights
+    entity_id: light.kitchen_spotlights_2
     state: 'off'
   - condition: state
     entity_id: sun.sun
@@ -1879,55 +1921,65 @@
   action:
   - service: scene.turn_on
     target:
-      entity_id: scene.kitchen_daytime
-    data:
-      transition: 3
+      entity_id:
+      - scene.kitchen_daytime_scene
+    data: {}
   mode: single
 - id: '1636958839522'
   alias: Lights - Kitchen - On Evening
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.motion_sensor_kitchen
+    entity_id: binary_sensor.motion_sensor_kitchen_occupancy
     from: 'off'
     to: 'on'
   condition:
   - condition: state
-    entity_id: light.kitchen_spotlights
+    entity_id: light.kitchen_spotlights_2
     state: 'off'
   - condition: state
     entity_id: sun.sun
     state: below_horizon
   - condition: time
-    before: '23:59'
+    before: '23:59:00'
+    after: '12:00:00'
   action:
   - service: scene.turn_on
     target:
-      entity_id: scene.kitchen_nigthtime
-    data:
-      transition: 3
+      entity_id:
+      - scene.kitchen_evening_scene
+    data: {}
   mode: single
 - id: '1636958937460'
   alias: 'Lights - Kitchen - On night '
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.motion_sensor_kitchen
+    entity_id: binary_sensor.motion_sensor_kitchen_occupancy
     from: 'off'
     to: 'on'
   condition:
-  - condition: numeric_state
-    entity_id: light.kitchen_spotlights
-    attribute: brightness
-    below: '136'
   - condition: time
-    after: 00:00
-    before: 09:00
+    after: 00:00:00
+    before: 09:00:00
   - condition: state
     entity_id: sun.sun
     state: below_horizon
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: light.kitchen_spotlights_2
+      state: 'off'
+    - condition: numeric_state
+      entity_id: light.kitchen_spotlights_2
+      attribute: brightness
+      below: '136'
   action:
-  - scene: scene.kitchen_passive
+  - service: scene.turn_on
+    target:
+      entity_id:
+      - scene.kitchen_passive_2
+    data: {}
   - delay:
       hours: 0
       minutes: 0
@@ -1935,16 +1987,16 @@
       milliseconds: 0
   - service: scene.turn_on
     target:
-      entity_id: scene.kitchen_nigthtime
-    data:
-      transition: 300
+      entity_id:
+      - scene.kitchen_evening_5_min
+    data: {}
   mode: single
 - id: '1636995387249'
   alias: Lights - Kitchen off
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.motion_sensor_kitchen
+    entity_id: binary_sensor.motion_sensor_kitchen_occupancy
     from: 'on'
     to: 'off'
     for:
@@ -1964,7 +2016,7 @@
   action:
   - service: light.turn_off
     target:
-      entity_id: light.kitchen_spotlights
+      entity_id: light.kitchen_spotlights_2
   mode: single
 - id: '1637694506916'
   alias: Switch - Single click left on - night time
@@ -1980,13 +2032,20 @@
     event_data:
       click_type: single
       entity_id: binary_sensor.switch_158d0002ad6c3a
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tv_room_behind_sofa
+      event: 1002
   condition:
   - condition: or
     conditions:
     - condition: time
       after: '23:00'
+      before: 00:00:00
     - condition: time
       before: 07:00:00
+      after: 00:00:00
   - condition: state
     entity_id: light.tv_room_cieling_lights
     state: 'off'
@@ -1998,6 +2057,7 @@
     state: 'off'
   action:
   - service: script.tv_room_passive_light
+    data: {}
   mode: single
 - id: '1637918760419'
   alias: TTS Notification - Entrance open too long
@@ -2066,48 +2126,6 @@
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.tts_notification_identification_complete
-  mode: single
-- id: '1637918923487'
-  alias: TTS Notification - Basement leak
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.water_leak_sensor_158d0002334525
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: script.tts_long
-    data:
-      message: Attention! Possible water leak has been detected in the basement
-  mode: single
-- id: '1637918923488'
-  alias: TTS Notification - Bathroom leak
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.water_leak_sensor_158d00027955e3
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: script.tts_long
-    data:
-      message: Attention! Possible water leak has been detected in the bathroom
-  mode: single
-- id: '1637918923489'
-  alias: TTS Notification - Luandry room leak
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.water_leak_sensor_158d0002837195
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: script.tts_long
-    data:
-      message: Attention! Possible water leak has been detected in the luandry room
   mode: single
 - id: '1638038537552'
   alias: TTS Notification - Good morning
@@ -2540,7 +2558,8 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.motion_sensor_158d00023db75a
+    entity_id:
+    - group.tv_room_motion_sensors
     from: 'on'
     to: 'off'
     for:
@@ -2549,7 +2568,8 @@
       seconds: 0
     id: day
   - platform: state
-    entity_id: binary_sensor.motion_sensor_158d00023db75a
+    entity_id:
+    - group.tv_room_motion_sensors
     from: 'on'
     to: 'off'
     for:
@@ -2596,7 +2616,8 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: binary_sensor.motion_sensor_158d00023db75a
+    entity_id:
+    - group.tv_room_motion_sensors
     from: 'off'
     to: 'on'
   condition:
@@ -3027,7 +3048,7 @@
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.motion_sensor_kitchen
+    - binary_sensor.motion_sensor_kitchen_occupancy
     - binary_sensor.motion_sensor_upper_floor
     - binary_sensor.motion_sensor_158d00023db75a
     - binary_sensor.motion_sensor_158d00023db6f4
@@ -3207,7 +3228,7 @@
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.motion_sensor_kitchen
+    - binary_sensor.motion_sensor_kitchen_occupancy
     - binary_sensor.motion_sensor_158d00023db75a
     - binary_sensor.motion_sensor_upper_floor
     from: 'off'
@@ -3309,18 +3330,56 @@
       - condition: trigger
         id: Turn cw
       sequence:
-      - service: media_player.volume_up
-        data: {}
-        target:
-          entity_id: media_player.chromecast
+      - if:
+        - condition: state
+          entity_id: switch.moonlight
+          state: 'on'
+        - condition: template
+          value_template: '{{ state_attr(''light.tv_room_cieling_lights'', ''brightness'')
+            + 50 > 255}}'
+        then:
+        - service: switch.turn_off
+          data: {}
+          target:
+            entity_id: switch.moonlight
+        - service: light.turn_on
+          data:
+            brightness: 5
+          target:
+            entity_id: light.tv_room_cieling_lights
+        else:
+        - service: light.turn_on
+          data:
+            brightness_step: 50
+          target:
+            entity_id: light.tv_room_cieling_lights
     - conditions:
       - condition: trigger
         id: Turn ccw
       sequence:
-      - service: media_player.volume_down
-        data: {}
-        target:
-          entity_id: media_player.chromecast
+      - if:
+        - condition: state
+          entity_id: switch.moonlight
+          state: 'off'
+        - condition: template
+          value_template: '{{ state_attr(''light.tv_room_cieling_lights'', ''brightness'')
+            - 50 < 1}}'
+        then:
+        - service: switch.turn_on
+          data: {}
+          target:
+            entity_id: switch.moonlight
+        - service: light.turn_on
+          data:
+            brightness: 255
+          target:
+            entity_id: light.tv_room_cieling_lights
+        else:
+        - service: light.turn_on
+          data:
+            brightness_step: -50
+          target:
+            entity_id: light.tv_room_cieling_lights
     default: []
   mode: single
 - id: '1661546925974'
@@ -3367,13 +3426,14 @@
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.motion_sensor_158d00036d598f
+    - binary_sensor.entrance_motion_sensor_occupancy
     - binary_sensor.motion_sensor_158d00023db75a
     - binary_sensor.motion_sensor_upper_floor
-    - binary_sensor.motion_sensor_kitchen
+    - binary_sensor.motion_sensor_kitchen_occupancy
     - binary_sensor.motion_sensor_158d00053fcc36
     - binary_sensor.motion_sensor_158d00023db6f4
     - binary_sensor.motion_sensor_corridor_upstairs
+    - binary_sensor.tv_room_entrance_motion_sensor_occupancy
     to: 'on'
   condition: []
   action:
@@ -3454,3 +3514,166 @@
           entity_id: media_player.dining_room
     default: []
   mode: queued
+- id: '1663423041438'
+  alias: Switch - Behind sofa
+  description: ''
+  trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tv_room_behind_sofa
+      event: 1005
+    id: triple
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      id: tv_room_behind_sofa
+      event: 1006
+    id: quadruple
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: triple
+      sequence:
+      - service: scene.turn_on
+        data: {}
+        target:
+          entity_id: scene.tv_rum_passive
+    - conditions:
+      - condition: trigger
+        id: quadruple
+      sequence:
+      - service: yeelight.set_color_scene
+        data:
+          brightness: 100
+          rgb_color:
+          - 0
+          - 0
+          - 255
+        target:
+          entity_id:
+          - light.yeelight_color_0x5e72c05
+          - light.yeelight_color_0x5e72e34
+  mode: single
+- id: '1663435138533'
+  alias: Lights - Turn off tv room when bright
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.illumination_158d00023db75a
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+    above: 300
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.tv_room_cieling_lights
+      - light.all_tv_room_lights
+  mode: single
+- id: '1663494743687'
+  alias: Dryer - Track session power
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.dryer_washer_job_state
+    from: none
+    to: drying
+  condition: []
+  action:
+  - service: input_text.set_value
+    data:
+      value: '{{ states.sensor.dryer_energy.state }}'
+    target:
+      entity_id: input_text.last_dryer_session_power
+  mode: single
+- id: '1663620297186'
+  alias: AC - Dining room - Off
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00:00
+    enabled: false
+  - platform: template
+    value_template: "{{states.sensor.temperature_158d000460535b.state | float >=\n
+      \   (states.sensor.min_temperature.state | float + 0.75)}}"
+  condition: []
+  action:
+  - service: remote.send_command
+    data:
+      device: heatpumpdiningroom
+      command: dining_room_off
+      hold_secs: 1
+    target:
+      entity_id: remote.dining_room_remote_remote
+  mode: single
+- id: '1663789354099'
+  alias: AC - Dining room - On
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  - platform: template
+    value_template: "{{states.sensor.temperature_158d000460535b.state <\n  states.sensor.min_temperature.state}}"
+  condition: []
+  action:
+  - service: remote.send_command
+    data:
+      device: heatpumpdiningroom
+      command: dining_room_on_heat
+      hold_secs: 1
+    target:
+      entity_id: remote.dining_room_remote_remote
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.min_temperature
+        below: 16.5
+      sequence:
+      - service: remote.send_command
+        data:
+          device: heatpumpdiningroom
+          hold_secs: 1
+          command: dining_room_heat_16
+        target:
+          entity_id: remote.dining_room_remote_remote
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.min_temperature
+        below: 18.5
+        above: 16.5
+      sequence:
+      - service: remote.send_command
+        data:
+          device: heatpumpdiningroom
+          command: dining_room_heat_18
+          hold_secs: 1
+        target:
+          entity_id: remote.dining_room_remote
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.min_temperature
+        below: 22.5
+        above: 20.5
+      sequence:
+      - service: remote.send_command
+        data:
+          device: heatpumpdiningroom
+          command: dining_room_heat_22
+          hold_secs: 1
+        target:
+          entity_id: remote.dining_room_remote
+    enabled: true
+  mode: single
